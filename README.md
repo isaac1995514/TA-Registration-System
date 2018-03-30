@@ -12,6 +12,10 @@ Files used for database initialzation are included in 'resources\Database' Initi
 
 ### Steps
 1. log in to the database as root
+
 '''
+
 $ mysql -u root -p
+
 '''
+
