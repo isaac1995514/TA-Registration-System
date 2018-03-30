@@ -1,5 +1,8 @@
 DROP TABLE IF EXISTS Department;
 DROP TABLE IF EXISTS Student;
+DROP TABLE IF EXISTS StudentAccount;
+DROP TABLE IF EXISTS Faculty;
+DROP TABLE IF EXISTS FacultyAccount;
 DROP TABLE IF EXISTS TA_Experience;
 DROP TABLE IF EXISTS Applications;
 DROP TABLE IF EXISTS Faculty;
@@ -11,58 +14,74 @@ CREATE TABLE Department(
     PRIMARY KEY (departmentName)
 );
 
-CREATE TABLE Student(
-    username varchar(50),
-    psw varchar(50),
-    studentId varchar(8),
-    firstName varchar(50),
-    middleName varchar(1),
-    lastName varchar(50),
-    email varchar(50),
-    phone varchar(15),
-    departmentName varchar(50),
+CREATE TABLE StudentAccount(
+    studentId varchar(8) NOT NULL,
+    username varchar(50) NOT NULL UNIQUE,
+    psw varchar(50) NOT NULL,
     PRIMARY KEY (studentId)
 );
 
+CREATE TABLE Student(
+    studentId varchar(8) NOT NULL,
+    firstName varchar(50) NOT NULL,
+    middleName varchar(1),
+    lastName varchar(50) NOT NULL,
+    email varchar(50) NOT NULL,
+    phone varchar(15) NOT NULL,
+    departmentName varchar(50) NOT NULL,
+    entryYear varchar(4) NOT NULL,
+    entryTerm enum('Spring', 'Fall') NOT NULL,
+    studentType enum('Undergrad', 'Grad', 'Master') NOT NULL,
+    advisor varchar(50),
+    msDegree enum('Yes', 'No') NOT NULL,
+    emiTestPassed enum('Yes', 'No'),
+    currentEMI enum('Yes', 'No'),
+    PRIMARY KEY (studentId)
+);
+
+CREATE TABLE FacultyAccount(
+    facultyId varchar(8) NOT NULL,
+    username varchar(50) NOT NULL UNIQUE,
+    psw varchar(50) NOT NULL,
+    PRIMARY KEY (facultyId)
+);
+
+CREATE TABLE Faculty(
+    facultyId varchar(8) NOT NULL,
+    firstName varchar(50) NOT NULL,
+    middleName varchar(1),
+    lastName varchar(50) NOT NULL,
+    email varchar(50) NOT NULL,
+    phone varchar(15) NOT NULL,
+    departmentName varchar(50) NOT NULL,
+    PRIMARY KEY (facultyId)
+);
 
 CREATE TABLE TA_Experience(
-    studentId varchar(8),
-    courseCode varchar(10),
-    academicYear varchar(4),
-    section varchar(4),
-    term enum('Fall', 'Spring', 'Winter', 'Summer'),
+    studentId varchar(8) NOT NULL,
+    courseCode varchar(10) NOT NULL,
+    academicYear varchar(4) NOT NULL,
+    section varchar(4) NOT NULL,
+    term enum('Fall', 'Spring', 'Winter', 'Summer') NOT NULL,
     PRIMARY KEY(studentId, courseCode, academicYear, section, term)
 );
 
 CREATE TABLE Applications(
-    studentId varchar(8),
-    academicYear varchar(4),
-    course varchar(8),
-    section varchar(4),
-    term enum('Fall', 'Spring', 'Winter', 'Summer'),
-    appStatus enum('New','Accepted', "Denied"),
-    PRIMARY KEY (studentId, academicYear, course, section)
-);
-
-CREATE TABLE Faculty(
-    username varchar(50) ,
-    psw varchar(50),
-    facultyId varchar(8),
-    firstName varchar(50),
-    middleName varchar(1),
-    lastName varchar(50),
-    email varchar(50),
-    phone varchar(15),
-    departmentName varchar(50),
-    PRIMARY KEY (facultyId)
+    studentId varchar(8) NOT NULL,
+    academicYear varchar(4) NOT NULL,
+    course varchar(8) NOT NULL,
+    term enum('Fall', 'Spring', 'Winter', 'Summer') NOT NULL,
+    appStatus enum('New','Accepted', "Denied") NOT NULL,
+    taType enum('Part Time', 'Full Time') NOT NULL,
+    PRIMARY KEY (studentId, academicYear, course)
 );
 
 CREATE TABLE Course(
-    courseName varchar(50),
-    courseCode varchar(8),
-    academicYear varchar(4),
-    section varchar(4),
-    term enum('Fall', 'Spring', 'Winter', 'Summer'),
-    professorId varchar(8),
+    courseName varchar(50) NOT NULL,
+    courseCode varchar(8) NOT NULL,
+    academicYear varchar(4) NOT NULL,
+    section varchar(4) NOT NULL,
+    term enum('Fall', 'Spring', 'Winter', 'Summer') NOT NULL,
+    professorId varchar(8) NOT NULL,
     PRIMARY KEY (courseCode, academicYear, section, term)
 );
