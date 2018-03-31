@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ca4d23ed-ab05-4297-adf1-7d54186c2aa7" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/model/DatabaseManager.php" afterPath="$PROJECT_DIR$/model/DatabaseManager.php" />
-      <change beforePath="$PROJECT_DIR$/resources/initialization/database.sql" afterPath="$PROJECT_DIR$/resources/initialization/database.sql" />
-      <change beforePath="$PROJECT_DIR$/resources/initialization/initializeDatabase.bat" afterPath="$PROJECT_DIR$/resources/initialization/initializeDatabase.bat" />
-    </list>
+    <list default="true" id="ca4d23ed-ab05-4297-adf1-7d54186c2aa7" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,8 +31,8 @@
       <file leaf-file-name="InsertionTest.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/InsertionTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="685">
-              <caret line="80" column="33" lean-forward="true" selection-start-line="80" selection-start-column="33" selection-end-line="80" selection-end-column="33" />
+            <state relative-caret-position="205">
+              <caret line="56" column="14" lean-forward="false" selection-start-line="56" selection-start-column="14" selection-end-line="56" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -153,12 +149,12 @@
       <option name="presentableId" value="Default" />
       <updated>1522290745293</updated>
       <workItem from="1522290746399" duration="289000" />
-      <workItem from="1522372329742" duration="15116000" />
+      <workItem from="1522372329742" duration="15209000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15405000" />
+    <option name="totallyTimeSpent" value="15498000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="2552" y="-426" width="1096" height="1906" extended-state="6" />
@@ -228,8 +224,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/InsertionTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="685">
-          <caret line="80" column="33" lean-forward="true" selection-start-line="80" selection-start-column="33" selection-end-line="80" selection-end-column="33" />
+        <state relative-caret-position="205">
+          <caret line="56" column="14" lean-forward="false" selection-start-line="56" selection-start-column="14" selection-end-line="56" selection-end-column="14" />
           <folding />
         </state>
       </provider>
