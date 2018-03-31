@@ -1,24 +1,16 @@
-DROP TABLE IF EXISTS Department;
-DROP TABLE IF EXISTS Student;
-DROP TABLE IF EXISTS StudentAccount;
-DROP TABLE IF EXISTS Faculty;
-DROP TABLE IF EXISTS FacultyAccount;
-DROP TABLE IF EXISTS TA_Experience;
 DROP TABLE IF EXISTS Applications;
-DROP TABLE IF EXISTS Faculty;
+DROP TABLE IF EXISTS TA_Experience;
 DROP TABLE IF EXISTS Course;
+DROP TABLE IF EXISTS FacultyAccount;
+DROP TABLE IF EXISTS Faculty;
+DROP TABLE IF EXISTS StudentAccount;
+DROP TABLE IF EXISTS Student;
+DROP TABLE IF EXISTS Department;
 
 CREATE TABLE Department(
     departmentName varchar(20) NOT NULL,
     registrationKey varchar(10) NOT NULL,
     PRIMARY KEY (departmentName)
-);
-
-CREATE TABLE StudentAccount(
-    studentId varchar(8) NOT NULL,
-    username varchar(50) NOT NULL UNIQUE,
-    psw varchar(50) NOT NULL,
-    PRIMARY KEY (studentId)
 );
 
 CREATE TABLE Student(
@@ -28,22 +20,25 @@ CREATE TABLE Student(
     lastName varchar(50) NOT NULL,
     email varchar(50) NOT NULL,
     phone varchar(15) NOT NULL,
+    gpa float NOT NULL,
     departmentName varchar(50) NOT NULL,
     entryYear varchar(4) NOT NULL,
     entryTerm enum('Spring', 'Fall') NOT NULL,
     studentType enum('Undergrad', 'Grad', 'Master') NOT NULL,
-    advisor varchar(50),
+    adviser varchar(50),
     msDegree enum('Yes', 'No') NOT NULL,
     emiTestPassed enum('Yes', 'No'),
     currentEMI enum('Yes', 'No'),
-    PRIMARY KEY (studentId)
+    PRIMARY KEY (studentId),
+    FOREIGN KEY (departmentName) REFERENCES Department(departmentName)
 );
 
-CREATE TABLE FacultyAccount(
-    facultyId varchar(8) NOT NULL,
-    username varchar(50) NOT NULL UNIQUE,
-    psw varchar(50) NOT NULL,
-    PRIMARY KEY (facultyId)
+CREATE TABLE StudentAccount(
+    studentId varchar(8) NOT NULL,
+    username varchar(255) NOT NULL UNIQUE,
+    psw varchar(255) NOT NULL,
+    PRIMARY KEY (studentId),
+    FOREIGN KEY (studentId) REFERENCES Student(studentId)
 );
 
 CREATE TABLE Faculty(
@@ -54,34 +49,49 @@ CREATE TABLE Faculty(
     email varchar(50) NOT NULL,
     phone varchar(15) NOT NULL,
     departmentName varchar(50) NOT NULL,
-    PRIMARY KEY (facultyId)
+    PRIMARY KEY (facultyId),
+    FOREIGN KEY (departmentName) REFERENCES Department(departmentName)
+);
+
+CREATE TABLE FacultyAccount(
+    facultyId varchar(8) NOT NULL,
+    username varchar(255) NOT NULL UNIQUE,
+    psw varchar(255) NOT NULL,
+    PRIMARY KEY (facultyId),
+    FOREIGN KEY (facultyId) REFERENCES Faculty(facultyId)
+);
+
+CREATE TABLE Course(
+    courseName varchar(50) NOT NULL,
+    courseCode varchar(8) NOT NULL,
+    section varchar(4) NOT NULL,
+    academicYear varchar(4) NOT NULL,
+    term enum('Fall', 'Spring', 'Winter', 'Summer') NOT NULL,
+    professorId varchar(8) NOT NULL,
+    PRIMARY KEY (courseCode, academicYear, section, term),
+    FOREIGN KEY (professorId) REFERENCES Faculty(facultyId)
 );
 
 CREATE TABLE TA_Experience(
     studentId varchar(8) NOT NULL,
     courseCode varchar(10) NOT NULL,
     academicYear varchar(4) NOT NULL,
-    section varchar(4) NOT NULL,
     term enum('Fall', 'Spring', 'Winter', 'Summer') NOT NULL,
-    PRIMARY KEY(studentId, courseCode, academicYear, section, term)
+    PRIMARY KEY(studentId, courseCode, academicYear, term),
+    FOREIGN KEY (studentId) REFERENCES Student(studentId),
+    FOREIGN KEY (courseCode) REFERENCES Course(courseCode)
 );
 
 CREATE TABLE Applications(
     studentId varchar(8) NOT NULL,
     academicYear varchar(4) NOT NULL,
-    course varchar(8) NOT NULL,
+    courseCode varchar(8) NOT NULL,
     term enum('Fall', 'Spring', 'Winter', 'Summer') NOT NULL,
     appStatus enum('New','Accepted', "Denied") NOT NULL,
     taType enum('Part Time', 'Full Time') NOT NULL,
-    PRIMARY KEY (studentId, academicYear, course)
+    PRIMARY KEY (studentId, academicYear, courseCode),
+    FOREIGN KEY (studentId) REFERENCES Student(studentId),
+    FOREIGN KEY (courseCode) REFERENCES Course(courseCode)
 );
 
-CREATE TABLE Course(
-    courseName varchar(50) NOT NULL,
-    courseCode varchar(8) NOT NULL,
-    academicYear varchar(4) NOT NULL,
-    section varchar(4) NOT NULL,
-    term enum('Fall', 'Spring', 'Winter', 'Summer') NOT NULL,
-    professorId varchar(8) NOT NULL,
-    PRIMARY KEY (courseCode, academicYear, section, term)
-);
+GRANT ALL ON tasql.* to dbuser@localhost identified by "password";
