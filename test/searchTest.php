@@ -12,6 +12,29 @@
      * Testing Insertion Function in DatabaseManager.php
      */
 
+    echo "getStudentApplication()", "<br><br>";
+
     $database = new DatabaseManager();
 
-    $database->getStudentApplication("00000001");
+    [$code, $result] = $database->getStudentApplication("00000001");
+
+    foreach($result as $application){
+        print_r($application);
+        echo "<br><br>";
+    }
+
+    echo "getTAForCourse()", "<br><br>";
+
+    [$code, $result] = $database->getTAForCourse("CMSC131");
+
+    foreach($result as $application){
+        print_r($application);
+        echo "<br><br>";
+    }
+
+
+
+
+
+
+

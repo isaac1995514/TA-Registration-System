@@ -16,6 +16,16 @@
         const UPDATE = "UPDATE";
         const SELECT = "SELECT";
 
+        // Tables
+        const DEPARTMENT = "Department";
+        const STUDENT = "Student";
+        const STUDENT_ACCOUNT = "StudentAccount";
+        const FACULTY = "Faculty";
+        const FACULTY_ACCOUNT = "FacultyAccount";
+        const TA = "TA_Experience";
+        const APPLICATION = "Applications";
+        const COURSE = "Course";
+
         private $host;
         private $user;
         private $password;
@@ -31,16 +41,6 @@
             $this->user = 'dbuser';
             $this->password = "password";
             $this->database = 'tasql';
-            $this->tables = array(
-                "department" => "Department",
-                "student" => "Student",
-                "studentAcc" => "StudentAccount",
-                "faculty" => "Faculty",
-                "facultyAcc" => "FacultyAccount",
-                "ta" => "TA_Experience",
-                "app" => "Applications",
-                "course" => "Course"
-            );
         }
 
         /***************************************************************************
@@ -80,13 +80,13 @@
                     $values = join(", ", array_keys($arguments));
                     $field = join(", ", array_values($arguments));
 
-                    $query = "INSERT INTO {$tables[0]} ({$values}) VALUES ({$field});";
+                    $query = "INSERT INTO {$tables} ({$values}) VALUES ({$field});";
                     break;
                 case "SELECT":
                     $select = $arguments["select"];
                     $where = $arguments["where"];
 
-                    $query = "SELECT {$select} FROM {$tables[0]} WHERE {$where};";
+                    $query = "SELECT {$select} FROM {$tables} WHERE {$where};";
             }
 
             return $query;
@@ -135,7 +135,8 @@
             );
 
             // Generate Query to add Student
-            $query = $this->generateQuery(self::INSERT, array($this->tables['student']), $arguments);
+            $tables = self::STUDENT;
+            $query = $this->generateQuery(self::INSERT, $tables, $arguments);
 
             // echo "Query (Add to Student): ", $query;
             // echo "<br><br>";
@@ -158,7 +159,8 @@
             );
 
             // Generate Query to add StudentAccount
-            $query = $this->generateQuery(self::INSERT, array($this->tables['studentAcc']), $arguments);
+            $tables = self::STUDENT_ACCOUNT;
+            $query = $this->generateQuery(self::INSERT, $tables, $arguments);
 
             // echo "Query (Add to StudentAccount): ", $query;
             // echo "<br><br>";
@@ -202,7 +204,8 @@
             );
 
             // Generate Query to add Faculty
-            $query = $this->generateQuery(self::INSERT, array($this->tables['ta']), $arguments);
+            $tables = self::TA;
+            $query = $this->generateQuery(self::INSERT, $tables, $arguments);
 
             /* Executing query */
             $result = $db_connection->query($query);
@@ -245,7 +248,8 @@
             );
 
             // Generate Query to add Faculty
-            $query = $this->generateQuery(self::INSERT, array($this->tables['faculty']), $arguments);
+            $tables = self::FACULTY;
+            $query = $this->generateQuery(self::INSERT, $tables, $arguments);
 
             /* Executing query */
             $result = $db_connection->query($query);
@@ -264,7 +268,8 @@
             );
 
             // Generate Query to add FacultyAccount
-            $query = $this->generateQuery(self::INSERT, array($this->tables['facultyAcc']), $arguments);
+            $tables = self::FACULTY_ACCOUNT;
+            $query = $this->generateQuery(self::INSERT, $tables, $arguments);
 
             /* Executing query */
             $result = $db_connection->query($query);
@@ -305,7 +310,8 @@
             );
 
             // Generate Query to add Faculty
-            $query = $this->generateQuery(self::INSERT, array($this->tables['app']), $arguments);
+            $tables = self::APPLICATION;
+            $query = $this->generateQuery(self::INSERT, $tables, $arguments);
 
             /* Executing query */
             $result = $db_connection->query($query);
@@ -349,12 +355,13 @@
 
             $arguments = array(
                 "select" => "*",
-                "where" => ($year == NULL) ?
+                "where" => ($year === NULL) ?
                     ("studentId = '{$studentId}'") :
                     ("studentId = '{$studentId}', academicYear = '{$year}', term = '{$term}'")
             );
 
-            $query = $this->generateQuery(self::SELECT, array($this->tables["app"]), $arguments);
+            $tables = self::APPLICATION;
+            $query = $this->generateQuery(self::SELECT, $tables, $arguments);
 
             /* Executing query */
             $result = $db_connection->query($query);
@@ -378,6 +385,55 @@
 
             return [0, $data];
         }
+
+        /***
+         * Admin User Interface Functions
+         */
+
+        public function getTAForCourse($course, $section = NULL){
+
+            $data = array();
+
+            $db_connection = $this->connect();
+
+            if($db_connection == NULL) return [101, $data];
+
+            $arguments = array(
+                "select" => "*",
+                "where" => ($section === NULL) ?
+                    ("courseCode = '{$course}'") :
+                    ("courseCode = '{$course}', section = '{$section}'")
+            );
+
+            $tables = self::TA;
+            $query = $this->generateQuery(self::SELECT, $tables, $arguments);
+
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return [102, $result];
+            }else{
+                /* Number of rows found */
+                $num_rows = $result->num_rows;
+
+                if($num_rows == 0){
+                    return [1, $data];
+                }else{
+
+                    while($row = $result->fetch_assoc()) {
+                        $data[]=$row;
+                    }
+                }
+            }
+
+            $db_connection->close();
+
+            return [0, $data];
+
+        }
+
+
 
         private function getRow($columns, $row){
 
