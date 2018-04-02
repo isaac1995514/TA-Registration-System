@@ -25,11 +25,13 @@
         "phone" => "111-111-1111",
         "gpa" => "3.33",
         "departmentName" => "Computer Science",
+        "resumeFile" => NULL,
         "entryYear" => "2015",
         "entryTerm" => "Fall",
         "studentType" => "Undergrad",
         "adviser" => "Adviser",
-        "msDegree" => "No",
+        "earnedMasterDegree" => 0,
+        "foreignStudent" => 0,
         "emiTestPassed" => NULL,
         "currentEMI" => NULL
     );
@@ -49,37 +51,15 @@
         "phone" => "111-111-1112",
         "gpa" => "3.34",
         "departmentName" => "History",
+        "resumeFile" => NULL,
         "entryYear" => "2016",
         "entryTerm" => "Spring",
-        "studentType" => "Undergrad",
+        "studentType" => "PhD",
         "adviser" => "Adviser",
-        "msDegree" => "Yes",
-        "emiTestPassed" => "Yes",
-        "currentEMI" => "No"
-    );
-
-    $code = $database->addStudent($fields);
-
-    echo "Error Code (Add Student): ", $code, "<br><br>";
-
-    $fields = array(
-        "studentId" => "333333333",
-        "username" => "user03",
-        "psw" => "psw1234567",
-        "firstName" => "First03",
-        "middleName" => "M",
-        "lastName" => "Last03",
-        "email" => "fakeEmail03@gmail.com",
-        "phone" => "111-111-1113",
-        "gpa" => "3.341",
-        "departmentName" => "Biology",
-        "entryYear" => "2016",
-        "entryTerm" => "Spring",
-        "studentType" => "Grad",
-        "adviser" => "Adviser",
-        "msDegree" => "Yes",
-        "emiTestPassed" => "Yes",
-        "currentEMI" => "No"
+        "earnedMasterDegree" => 1,
+        "foreignStudent" => 1,
+        "emiTestPassed" => 1,
+        "currentEMI" => 1
     );
 
     $code = $database->addStudent($fields);
@@ -107,6 +87,7 @@
         "courseCode" => "CMSC131",
         "academicYear" => "2018",
         "term" => "Spring",
+        "professorId" => "000001"
     );
 
     $code = $database->addTA($fields);
@@ -117,6 +98,45 @@
         "studentId" => "00000001",
         "academicYear" => "2018",
         "courseCode" => "CMSC131",
+        "term" => "Spring",
+        "appStatus" => "New",
+        "taType" => "Full Time"
+    );
+
+    $code = $database->addApplication($fields);
+
+    echo "Error Code (Add Application): ", $code, "<br><br>";
+
+    $fields = array(
+        "studentId" => "00000001",
+        "academicYear" => "2018",
+        "courseCode" => "CMSC132",
+        "term" => "Spring",
+        "appStatus" => "New",
+        "taType" => "Full Time"
+    );
+
+    $code = $database->addApplication($fields);
+
+    echo "Error Code (Add Application): ", $code, "<br><br>";
+
+    $fields = array(
+        "studentId" => "00000001",
+        "academicYear" => "2018",
+        "courseCode" => "CMSC216",
+        "term" => "Spring",
+        "appStatus" => "New",
+        "taType" => "Full Time"
+    );
+
+    $code = $database->addApplication($fields);
+
+    echo "Error Code (Add Application): ", $code, "<br><br>";
+
+    $fields = array(
+        "studentId" => "00000001",
+        "academicYear" => "2018",
+        "courseCode" => "CMSC351",
         "term" => "Spring",
         "appStatus" => "New",
         "taType" => "Full Time"

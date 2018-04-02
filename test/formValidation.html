@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+    <head> 
+        <meta charset="UTF-8" /> 
+		<title>Form Validation</title>
+        <link rel="stylesheet" href="formValidation.css" />
+	</head>
+
+	<body>
+		<form>
+            <fieldset>
+                <legend><em>Customer Info</em></legend>
+                <strong>studentId: </strong><input id="studentId" type="text" name="stduentId" required/><br><br>
+                <strong>First Name: </strong><input id="firstName" type="text" name="firstName" required/><br /><br />
+                <strong>Middle Name: </strong><input id="middleName" type="text" name="middleName" /><br /><br />
+                <strong>Last Name: </strong><input id="lastName" type="text" name="lastName" required/><br /><br />
+                <strong>Email: </strong><input id="email" type="email" name="email" /><br /><br />
+                <strong>Phone: </strong><input id="phone" type="text" name="phone" /><br /><br />
+                <strong>GPA: </strong><input id="gpa" type="number" name="gpa" step = "0.01"/><br /><br />
+                <strong>Department Name</strong><input id="department" type="text" name="department" /><br /><br />
+                <strong>Entry Year: </strong>
+                <select id = "entryYear" name = "entryYear" required>
+                    <option value = "2010">2010</option>
+                    <option value = "2011">2011</option>
+                    <option value = "2012">2012</option>
+                    <option value = "2013">2013</option>
+                    <option value = "2014">2014</option>
+                    <option value = "2015">2015</option>
+                    <option value = "2016">2016</option>
+                    <option value = "2017">2017</option>
+                    <option value = "2018">2018</option>
+                </select><br><br>
+                <strong>Entry Term: </strong>
+                    <input type="radio" name="entryTerm" id="entryTermSpring" value="Spring" /><label for="entryTermSpring">Spring</label>
+                    <input type="radio" name="entryTerm" id="entryTermSummer" value="Summer" /><label for="entryTermSummer">Summer</label>
+                    <input type="radio" name="entryTerm" id="entryTermFall" value="Fall" /><label for="entryTermFall">Fall</label>
+                    <input type="radio" name="entryTerm" id="entryTermWinter" value="Winter" /><label for="entryTermWinter">Winter</label><br /><br />
+                <strong>Student Type: </strong>
+                    <select id = "studentType" name = "studentType" require>
+                        <option value = "Undergrad">Undergrad Student</option>
+                        <option value = "Grad">Graduate Student</option>
+                        <option value = "Master">Master Student</option>
+                    </select><br><br>
+                <strong>Adviser</strong><input id="adviser" type="text" name="adviser" /><br /><br />
+                <strong>Master Degree:</strong>
+                    <input type="radio" name="msDegree" id="hasMS" value="Yes" /><label for="hasMS">Yes</label>
+                    <input type="radio" name="msDegree" id="noMs" value="No" /><label for="noMs">No</label><br /><br />
+                <br /><br />
+                <input type="reset" />
+                <input type="submit" id = "submitButton" value="Submit Data"/>
+            </fieldset>
+        </form>
+        <script>
+
+            main();
+
+            function main(){
+                document.getElementById("submitButton").addEventListener("click", insert);
+            }
+
+            function insert(){
+                console.log("HELLO");
+                /* Retrieving the values */
+                let studentId = document.getElementById("studentId").value;
+                let firstName = document.getElementById("firstName").value;
+                let middleName = document.getElementById("middleName").value;
+                let lastName = document.getElementById("lastName").value;
+                let email = document.getElementById("email").value;
+                let phone = document.getElementById("phone").value;
+                let gpa = document.getElementById("gpa").value;
+                let entryYear = document.getElementById("entryYear").value;
+                let entryTermArr = document.getElementsByName("entryYear");
+                let entryTerm = null;
+            
+                for(let i = 0; i < entryTermArr.length; i++){
+                    if(entryTermArr[i].checked){
+                        entryTerm = entryTermArr[i].value;
+                        break;
+                    }
+                }
+            
+                let studentType = document.getElementById("studentType").value;
+                let adviser = document.getElementById("adviser").value;
+                let masterArr = document.getElementsByName("msDegree");
+                let master = null;
+            
+                for(let i = 0; i < masterArr.length; i++){
+                    if(masterArr[i].checked){
+                        master = masterArr[i].value;
+                        break;
+                    }
+                }
+                let str = `studentId: ${studentId}\n
+                firstName: ${firstName}\n
+                middleName: ${middleName}\n
+                lastName: ${lastName}\n
+                email: ${email}\n
+                phone: ${phone}\n
+                GPA: ${gpa}\n
+                entryYear: ${entryYear}\n
+                entryTerm: ${entryTerm}\n
+                studentType: ${studentType}\n
+                adviser: ${adviser}\n
+                MsDegree: ${master}`
+
+                alert(str);
+            }
+            function isEmpty(str) {
+                return (!str || 0 === str.length);
+            }
+        </script>
+    </body>
+</html>

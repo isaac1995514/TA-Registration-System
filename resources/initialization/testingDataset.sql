@@ -13,7 +13,8 @@ INSERT INTO Department VALUES ("Japanese", "JAPN010");
 
 /* Insert Student Testing Dataset */
 INSERT INTO Student VALUES ("00000001", "First", "M", "Last", "fakeEmail@gmail.com", "000-000-0000", "2.22",
-                            "Computer Science", "2015", "Fall", "Undergrad", "Adviser", "Yes", NULL, NULL);
+                            "Computer Science", NULL, "2015", "Fall", "Undergrad", "Adviser",
+                            0, 0, NULL, NULL);
 
 /* Insert StudentAccount Testing Dataset */
 
@@ -35,23 +36,24 @@ INSERT INTO FacultyAccount VALUES("000004", "faculty00004", "psw00004");
 
 /* Insert Course Testing Dataset*/
 
-INSERT INTO Course VALUES ("Object-Oriented Programming I", "CMSC131", "0101", "2018", "Spring", "000001");
-INSERT INTO Course VALUES ("Object-Oriented Programming I", "CMSC131", "0102", "2018", "Spring", "000001");
-INSERT INTO Course VALUES ("Object-Oriented Programming I", "CMSC131", "0103", "2018", "Spring", "000001");
-INSERT INTO Course VALUES ("Object-Oriented Programming I", "CMSC131", "0104", "2018", "Spring", "000001");
-INSERT INTO Course VALUES ("Object-Oriented Programming I", "CMSC131", "0105", "2018", "Spring", "000001");
-INSERT INTO Course VALUES ("Object-Oriented Programming II", "CMSC132", "0101", "2018", "Spring", "000002");
-INSERT INTO Course VALUES ("Object-Oriented Programming II", "CMSC132", "0102", "2018", "Spring", "000002");
-INSERT INTO Course VALUES ("Object-Oriented Programming II", "CMSC132", "0103", "2018", "Spring", "000002");
-INSERT INTO Course VALUES ("Object-Oriented Programming II", "CMSC132", "0104", "2018", "Spring", "000002");
-INSERT INTO Course VALUES ("Object-Oriented Programming II", "CMSC132", "0105", "2018", "Spring", "000002");
-INSERT INTO Course VALUES ("Introduction to Computer Systems", "CMSC216", "0101", "2018", "Spring", "000003");
-INSERT INTO Course VALUES ("Introduction to Computer Systems", "CMSC216", "0102", "2018", "Spring", "000003");
-INSERT INTO Course VALUES ("Introduction to Computer Systems", "CMSC216", "0103", "2018", "Spring", "000003");
-INSERT INTO Course VALUES ("Introduction to Computer Systems", "CMSC216", "0104", "2018", "Spring", "000003");
-INSERT INTO Course VALUES ("Introduction to Computer Systems", "CMSC216", "0105", "2018", "Spring", "000003");
-INSERT INTO Course VALUES ("Algorithms", "CMSC351", "0101", "2018", "Spring", "000004");
-INSERT INTO Course VALUES ("Algorithms", "CMSC351", "0102", "2018", "Spring", "000004");
-INSERT INTO Course VALUES ("Algorithms", "CMSC351", "0103", "2018", "Spring", "000004");
-INSERT INTO Course VALUES ("Algorithms", "CMSC351", "0104", "2018", "Spring", "000004");
-INSERT INTO Course VALUES ("Algorithms", "CMSC351", "0105", "2018", "Spring", "000004");
+
+INSERT INTO Course VALUES ("Object-Oriented Programming I", "CMSC131", "2018", "Spring", "0101", "000001", 3);
+INSERT INTO Course VALUES ("Object-Oriented Programming I", "CMSC131", "2018", "Spring", "0201", "000001", 3);
+INSERT INTO Course VALUES ("Object-Oriented Programming I", "CMSC131", "2018", "Spring", "0301", "000001", 3);
+INSERT INTO Course VALUES ("Object-Oriented Programming I", "CMSC131", "2018", "Spring", "0401", "000001", 3);
+INSERT INTO Course VALUES ("Object-Oriented Programming I", "CMSC131", "2018", "Spring", "0501", "000001", 3);
+INSERT INTO Course VALUES ("Object-Oriented Programming II", "CMSC132", "2018", "Spring", "0101", "000002", 3);
+INSERT INTO Course VALUES ("Object-Oriented Programming II", "CMSC132", "2018", "Spring", "0201", "000002", 3);
+INSERT INTO Course VALUES ("Object-Oriented Programming II", "CMSC132", "2018", "Spring", "0301", "000002", 3);
+INSERT INTO Course VALUES ("Object-Oriented Programming II", "CMSC132", "2018", "Spring", "0401", "000002", 3);
+INSERT INTO Course VALUES ("Object-Oriented Programming II", "CMSC132", "2018", "Spring", "0501", "000002", 3);
+INSERT INTO Course VALUES ("Introduction to Computer Systems", "CMSC216", "2018", "Spring", "0101", "000003", 4);
+INSERT INTO Course VALUES ("Introduction to Computer Systems", "CMSC216", "2018", "Spring", "0201", "000003", 4);
+INSERT INTO Course VALUES ("Introduction to Computer Systems", "CMSC216", "2018", "Spring", "0301", "000003", 4);
+INSERT INTO Course VALUES ("Introduction to Computer Systems", "CMSC216", "2018", "Spring", "0401", "000003", 4);
+INSERT INTO Course VALUES ("Introduction to Computer Systems", "CMSC216", "2018", "Spring", "0501", "000003", 4);
+INSERT INTO Course VALUES ("Algorithms", "CMSC351", "2018", "Spring", "0101", "000004", 3);
+INSERT INTO Course VALUES ("Algorithms", "CMSC351", "2018", "Spring", "0201", "000004", 3);
+INSERT INTO Course VALUES ("Algorithms", "CMSC351", "2018", "Spring", "0301", "000004", 3);
+INSERT INTO Course VALUES ("Algorithms", "CMSC351", "2018", "Spring", "0401", "000004", 3);
+INSERT INTO Course VALUES ("Algorithms", "CMSC351", "2018", "Spring", "0501", "000004", 3);

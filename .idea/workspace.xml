@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ca4d23ed-ab05-4297-adf1-7d54186c2aa7" name="Default" comment="" />
+    <list default="true" id="ca4d23ed-ab05-4297-adf1-7d54186c2aa7" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/model/DatabaseManager.php" afterPath="$PROJECT_DIR$/model/DatabaseManager.php" />
+      <change beforePath="$PROJECT_DIR$/test/InsertionTest.php" afterPath="$PROJECT_DIR$/test/InsertionTest.php" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,25 +17,45 @@
       <file leaf-file-name="DatabaseManager.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/DatabaseManager.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1065">
-              <caret line="285" column="54" lean-forward="false" selection-start-line="285" selection-start-column="54" selection-end-line="285" selection-end-column="54" />
+            <state relative-caret-position="2460">
+              <caret line="345" column="0" lean-forward="true" selection-start-line="345" selection-start-column="0" selection-end-line="345" selection-end-column="0" />
               <folding>
+                <element signature="n#__construct#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+                <element signature="n#connect#0;n#DatabaseManager#0;n#!!top" expanded="false" />
                 <element signature="n#addStudent#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+                <element signature="n#addTA#0;n#DatabaseManager#0;n#!!top" expanded="false" />
                 <element signature="n#addFaculty#0;n#DatabaseManager#0;n#!!top" expanded="false" />
-                <marker date="1522526188778" expanded="true" signature="2181:2193" ph="INSERT INTO $... " />
-                <marker date="1522526188778" expanded="true" signature="2181:2205" ph="INSERT INTO " />
-                <marker date="1522526188778" expanded="true" signature="2181:2218" ph="INSERT INTO $... " />
-                <marker date="1522526188778" expanded="true" signature="2181:2235" ph="INSERT INTO $... " />
+                <element signature="n#addApplication#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+                <element signature="n#getRow#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+                <element signature="n#getTableColumnNames#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+                <marker date="1522689557868" expanded="true" signature="2378:2390" ph="INSERT INTO $... " />
+                <marker date="1522689557868" expanded="true" signature="2378:2402" ph="INSERT INTO " />
+                <marker date="1522689557868" expanded="true" signature="2378:2415" ph="INSERT INTO $... " />
+                <marker date="1522689557868" expanded="true" signature="2378:2432" ph="INSERT INTO $... " />
+                <marker date="1522689557868" expanded="true" signature="2627:2649" ph="SELECT ${{$s... " />
+                <marker date="1522689557868" expanded="true" signature="2627:2661" ph="SELECT ${{$s... " />
+                <marker date="1522689557868" expanded="true" signature="2627:2668" ph="SELECT ${{$s... " />
+                <marker date="1522689557868" expanded="true" signature="2627:2676" ph="SELECT ${{$s... " />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InsertionTest.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="InsertionTest.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/InsertionTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="56" column="14" lean-forward="false" selection-start-line="56" selection-start-column="14" selection-end-line="56" selection-end-column="14" />
+            <state relative-caret-position="1325">
+              <caret line="151" column="0" lean-forward="true" selection-start-line="151" selection-start-column="0" selection-end-line="151" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="searchTest.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/searchTest.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="16" column="49" lean-forward="false" selection-start-line="16" selection-start-column="49" selection-end-line="16" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -48,8 +71,10 @@
       <list>
         <option value="$PROJECT_DIR$/DatabaseManager.php" />
         <option value="$PROJECT_DIR$/resources/initialization/database.sql" />
-        <option value="$PROJECT_DIR$/model/DatabaseManager.php" />
+        <option value="$PROJECT_DIR$/tester.php" />
         <option value="$PROJECT_DIR$/test/InsertionTest.php" />
+        <option value="$PROJECT_DIR$/test/searchTest.php" />
+        <option value="$PROJECT_DIR$/model/DatabaseManager.php" />
       </list>
     </option>
   </component>
@@ -60,11 +85,11 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2552" />
-    <option name="y" value="-426" />
-    <option name="width" value="1096" />
-    <option name="height" value="1906" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="2553" />
+    <option name="y" value="-418" />
+    <option name="width" value="554" />
+    <option name="height" value="1897" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -122,6 +147,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../CMSC389N - Project 4" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/xampp/htdocs/CMSC389N/Project/TA Registration System/tester.php" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -149,15 +175,15 @@
       <option name="presentableId" value="Default" />
       <updated>1522290745293</updated>
       <workItem from="1522290746399" duration="289000" />
-      <workItem from="1522372329742" duration="15209000" />
+      <workItem from="1522372329742" duration="22683000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15498000" />
+    <option name="totallyTimeSpent" value="22972000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2552" y="-426" width="1096" height="1906" extended-state="6" />
+    <frame x="2552" y="-426" width="1096" height="1906" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -187,7 +213,15 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/model/DatabaseManager.php</url>
+          <line>78</line>
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -207,25 +241,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/DatabaseManager.php">
+    <entry file="file://$PROJECT_DIR$/tester.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1065">
-          <caret line="285" column="54" lean-forward="false" selection-start-line="285" selection-start-column="54" selection-end-line="285" selection-end-column="54" />
-          <folding>
-            <element signature="n#addStudent#0;n#DatabaseManager#0;n#!!top" expanded="false" />
-            <element signature="n#addFaculty#0;n#DatabaseManager#0;n#!!top" expanded="false" />
-            <marker date="1522526188778" expanded="true" signature="2181:2193" ph="INSERT INTO $... " />
-            <marker date="1522526188778" expanded="true" signature="2181:2205" ph="INSERT INTO " />
-            <marker date="1522526188778" expanded="true" signature="2181:2218" ph="INSERT INTO $... " />
-            <marker date="1522526188778" expanded="true" signature="2181:2235" ph="INSERT INTO $... " />
-          </folding>
+        <state relative-caret-position="80">
+          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/InsertionTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="56" column="14" lean-forward="false" selection-start-line="56" selection-start-column="14" selection-end-line="56" selection-end-column="14" />
+        <state relative-caret-position="1325">
+          <caret line="151" column="0" lean-forward="true" selection-start-line="151" selection-start-column="0" selection-end-line="151" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/DatabaseManager.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2460">
+          <caret line="345" column="0" lean-forward="true" selection-start-line="345" selection-start-column="0" selection-end-line="345" selection-end-column="0" />
+          <folding>
+            <element signature="n#__construct#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+            <element signature="n#connect#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+            <element signature="n#addStudent#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+            <element signature="n#addTA#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+            <element signature="n#addFaculty#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+            <element signature="n#addApplication#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+            <element signature="n#getRow#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+            <element signature="n#getTableColumnNames#0;n#DatabaseManager#0;n#!!top" expanded="false" />
+            <marker date="1522689557868" expanded="true" signature="2378:2390" ph="INSERT INTO $... " />
+            <marker date="1522689557868" expanded="true" signature="2378:2402" ph="INSERT INTO " />
+            <marker date="1522689557868" expanded="true" signature="2378:2415" ph="INSERT INTO $... " />
+            <marker date="1522689557868" expanded="true" signature="2378:2432" ph="INSERT INTO $... " />
+            <marker date="1522689557868" expanded="true" signature="2627:2649" ph="SELECT ${{$s... " />
+            <marker date="1522689557868" expanded="true" signature="2627:2661" ph="SELECT ${{$s... " />
+            <marker date="1522689557868" expanded="true" signature="2627:2668" ph="SELECT ${{$s... " />
+            <marker date="1522689557868" expanded="true" signature="2627:2676" ph="SELECT ${{$s... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/searchTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="16" column="49" lean-forward="false" selection-start-line="16" selection-start-column="49" selection-end-line="16" selection-end-column="49" />
           <folding />
         </state>
       </provider>

@@ -63,6 +63,14 @@
             return $db_connection;
         }
 
+        /**
+         * Generate queries for database operations
+         *
+         * @param $type
+         * @param $tables
+         * @param $arguments
+         * @return null|string
+         */
         private function generateQuery($type, $tables, $arguments){
 
             $query = NULL;
@@ -73,8 +81,12 @@
                     $field = join(", ", array_values($arguments));
 
                     $query = "INSERT INTO {$tables[0]} ({$values}) VALUES ({$field});";
-
                     break;
+                case "SELECT":
+                    $select = $arguments["select"];
+                    $where = $arguments["where"];
+
+                    $query = "SELECT {$select} FROM {$tables[0]} WHERE {$where};";
             }
 
             return $query;
@@ -111,13 +123,15 @@
                 "phone" => "'{$fields["phone"]}'",
                 "gpa" => $fields["gpa"],
                 "departmentName" => "'{$fields["departmentName"]}'",
+                "resumeFile" => (is_null($fields["resumeFile"])) ? "NULL" : "NULL", 
                 "entryYear" => "'{$fields["entryYear"]}'",
                 "entryTerm" => "'{$fields["entryTerm"]}'",
                 "studentType" => "'{$fields["studentType"]}'",
                 "adviser" => "'{$fields["adviser"]}'",
-                "msDegree" => "'{$fields["msDegree"]}'",
-                "emiTestPassed" => (is_null($fields["emiTestPassed"]) ? "NULL" : "'{$fields["emiTestPassed"]}'"),
-                "currentEMI" => (is_null($fields["currentEMI"]) ? "NULL" : "'{$fields["currentEMI"]}'")
+                "earnedMasterDegree" => "{$fields["earnedMasterDegree"]}",
+                "foreignStudent" => "{$fields["foreignStudent"]}",
+                "emiTestPassed" => (is_null($fields["emiTestPassed"]) ? "NULL" : "{$fields["emiTestPassed"]}"),
+                "currentEMI" => (is_null($fields["currentEMI"]) ? "NULL" : "{$fields["currentEMI"]}")
             );
 
             // Generate Query to add Student
@@ -183,7 +197,8 @@
                 "studentId" => "'{$fields["studentId"]}'",
                 "courseCode" => "'{$fields["courseCode"]}'",
                 "academicYear" => "'{$fields["academicYear"]}'",
-                "term" => "'{$fields["term"]}'"
+                "term" => "'{$fields["term"]}'",
+                "professorId" => "'{$fields["professorId"]}'"
             );
 
             // Generate Query to add Faculty
@@ -309,5 +324,85 @@
          * Student User Interface Functions
          */
 
+        /**
+         * Get all application for a specific student
+         *      Note: if $year and $term are not provides, all application (current and previous) will be returned.
+         *
+         * @param $studentId
+         * @param null $year
+         * @param null $term
+         * @return array [Error Code : int, Result : array($key => $value)]
+         *      Error Code:
+         *          0 - Succeeded
+         *          1 - Empty Result
+         *          101 - Connection Error
+         *          102 - Failed to obtain student's application from database
+         *          103 - Failed to obtain the column's name of a table from database
+         */
+        public function getStudentApplication($studentId, $year = NULL, $term = NULL){
+
+            $data = array();
+
+            $db_connection = $this->connect();
+
+            if ($db_connection == NULL) return [101, $data];
+
+            $arguments = array(
+                "select" => "*",
+                "where" => ($year == NULL) ?
+                    ("studentId = '{$studentId}'") :
+                    ("studentId = '{$studentId}', academicYear = '{$year}', term = '{$term}'")
+            );
+
+            $query = $this->generateQuery(self::SELECT, array($this->tables["app"]), $arguments);
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return [102, $result];
+            }else{
+                /* Number of rows found */
+                $num_rows = $result->num_rows;
+
+                if($num_rows == 0){
+                    return [1, $data];
+                }else{
+
+                    while($row = $result->fetch_assoc()) {
+                        $data[]=$row;
+                    }
+                }
+            }
+
+            $db_connection->close();
+
+            return [0, $data];
+        }
+
+        private function getRow($columns, $row){
+
+            $translatedRow = array();
+
+            foreach($columns as $column){
+                $translatedRow[(string) $column] = $row[(string) $column];
+            }
+
+            return $translatedRow;
+        }
+
+        private function getTableColumnNames($db_connection, $table){
+            $columns = [];
+            $columnQuery = "SHOW COLUMNS FROM {$table}";
+            $res = $db_connection->query($columnQuery);
+            if(!$res){
+                return NULL;
+            }else{
+                while($row = $res->fetch_assoc()){
+                    $columns[] = $row['Field'];
+                }
+            }
+
+            return $columns;
+        }
     }
 
