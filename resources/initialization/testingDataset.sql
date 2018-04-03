@@ -12,13 +12,23 @@ INSERT INTO Department VALUES ("Italian", "ITAL009");
 INSERT INTO Department VALUES ("Japanese", "JAPN010");
 
 /* Insert Student Testing Dataset */
-INSERT INTO Student VALUES ("00000001", "First", "M", "Last", "fakeEmail@gmail.com", "000-000-0000", "2.22",
+INSERT INTO Student VALUES ("00000001", "First01", "M", "Last01", "fakeEmail@gmail.com", "000-000-0000", "2.22",
                             "Computer Science", NULL, "2015", "Fall", "Undergrad", "Adviser",
                             0, 0, NULL, NULL);
+
+INSERT INTO Student VALUES ("00000002", "First02", "M", "Last02", "fakeEmail@gmail.com", "000-000-0000", "2.22",
+                            "Computer Science", NULL, "2015", "Fall", "Undergrad", "Adviser",
+                            0, 0, NULL, NULL);
+
+INSERT INTO Student VALUES ("00000003", "First03", "M", "Last03", "fakeEmail@gmail.com", "000-000-0000", "2.22",
+                            "Computer Science", NULL, "2015", "Fall", "Undergrad", "Adviser",
+                            0, 0, NULL, NULL);   
 
 /* Insert StudentAccount Testing Dataset */
 
 INSERT INTO StudentAccount VALUES("00000001", "user0000001", "psw0000001"); 
+INSERT INTO StudentAccount VALUES("00000002", "user0000002", "psw0000002"); 
+INSERT INTO StudentAccount VALUES("00000003", "user0000003", "psw0000003"); 
 
 /* Insert Faculty Testing Dataset */
 
@@ -35,7 +45,6 @@ INSERT INTO FacultyAccount VALUES("000003", "faculty00003", "psw00003");
 INSERT INTO FacultyAccount VALUES("000004", "faculty00004", "psw00004");
 
 /* Insert Course Testing Dataset*/
-
 
 INSERT INTO Course VALUES ("Object-Oriented Programming I", "CMSC131", "2018", "Spring", "0101", "000001", 3);
 INSERT INTO Course VALUES ("Object-Oriented Programming I", "CMSC131", "2018", "Spring", "0201", "000001", 3);
@@ -57,3 +66,4 @@ INSERT INTO Course VALUES ("Algorithms", "CMSC351", "2018", "Spring", "0201", "0
 INSERT INTO Course VALUES ("Algorithms", "CMSC351", "2018", "Spring", "0301", "000004", 3);
 INSERT INTO Course VALUES ("Algorithms", "CMSC351", "2018", "Spring", "0401", "000004", 3);
 INSERT INTO Course VALUES ("Algorithms", "CMSC351", "2018", "Spring", "0501", "000004", 3);
+

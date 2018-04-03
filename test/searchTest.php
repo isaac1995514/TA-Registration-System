@@ -23,9 +23,27 @@
         echo "<br><br>";
     }
 
-    echo "getTAForCourse()", "<br><br>";
+    echo "getCourseTA()", "<br><br>";
 
-    [$code, $result] = $database->getTAForCourse("CMSC131");
+    [$code, $result] = $database->getCourseTA("CMSC131");
+
+    foreach($result as $application){
+        print_r($application);
+        echo "<br><br>";
+    }
+
+    echo "getTACandidates()","<br><br>";
+
+    [$code, $result] = $database->getTACandidates("CMSC132", "2018", "Spring", true);
+
+    foreach($result as $application){
+        print_r($application);
+        echo "<br><br>";
+    }
+
+    echo "getTACandidates()","<br><br>";
+
+    [$code, $result] = $database->getTACandidates("CMSC132", "2018", "Spring", false);
 
     foreach($result as $application){
         print_r($application);

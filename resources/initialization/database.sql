@@ -80,8 +80,9 @@ CREATE TABLE TA_Experience(
     courseCode VARCHAR(10) NOT NULL,
     academicYear VARCHAR(4) NOT NULL,
     term enum('Fall', 'Spring', 'Winter', 'Summer') NOT NULL,
+    section VARCHAR(4) NOT NULL,
     professorId VARCHAR(8) NOT NULL,
-    PRIMARY KEY(studentId, courseCode, academicYear, term),
+    PRIMARY KEY(studentId, courseCode, academicYear, section, term),
     FOREIGN KEY (studentId) REFERENCES Student(studentId),
     FOREIGN KEY (courseCode) REFERENCES Course(courseCode)
 );

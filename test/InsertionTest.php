@@ -87,6 +87,7 @@
         "courseCode" => "CMSC131",
         "academicYear" => "2018",
         "term" => "Spring",
+        "section" => "0101",
         "professorId" => "000001"
     );
 
@@ -95,9 +96,35 @@
     echo "Error Code (Add TA): ", $code, "<br><br>";
 
     $fields = array(
-        "studentId" => "00000001",
+        "studentId" => "00000002",
         "academicYear" => "2018",
-        "courseCode" => "CMSC131",
+        "courseCode" => "CMSC132",
+        "term" => "Spring",
+        "appStatus" => "New",
+        "taType" => "Full Time"
+    );
+
+    $code = $database->addApplication($fields);
+
+    echo "Error Code (Add Application): ", $code, "<br><br>";
+
+    $fields = array(
+        "studentId" => "00000003",
+        "academicYear" => "2018",
+        "courseCode" => "CMSC132",
+        "term" => "Spring",
+        "appStatus" => "New",
+        "taType" => "Full Time"
+    );
+
+    $code = $database->addApplication($fields);
+
+    echo "Error Code (Add Application): ", $code, "<br><br>";
+
+    $fields = array(
+        "studentId" => "00000002",
+        "academicYear" => "2018",
+        "courseCode" => "CMSC216",
         "term" => "Spring",
         "appStatus" => "New",
         "taType" => "Full Time"

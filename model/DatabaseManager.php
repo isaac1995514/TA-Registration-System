@@ -11,20 +11,20 @@
         /**
          * Constants
          */
-        const INSERT = "INSERT";
-        const DELETE = "DELETE";
-        const UPDATE = "UPDATE";
-        const SELECT = "SELECT";
+        public const INSERT = "INSERT";
+        public const DELETE = "DELETE";
+        public const UPDATE = "UPDATE";
+        public const SELECT = "SELECT";
 
         // Tables
-        const DEPARTMENT = "Department";
-        const STUDENT = "Student";
-        const STUDENT_ACCOUNT = "StudentAccount";
-        const FACULTY = "Faculty";
-        const FACULTY_ACCOUNT = "FacultyAccount";
-        const TA = "TA_Experience";
-        const APPLICATION = "Applications";
-        const COURSE = "Course";
+        public const DEPARTMENT = "Department";
+        public const STUDENT = "Student";
+        public const STUDENT_ACCOUNT = "StudentAccount";
+        public const FACULTY = "Faculty";
+        public const FACULTY_ACCOUNT = "FacultyAccount";
+        public const TA = "TA_Experience";
+        public const APPLICATION = "Applications";
+        public const COURSE = "Course";
 
         private $host;
         private $user;
@@ -343,7 +343,6 @@
          *          1 - Empty Result
          *          101 - Connection Error
          *          102 - Failed to obtain student's application from database
-         *          103 - Failed to obtain the column's name of a table from database
          */
         public function getStudentApplication($studentId, $year = NULL, $term = NULL){
 
@@ -390,7 +389,21 @@
          * Admin User Interface Functions
          */
 
-        public function getTAForCourse($course, $section = NULL){
+
+        /**
+         * Get TA for a specific course (and section)
+         *      Note: if $section is not provided, TAs of all section for a specific course are returned
+         *
+         * @param $course
+         * @param null $section
+         * @return array [Error Code : int, Result : array($key => $value)]
+         *      Error Code:
+         *          0 - Succeeded
+         *          1 - Empty Result
+         *          101 - Connection Error
+         *          102 - Failed to obtain TA information for a course
+         */
+        public function getCourseTA($course, $section = NULL){
 
             $data = array();
 
@@ -433,7 +446,79 @@
 
         }
 
+        /**
+         * Get the application of student who applied for TA of a specific class
+         *      Note: if $includeCurrentTAs is true, a TA selected for other classes will also be shown
+         *
+         * @param $course
+         * @param null $section
+         * @return array [Error Code : int, Result : array($key => $value)]
+         *      Error Code:
+         *          0 - Succeeded
+         *          1 - Empty Result
+         *          101 - Connection Error
+         *          102 - Failed to obtain application of a specific course
+         */
+        public function getTACandidates($course, $year, $term, $includeCurrentTAs){
 
+            $data = array();
+            $arguments = null;
+
+            $db_connection = $this->connect();
+
+            if($db_connection == NULL) return [101, $data];
+
+            if($includeCurrentTAs){
+                $arguments = array(
+                    "select" => "*",
+                    "where" => "courseCode = '{$course}' AND
+                                academicYear = '{$year}' AND
+                                term = '$term'"
+
+                );
+               
+            }else{
+                $table = self::TA;
+                $innerQuery = "SELECT studentId
+                               FROM {$table}
+                               WHERE academicYear = '{$year}'
+                                 AND term = '{$term}'";
+
+                $arguments = array(
+                    "select" => "*",
+                    "where" => "courseCode = '{$course}' AND
+                                academicYear = '{$year}' AND
+                                term = '$term' AND
+                                studentId NOT IN ({$innerQuery});"
+                );
+            }
+
+            $tables = self::APPLICATION;
+            $query = $this->generateQuery(self::SELECT, $tables, $arguments);
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return [102, $result];
+            }else{
+                /* Number of rows found */
+                $num_rows = $result->num_rows;
+
+                if($num_rows == 0){
+                    return [1, $data];
+                }else{
+
+                    while($row = $result->fetch_assoc()) {
+                        $data[]=$row;
+                    }
+                }
+            }
+
+            $db_connection->close();
+
+            return [0, $data];
+
+        }
 
         private function getRow($columns, $row){
 
