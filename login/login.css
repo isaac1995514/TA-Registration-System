@@ -1,7 +1,12 @@
 body {
- 	padding-top: 80px;
+ 	padding-top: 100px;
   padding-left: 40px;
   padding-right: 40px;
 
+}
 
+button {
+  height: 40px;
+  width: 25%;
+  margin: 10px 75%;
 }

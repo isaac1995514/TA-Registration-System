@@ -11,6 +11,7 @@
   </ul>
 
 <body>
+  
   <div class= "tab-content">
     <br><div id="home" class= "tab-pane active" >
       <form action="student.php" method="post">
@@ -22,6 +23,18 @@
           <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
           <input type="password" class="form-control" name="password" placeholder="Password">
         </div>
+        <br><br>
+
+        <select class="form-control" name= "type" required>
+          <option value="student">Student</option>
+          <option value="professor">Professor</option>
+          <option value="admin">Admin</option>
+        </select><br><br>
+
+        <button type="submit" class="btn btn-default">
+          <span class="glyphicon glyphicon-circle-arrow-right"></span>
+        </button>
+
       </form>
     </div>
     <div id="register" class="tab-pane fade">
