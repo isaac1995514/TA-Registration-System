@@ -4,7 +4,7 @@
 
     $content = <<<CONTENT
 
-    <h1>This is New Application Page<h2>
+    <h1>This is New Application Page</h1>
 
 
 CONTENT;

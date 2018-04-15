@@ -1,5 +1,9 @@
+.form-style-5 div{
+    display: inline;
+}
+
 .form-style-5{
-    max-width: 500px;
+    max-width: 1500px;
     padding: 10px 20px;
     background: #f4f7f8;
     margin: 10px auto;
@@ -27,6 +31,7 @@
 .form-style-5 input[type="search"],
 .form-style-5 input[type="time"],
 .form-style-5 input[type="url"],
+.form-style-5 input[type='radio'],
 .form-style-5 textarea,
 .form-style-5 select {
     font-family: Georgia, "Times New Roman", Times, serif;
@@ -56,6 +61,7 @@
 .form-style-5 input[type="search"]:focus,
 .form-style-5 input[type="time"]:focus,
 .form-style-5 input[type="url"]:focus,
+.form-style-5 input[type="radio"]:focus,
 .form-style-5 textarea:focus,
 .form-style-5 select:focus{
     background: #d2d9dd;
@@ -79,6 +85,7 @@
 }
 
 .form-style-5 input[type="submit"],
+.form-style-5 input[type="reset"],
 .form-style-5 input[type="button"]
 {
     position: relative;
@@ -96,6 +103,7 @@
     margin-bottom: 10px;
 }
 .form-style-5 input[type="submit"]:hover,
+.form-Stype-5 input[type="reset"]:hover,
 .form-style-5 input[type="button"]:hover
 {
     background: #109177;
