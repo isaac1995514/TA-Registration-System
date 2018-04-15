@@ -4,6 +4,9 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <title>Login</title>
   <link rel="stylesheet" href="login.css" />
+<header>
+  <img src= "UMD-White.png" alt="umd icon">
+</header>
 
   <ul class="nav nav-tabs" role="tablist">
     <li class ="active"><a data-toggle= "tab" href= "#home">Log In</a></li>
@@ -11,17 +14,19 @@
   </ul>
 
 <body>
-  
+  <div class= "block">
+
+
   <div class= "tab-content">
     <br><div id="home" class= "tab-pane active" >
       <form action="student.php" method="post">
         <div class= "input-group">
           <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-          <input type="text" class="form-control" name="user" placeholder="Username">
+          <input type="text" class="form-control" name="user" placeholder="Username" required>
         </div><br>
         <div class="input-group">
           <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-          <input type="password" class="form-control" name="password" placeholder="Password">
+          <input type="password" class="form-control" name="password" placeholder="Password" required>
         </div>
         <br><br>
 
@@ -38,8 +43,38 @@
       </form>
     </div>
     <div id="register" class="tab-pane fade">
-      <h3>hiiiii</h3>
+      <form action = "register.php" method= "post">
+        <select class="form-control" name= "acctype" required>
+          <option value="student">Student</option>
+          <option value="professor">Professor</option>
+          <option value="admin">Admin</option>
+        </select><br>
+
+      <div class= "input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+        <input type="text" class="form-control" name="user" placeholder="Username" required>
+      </div><br>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+        <input type="password" class="form-control" name="password" placeholder="Password" required>
+      </div><br>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+        <input type="password" class="form-control" name="verpassword" placeholder="Verify Password" required>
+      </div><br><br>
+
+      <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-asterisk"></i></span>
+        <input type="text" class="form-control" name="key" placeholder="Key (Professors)">
+      </div><br><br>
+
+      <button type="submit" class="btn btn-default">
+        <span class="glyphicon glyphicon-circle-arrow-right"></span>
+      </button>
+
+    </form>
     </div>
   </div>
+</div>
 </body>
 </html>
