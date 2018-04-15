@@ -1,10 +1,4 @@
-<?php
-
-    require_once("studentSupport.php");
-
-    $content = <<<CONTENT
-
-    <div class="form-style-5">
+<div class="form-style-5">
     <form>
         <fieldset>
             <legend><span class="number">1</span> Basic Info</legend>
@@ -54,11 +48,3 @@
     <input type="submit" value="Apply" />
     </form>
 </div>
-
-CONTENT;
-
-$content = generatePage($content, "Personal Info", "personalInfo.css");
-echo $content;
-
-?>
-

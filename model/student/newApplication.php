@@ -9,7 +9,7 @@
 
 CONTENT;
 
-$content = generatePage($content, "New Application Page");
+$content = generatePage($content, "New Application");
 echo $content;
 
 ?>

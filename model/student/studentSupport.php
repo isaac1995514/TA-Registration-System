@@ -1,16 +1,16 @@
 <?php
 
-function generatePage($body, $title="Example") {
+function generatePage($body, $title="Example", $style = "") {
     $page = <<<EOPAGE
     <!doctype html>
     <html lang="en">
         <head>
             <meta charset="UTF-8">
             <title>$title</title>
-    
+
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <link href="./resources/bootstrap/css/bootstrap.min.css" rel = "stylesheet">
+            <link rel="stylesheet" type="text/css" href="$style">
             <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
                                    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
@@ -50,7 +50,7 @@ function generatePage($body, $title="Example") {
                 </div>
             </nav>        
             <!-- Sidebar -->
-            <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
+            <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:20%">
                 <h3 class="w3-bar-item">Menu</h3>
                 <a id = 'personalInfo' href="personalInfo.php" class="w3-bar-item w3-button">Personal Info</a>
                 <a id = 'newApp' href="newApplication.php" class="w3-bar-item w3-button">New Application</a>
@@ -59,7 +59,7 @@ function generatePage($body, $title="Example") {
             </div>
       
             <!-- Page Content -->
-            <div style="margin-left:25%">
+            <div style="margin-left:20%">
       
                 <div id = 'headerBlock' class="w3-container w3-teal">
                     <h1>$title</h1>
