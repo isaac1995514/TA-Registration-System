@@ -1,8 +1,16 @@
 body {
- 	padding-top: 100px;
-  padding-left: 40px;
-  padding-right: 40px;
+ 	padding-top: 160px;
+  padding-left: 15%;
+  padding-right: 15%;
+  background-color: #BFC9CA;
 
+}
+
+img{
+  width:150px;
+  height: auto;
+  margin-left: -20%;
+  margin-top: -22%;
 }
 
 button {
@@ -10,3 +18,14 @@ button {
   width: 25%;
   margin: 10px 75%;
 }
+
+
+  .block {
+   padding-top: 5%;
+   padding-left: 5%;
+   padding-right: 5%;
+   padding-bottom: 15px;
+   border-bottom-left-radius: 15px;
+   border-bottom-right-radius: 15px;
+   background-color: white;
+  }
