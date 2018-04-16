@@ -1,5 +1,5 @@
-<?php
 
+<?php
     require_once("studentSupport.php");
     require_once("./../DatabaseManager.php");
 
