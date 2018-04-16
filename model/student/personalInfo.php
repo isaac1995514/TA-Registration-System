@@ -1,16 +1,67 @@
 <?php
 
     require_once("studentSupport.php");
+    require_once("./../DatabaseManager.php");
+
+    //$studentId = (isset($_SESSION['studentId']) ? $_SESSION['studentId'] : "INVALID");
+    $studentId = "00000001";
+    $database = new DatabaseManager();
     
+    $result = $database->getStudent($studentId);
+
+    $errorCode = $result[0];
+    $searchResults = $result[1];
+    $searchResult = $searchResults[0];
+    $errorMsg = "";
+
+    if($errorCode == 0){
+
+        $firstName = $searchResult['firstName'];
+        $middleName = $searchResult['middleName'];
+        $lastName = $searchResult['lastName'];
+        $email = $searchResult['email'];
+        $phone = $searchResult['phone'];
+        $gpa = $searchResult['gpa'];
+        $departmentName = $searchResult['departmentName'];
+        $entryYear = $searchResult['entryYear'];
+        $entryTerm = $searchResult['entryTerm'];
+        $studentType = $searchResult['studentType'];
+        $adviser = $searchResult['adviser'];
+        $earnedMasterDegree = $searchResult['earnedMasterDegree'];
+        $foreignStudent = $searchResult['foreignStudent'];
+        $emiTestPassed = $searchResult['emiTestPassed'];
+
+        print_r($firstName); echo "<br><br>";
+        print_r($middleName);echo "<br><br>";
+        print_r($lastName);echo "<br><br>";
+        print_r($email);echo "<br><br>";
+        print_r($phone);echo "<br><br>";
+        print_r($gpa);echo "<br><br>";
+        print_r($departmentName);echo "<br><br>";
+        print_r($entryYear);echo "<br><br>";
+        print_r($entryTerm);echo "<br><br>";
+        print_r($studentType);echo "<br><br>";
+        print_r($adviser);echo "<br><br>";
+        print_r($earnedMasterDegree);echo "1<br><br>";
+        print_r($foreignStudent);echo "2<br><br>";
+        print_r($emiTestPassed);echo "3<br><br>";
+
+    
+    }elseif($errorCode == 1){
+        $errorMsg = "Student does not existed in the database";
+    }else{
+        $errorMsg = "System Failed";
+    }
 
     $content = <<<CONTENT
 
     <div class="form-style-5">
     <form>
+        <h1 style="color:red">$errorMsg</h1>
         <fieldset>
             <legend><span class="number">1</span> Basic Info</legend>
 
-            <input type = "text" name = 'studentId' placeholder = 'Student Id *'>
+            <input type = "text" name = 'studentId' disabled value = "$studentId">
                 <div class = 'subSection'>
                     <input type = "text" name = "firstName" placeholder = 'First Name *'>
                     <input type = "text" name = "middleName" placeholder = 'Middle Name *'>

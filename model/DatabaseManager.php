@@ -97,14 +97,13 @@
          ***************************************************************************/
 
         /**
-         * Add student into Student Table and StudentAccount Table
+         * Add student into Student Table
          *
          * @param $fields
          * @return int : Error Code
          *      0 - Succeed
          *      101 - Connection Error
          *      102 - Failed to insert to Student
-         *      103 - Failed io insert to StudentAccount
          */
         public function addStudent($fields){
 
@@ -147,35 +146,59 @@
                 return 102;
             }
 
-            // Set up values to be added
-            $encrypted_username = password_hash($fields["username"], PASSWORD_DEFAULT);
-            $encrypted_psw = password_hash($fields["psw"], PASSWORD_DEFAULT);
-
-
-            $arguments = array(
-                "studentId" => "'{$fields["studentId"]}'",
-                "username" => "'{$encrypted_username}'",
-                "psw" => "'{$encrypted_psw}'"
-            );
-
-            // Generate Query to add StudentAccount
-            $tables = self::STUDENT_ACCOUNT;
-            $query = $this->generateQuery(self::INSERT, $tables, $arguments);
-
-            // echo "Query (Add to StudentAccount): ", $query;
-            // echo "<br><br>";
-
-            /* Executing query */
-            $result = $db_connection->query($query);
-            if (!$result) {
-                // Make sure to delete previous insertion to student
-                return 103;
-            }
-
             // Disconnect from Database;
             $db_connection->close();
 
             return 0;
+
+        }
+
+        /**
+         * Get student in Student Table
+         *
+         * @param $fields
+         * @return int : Error Code
+         *          0 - Succeeded
+         *          1 - Empty Result
+         *          101 - Connection Error
+         *          102 - Failed to obtain student's application from database
+         */
+        public function getStudent($studentId){
+
+            $data = array();
+
+            /* Connect to database */
+            $db_connection = $this->connect();
+
+            if ($db_connection == NULL) return [101, $data];
+
+            $arguments = array(
+                "select" => "*",
+                "where" => "studentId = '{$studentId}'"
+            );
+
+            $tables = self::STUDENT;
+            $query = $this->generateQuery(self::SELECT, $tables, $arguments);
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return [102, $result];
+            }else{
+                
+                /* Number of rows found */
+                $num_rows = $result->num_rows;
+
+                if($num_rows == 0){
+                    return [1, $data];
+                }else{
+
+                    while($row = $result->fetch_assoc()) {
+                        $data[]=$row;
+                    }
+                }
+            }
+            return [0, $data];
 
         }
 
