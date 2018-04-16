@@ -21,7 +21,7 @@ INSERT INTO Student VALUES ("00000002", "First02", "M", "Last02", "fakeEmail@gma
                             0, 0, NULL, NULL);
 
 INSERT INTO Student VALUES ("00000003", "First03", "M", "Last03", "fakeEmail@gmail.com", "000-000-0000", "2.22",
-                            "Computer Science", NULL, "2015", "Fall", "Undergrad", "Adviser",
+                            "Computer Science", NULL, "2015", "Spring", "Undergrad", "Adviser",
                             0, 0, NULL, NULL);   
 
 /* Insert StudentAccount Testing Dataset */

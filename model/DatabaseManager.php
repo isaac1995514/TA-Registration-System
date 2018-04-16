@@ -87,6 +87,12 @@
                     $where = $arguments["where"];
 
                     $query = "SELECT {$select} FROM {$tables} WHERE {$where};";
+                    break;
+                case "UPDATE":
+                    $set = $arguments['set'];
+                    $where = $arguments['where'];
+
+                    $query = "UPDATE {$tables} SET {$set} WHERE {$where};";
             }
 
             return $query;
@@ -112,30 +118,49 @@
 
             if ($db_connection == NULL) return 101;
 
-            // Set up values to be added
-            $arguments = array(
-                "studentId" => "'{$fields["studentId"]}'",
-                "firstName" => "'{$fields["firstName"]}'",
-                "middleName" => (is_null($fields["middleName"]) ? "NULL" : "'{$fields["middleName"]}'"),
-                "lastName" => "'{$fields["lastName"]}'",
-                "email" => "'{$fields["email"]}'",
-                "phone" => "'{$fields["phone"]}'",
-                "gpa" => $fields["gpa"],
-                "departmentName" => "'{$fields["departmentName"]}'",
-                "resumeFile" => (is_null($fields["resumeFile"])) ? "NULL" : "NULL", 
-                "entryYear" => "'{$fields["entryYear"]}'",
-                "entryTerm" => "'{$fields["entryTerm"]}'",
-                "studentType" => "'{$fields["studentType"]}'",
-                "adviser" => "'{$fields["adviser"]}'",
-                "earnedMasterDegree" => "{$fields["earnedMasterDegree"]}",
-                "foreignStudent" => "{$fields["foreignStudent"]}",
-                "emiTestPassed" => (is_null($fields["emiTestPassed"]) ? "NULL" : "{$fields["emiTestPassed"]}"),
-                "currentEMI" => (is_null($fields["currentEMI"]) ? "NULL" : "{$fields["currentEMI"]}")
-            );
+            // Generate Query to add Student
+            $tables = self::STUDENT;
+            $query = $this->generateQuery(self::INSERT, $tables, $fields);
+
+            // echo "Query (Add to Student): ", $query;
+            // echo "<br><br>";
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return 102;
+            }
+
+            // Disconnect from Database;
+            $db_connection->close();
+
+            return 0;
+
+        }
+
+        public function updateStudent($fields){
+
+            /* Connect to database */
+            $db_connection = $this->connect();
+
+            if ($db_connection == NULL) return 101;
+
+            $setArr = [];
+
+            foreach($fields as $key => $value){
+                if($value != "" && $value != "NULL"){
+                    $setArr[] = "{$key} = '{$value}'";
+                }
+            }
+
+            $setStr = join(", ", $setArr);
+
+            $fields['where'] = "studentid = '{$fields['studentId']}'";
+            $fields['set'] = $setStr;
 
             // Generate Query to add Student
             $tables = self::STUDENT;
-            $query = $this->generateQuery(self::INSERT, $tables, $arguments);
+            $query = $this->generateQuery(self::UPDATE, $tables, $fields);
 
             // echo "Query (Add to Student): ", $query;
             // echo "<br><br>";
@@ -202,6 +227,16 @@
 
         }
 
+        /**
+         * update student into Student Table
+         *
+         * @param $fields
+         * @return int : Error Code
+         *      0 - Succeed
+         *      101 - Connection Error
+         *      102 - Failed to insert to Student
+         */
+        
         /**
          * Add ta position for a student in a specif year
          *

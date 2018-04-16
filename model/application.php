@@ -5,7 +5,7 @@
 			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 			<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 			<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-			<link rel="stylesheet" type="text/css" href="app-style.css">
+			<link rel="stylesheet" type="text/css" href="newApplication.css">
 			<script type="text/javascript" src="app.js"></script>
 		</head>
 		<body>
@@ -113,31 +113,7 @@
 						<fieldset>
 					</div>
 				</div>
-				<h3>Application Preferences</h3>
-				<div class="form-group">
-					<div class="radio">
-						<label><input type="radio" name="pos-type">Full Time (20hrs/week)</label>
-						<label><input type="radio" name="pos-type">Part Time (10hrs/week)</label>
-						</div>
-						<label for="semester">Semester:</label>
-						<select class="form-control" id="semester">
-							<option>Fall</option>
-							<option>Spring</option>
-							<option>Summer</option>
-						</select>
-					<label for="pref-courses">Select Classes to TA</label>
-					<div id="pref-courses">
-						<select class="form-control" id="top-courses" multiple>
-							<option>CMSC131</option>
-							<option>CMSC132</option>
-							<option>CMSC216</option>
-							<option>CMSC250</option>
-							<option>CMSC330</option>
-							<option>CMSC351</option>
-						</select>
-					</div>
-				</div>
-				<input type="submit" class="btn btn-block" name="submit" value="Submit Application">
+				
 			</div>
 			</form>
 		</body>
