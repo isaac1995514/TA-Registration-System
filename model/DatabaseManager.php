@@ -32,6 +32,11 @@
         private $database;
         private $tables;
 
+        public static $currentSemesterYear = "2018";
+        public static $currentSemesterTerm = "Spring";
+        public static $nextSemesterYear = "2018";
+        public static $nextSemesterTerm = "Fall";
+
         /**
          * DatabaseManager constructor.
          */
@@ -77,6 +82,11 @@
 
             switch ($type){
                 case "INSERT":
+
+                    foreach($arguments as $key => $value){
+                        $arguments[$key] = "'{$value}'";
+                    } 
+
                     $values = join(", ", array_keys($arguments));
                     $field = join(", ", array_values($arguments));
 
@@ -138,6 +148,15 @@
 
         }
 
+        /**
+         * update student into Student Table
+         *
+         * @param $fields
+         * @return int : Error Code
+         *      0 - Succeed
+         *      101 - Connection Error
+         *      102 - Failed to insert to Student
+         */
         public function updateStudent($fields){
 
             /* Connect to database */
@@ -148,9 +167,7 @@
             $setArr = [];
 
             foreach($fields as $key => $value){
-                if($value != "" && $value != "NULL"){
-                    $setArr[] = "{$key} = '{$value}'";
-                }
+                $setArr[] = "{$key} = '{$value}'"; 
             }
 
             $setStr = join(", ", $setArr);
@@ -161,6 +178,7 @@
             // Generate Query to add Student
             $tables = self::STUDENT;
             $query = $this->generateQuery(self::UPDATE, $tables, $fields);
+            echo $query;
 
             // echo "Query (Add to Student): ", $query;
             // echo "<br><br>";
@@ -228,15 +246,47 @@
         }
 
         /**
-         * update student into Student Table
-         *
-         * @param $fields
-         * @return int : Error Code
-         *      0 - Succeed
-         *      101 - Connection Error
-         *      102 - Failed to insert to Student
+         * 
          */
-        
+        public function getCourse($studentId){
+
+            $data = array();
+
+            /* Connect to database */
+            $db_connection = $this->connect();
+
+            if ($db_connection == NULL) return [101, $data];
+
+            $arguments = array(
+                "select" => "DISTINCT courseCode",
+                "where" => "s.studentId = '{$studentId}' and d.departmentName = s.departmentName and d.departmentName = c.departmentName"
+            );
+
+            $tables = "Student s, Department d, Course c";
+            $query = $this->generateQuery(self::SELECT, $tables, $arguments);
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return [102, $result];
+            }else{
+                
+                /* Number of rows found */
+                $num_rows = $result->num_rows;
+
+                if($num_rows == 0){
+                    return [1, $data];
+                }else{
+
+                    while($row = $result->fetch_assoc()) {
+                        $data[]=$row;
+                    }
+                }
+            }
+            return [0, $data];
+
+        }
+
         /**
          * Add ta position for a student in a specif year
          *
@@ -357,19 +407,9 @@
 
             if ($db_connection == NULL) return 101;
 
-            // Set up values to be added
-            $arguments = array(
-                "studentId" => "'{$fields["studentId"]}'",
-                "academicYear" => "'{$fields["academicYear"]}'",
-                "courseCode" => "'{$fields["courseCode"]}'",
-                "term" => "'{$fields["term"]}'",
-                "appStatus" => "'{$fields["appStatus"]}'",
-                "taType" => "'{$fields["taType"]}'"
-            );
-
             // Generate Query to add Faculty
             $tables = self::APPLICATION;
-            $query = $this->generateQuery(self::INSERT, $tables, $arguments);
+            $query = $this->generateQuery(self::INSERT, $tables, $fields);
 
             /* Executing query */
             $result = $db_connection->query($query);

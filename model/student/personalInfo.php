@@ -19,27 +19,37 @@
     $errorCode = 0;
     $newAccount = false;
 
+    // Check if this is a new Account
+    if(isset($_SESSION['newAccount'])){
+        $newAccount = $_SESSION['newAccount'];
+    }
+
     // Check to see if there is a local copy
     if(isset($_SESSION['studentInfo'])){
         // Find local copy
         $searchResult = $_SESSION['studentInfo'];
+        $errorCode = 202;
+        
+            //echo "<h1>Local Copy</h1>";
             
     }else{
         // Get SQL search result
         $result = $database->getStudent($studentId);
         $errorCode = $result[0];
-
-        // Check if this is a new Account
-        if(isset($_SESSION['newAccount'])){
-            $newAccount = $_SESSION['newAccount'];
-        }
-
+        
+            //echo "<h1>New Copy</h1>";
     }
-    
-    // Student Found in Database or Local copy available
+
+    // Student Found in Database
     if($errorCode == 0){
         $searchResult = $result[1][0];
+        
+        // Store Result as local Copy
+        $_SESSION['studentInfo'] = $searchResult;
     
+    // Local Copy Found
+    }elseif($errorCode == 202){
+
     // The student just registered
     }elseif($newAccount){
         $errorMsg = "Please field in all data before proceeding to other functionality";
@@ -66,6 +76,7 @@
         <link rel="stylesheet" type="text/css" href='./../../resources/style/commonStyle.css'>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src= "./../../resources/script/personalInfo.js"></script> 
     </head>
     
     <body>
@@ -127,7 +138,7 @@
                                 <input required type= "email" name="email" placeholder = "Email *" <?php echo (isset($searchResult['email'])) ? "value = '{$searchResult['email']}'": "" ?>>
                                 <input required type= "text" name = "phone" placeholder = "Phone Number *" <?php echo (isset($searchResult['phone'])) ? "value = '{$searchResult['phone']}'": "" ?>>
                                 <input required type = 'number' name = 'gpa' step = "0.01" min = "0" max = "4.0" placeholder = "GPA *" <?php echo (isset($searchResult['gpa'])) ? "value = '{$searchResult['gpa']}'": "" ?>>
-                                <input required type = 'text' name = "departmentName" placeholder = "Name of Your Department *" <?php echo (isset($searchResult['departmentName'])) ? "value = '{$searchResult['departmentName']}'": "" ?>>
+                                <input required type = 'text' id = 'departmentName' name = "departmentName" placeholder = "Name of Your Department *" <?php echo (isset($searchResult['departmentName'])) ? "value = '{$searchResult['departmentName']}'": "" ?>>
                             
                             <legend><span class="number">2</span> Additional Info</legend>
 

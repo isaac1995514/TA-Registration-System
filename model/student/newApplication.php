@@ -1,12 +1,59 @@
 
 <?php
-    require_once("studentSupport.php");
     require_once("./../DatabaseManager.php");
 
     session_start();
 
-?>
+    $errorMsg = "";
+    $studentId = $_SESSION['studentId'];
+    $nextSemesterYear = DatabaseManager::$nextSemesterYear;
+    $nextSemesterTerm = DatabaseManager::$nextSemesterTerm;
 
+    if(isset($_SESSION['database'])){
+        $database = $_SESSION['database'];
+    }else{
+        $database = new DatabaseManager();
+    }
+
+    $errorCode = 0;
+   
+    if(isset($_SESSION['courseInfo'])){
+        $errorCode = 202;
+        //echo "Local Copy Found";
+    }else{
+        // Get SQL search result
+        $result = $database->getCourse($studentId);
+        $errorCode = $result[0];
+        //echo "Local Copy not Found";
+    }
+
+    // Student Found in Database
+    if($errorCode == 0 || $errorCode == 202){
+        if($errorCode == 0){
+            $searchResult = $result[1];
+            $_SESSION['courseInfo'] = $searchResult;
+            //echo "New Copy Used";
+        }else{
+            $searchResult = $_SESSION['courseInfo'];
+            //echo "Local Copy Used";
+        }
+        
+        $options = "";
+
+        foreach($searchResult as $course){
+            $options .= "<option value = '{$course['courseCode']}'>{$course['courseCode']}</option>";
+        }
+
+        //Store CourseInfo as Local Copy
+        $_SESSION['courseInfo'] = $searchResult;
+        
+    // Local Copy Found
+    }elseif($errorCode == 202){
+
+    // The student just registered
+    }
+
+?>
 
 <!doctype html>
 <html lang="en">
@@ -67,35 +114,30 @@
       
             <div id = 'contentBlock' class="w3-container">
                 <div class="form-style-5">
-                    <form action="$_SERVER[PHP_SELF]" method="post">
+                    <form action="newApplicationSubmit.php" method="post">
                         <legend>Application Preferences</legend>
                         <label for="taType">Availability:</label>
-                            <select class="form-control" id="taType">
+                            <select required class="form-control" id = 'taType' name="taType">
                                 <option value = 'Full Time'>Full Time (20hrs/week)</option>
                                 <option value = 'Part Time'>Part Time (10hrs/week)</option>
                             </select>
 
                         <legend>Course</legend>
                         <label for="academicYear">Academic Year:</label>
-                        <input type = "number" name = 'academicYear' id = 'academicYear' min = '2010' max = '2050' value = "2018"/>
+                        <input required type = "number" name = 'academicYear' id = 'academicYear' min = '2010' max = '2050' value = '<?=$nextSemesterYear?>'/>
                         
-                        <label for="semester">Semester:</label>
-                            <select class="form-control" id="semester">
-                                <option value = 'Fall'>Fall</option>
-                                <option value = 'Spring'>Spring</option>
-                                <option value = 'Summer'>Summer</option>
-                                <option value = 'Winter'>Winter</option>
+                        <label for="term">Semester:</label>
+                            <select required class="form-control" id="term" name = 'term'>
+                                <option <?php echo (($nextSemesterTerm == 'Fall') ? "selected" : "")?> value = 'Fall'>Fall</option>
+                                <option <?php echo (($nextSemesterTerm == 'Spring') ? "selected" : "")?> value = 'Spring'>Spring</option>
+                                <option <?php echo (($nextSemesterTerm == 'Summer') ? "selected" : "")?> value = 'Summer'>Summer</option>
+                                <option <?php echo (($nextSemesterTerm == 'Winter') ? "selected" : "")?> value = 'Winter'>Winter</option>
                             </select>
 
                         <label for="pref-courses">Select Classes to TA</label>
                             <div id="pref-courses">
-                                <select class="form-control" id="top-courses" multiple>
-                                    <option value = 'CMSC131'>CMSC131</option>
-                                    <option value = 'CMSC132'>CMSC132</option>
-                                    <option value = 'CMSC216'>CMSC216</option>
-                                    <option value = 'CMSC250'>CMSC250</option>
-                                    <option value = 'CMSC330'>CMSC330</option>
-                                    <option value = 'CMSC351'>CMSC351</option>
+                                <select required class="form-control" name = "courseCode[]" id="courseCode" multiple>
+                                <?=$options?>
                                 </select>
                             </div>
                         

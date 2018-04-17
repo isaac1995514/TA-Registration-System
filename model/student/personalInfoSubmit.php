@@ -10,7 +10,6 @@
     }
 
     if(isset($_POST['submitBtn'])){
-
         $arguments = array(
             "studentId" => $_POST['studentId'],
             "firstName" => $_POST['firstName'],
@@ -35,10 +34,13 @@
         if(isset($_SESSION['newAccount'])){
         
             $errorCode = $database->addStudent($arguments);
+            unset($_SESSION['newAccount']);
         }else{
             $errorCode = $database->updateStudent($arguments);
         }
 
+        // Unset local copy after insert or update
+        unset($_SESSION['studentInfo']);
         header("Location: personalInfo.php");
 
     }else{

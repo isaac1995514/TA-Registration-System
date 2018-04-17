@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS Comment;
 DROP TABLE IF EXISTS Applications;
 DROP TABLE IF EXISTS TA_Experience;
 DROP TABLE IF EXISTS Course;
@@ -9,6 +10,7 @@ DROP TABLE IF EXISTS Department;
 
 CREATE TABLE Department(
     departmentName VARCHAR(20) NOT NULL,
+    abbreviation VARCHAR(4) NOT NULL,
     registrationKey VARCHAR(10) NOT NULL,
     PRIMARY KEY (departmentName)
 );
@@ -66,6 +68,7 @@ CREATE TABLE FacultyAccount(
 CREATE TABLE Course(
     courseName VARCHAR(50) NOT NULL,
     courseCode VARCHAR(8) NOT NULL,
+    departmentName VARCHAR(50) NOT NULL,
     academicYear VARCHAR(4) NOT NULL,
     term enum('Fall', 'Spring', 'Winter', 'Summer') NOT NULL,
     section VARCHAR(4) NOT NULL,
@@ -97,6 +100,16 @@ CREATE TABLE Applications(
     PRIMARY KEY (studentId, academicYear, courseCode),
     FOREIGN KEY (studentId) REFERENCES Student(studentId),
     FOREIGN KEY (courseCode) REFERENCES Course(courseCode)
+);
+
+CREATE TABLE Comment(
+    id INT NOT NULL AUTO_INCREMENT,
+    studentId VARCHAR(8) NOT NULL,
+    facultyId VARCHAR(8) NOT NULL,
+    comment TEXT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (studentId) REFERENCES Student(studentId),
+    FOREIGN KEY (facultyId) REFERENCES Faculty(facultyId)
 );
 
 GRANT ALL ON tasql.* to dbuser@localhost identified by "password";
