@@ -4,20 +4,26 @@
     session_start();
 
     $errorMsg = "";
+    $studentId = null;
+    $errorCode = 0;
+    $newAccount = false;
 
     // Show Student Data in Personal Info Page
 
     $_SESSION['studentId'] = '00000003';
 
-    $studentId = (isset($_SESSION['studentId']) ? $_SESSION['studentId'] : "INVALID");
+    // Check if login in gate has been passed
+    if(isset($_SESSION['studentId'])){
+        $studentId = $_SESSION['studentId'];
+    }else{
+        header("Location: ./../login/login.php");
+    }
+
     if(isset($_SESSION['database'])){
         $database = $_SESSION['database'];
     }else{
         $database = new DatabaseManager();
     }
-
-    $errorCode = 0;
-    $newAccount = false;
 
     // Check if this is a new Account
     if(isset($_SESSION['newAccount'])){
@@ -52,7 +58,7 @@
 
     // The student just registered
     }elseif($newAccount){
-        $errorMsg = "Please field in all data before proceeding to other functionality";
+        $errorMsg = "Please fill in all data before proceeding to other functionality";
 
     // Error Msg: This is student is not in the database ()
     }elseif($errorCode == 1){
@@ -72,9 +78,9 @@
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href='./../../resources/style/personalInfo.css'>
-        <link rel="stylesheet" type="text/css" href='./../../resources/style/commonStyle.css'>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" type="text/css" href='./../../resources/style/personalInfo.css'>
+        <link rel="stylesheet" type="text/css" href='./../../resources/style/commonStudentStyle.css'>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src= "./../../resources/script/personalInfo.js"></script> 
     </head>
@@ -99,7 +105,7 @@
     
                 <div id="navbarcontent" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href=#history>Logout</a></li>
+                        <li><a href="./../logout.php">Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -107,7 +113,7 @@
 
         <!-- Sidebar -->
         <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:20%">
-            <h3 class="w3-bar-item">Menu</h3>
+            <h3 class="w3-bar-item">Student Function Menu</h3>
             <a id = 'personalInfo' href="personalInfo.php" class="w3-bar-item w3-button">Personal Info</a>
             <a id = 'newApp' href="newApplication.php" class="w3-bar-item w3-button">New Application</a>
             <a id = 'viewApp' href="viewApplication.php" class="w3-bar-item w3-button">View Applications</a>
@@ -193,7 +199,7 @@
                         </fieldset>
 
                         <input type="reset" name = "resetBtn" value = "Clear Form"/>
-                        <input type="submit" name = "submitBtn" value="Apply" />
+                        <input type="submit" name = "submitBtn" value="Submit New/Update" />
                     </form>
                 </div>
             </div>

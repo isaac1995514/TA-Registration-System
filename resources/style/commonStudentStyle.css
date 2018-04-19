@@ -1,3 +1,15 @@
+body{
+    padding-top: 50px;
+}
+
+.w3-sidebar{
+    background-color: #e8f8f5 !important;
+}
+
+.w3-bar-item{
+    background-color: #a3e4d7 !important; 
+}
+
 .form-style-5 div{
     display: inline;
 }
@@ -103,7 +115,7 @@
     margin-bottom: 10px;
 }
 .form-style-5 input[type="submit"]:hover,
-.form-Stype-5 input[type="reset"]:hover,
+.form-style-5 input[type="reset"]:hover,
 .form-style-5 input[type="button"]:hover
 {
     background: #109177;

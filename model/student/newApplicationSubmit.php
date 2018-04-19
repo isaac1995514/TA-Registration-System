@@ -3,6 +3,13 @@
     require_once("./../DatabaseManager.php");
     session_start();
 
+    // Check if login in gate has been passed
+    if(isset($_SESSION['studentId'])){
+        $studentId = $_SESSION['studentId'];
+    }else{
+        header("Location: ./../login/login.php");
+    }
+
     if(isset($_SESSION['database'])){
         $database = $_SESSION['database'];
     }else{
@@ -32,11 +39,4 @@
     }else{
         echo "<h1 style='color:red';>Submission Error</h1>";
     }
-
-
-
-
-
-
-
 ?>

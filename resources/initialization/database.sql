@@ -107,6 +107,7 @@ CREATE TABLE Comment(
     studentId VARCHAR(8) NOT NULL,
     facultyId VARCHAR(8) NOT NULL,
     comment TEXT NOT NULL,
+    sendTime TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (studentId) REFERENCES Student(studentId),
     FOREIGN KEY (facultyId) REFERENCES Faculty(facultyId)

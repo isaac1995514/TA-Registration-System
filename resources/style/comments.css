@@ -1,0 +1,10 @@
+textarea{
+    width: 80%;
+    font-size: 20px !important; 
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+    border: 3px solid #cccccc;
+    font-family: Tahoma, sans-serif;
+}

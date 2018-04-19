@@ -25,6 +25,7 @@
         public const TA = "TA_Experience";
         public const APPLICATION = "Applications";
         public const COURSE = "Course";
+        public const COMMENT = "Comment";
 
         private $host;
         private $user;
@@ -221,6 +222,55 @@
             );
 
             $tables = self::STUDENT;
+            $query = $this->generateQuery(self::SELECT, $tables, $arguments);
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return [102, $result];
+            }else{
+                
+                /* Number of rows found */
+                $num_rows = $result->num_rows;
+
+                if($num_rows == 0){
+                    return [1, $data];
+                }else{
+
+                    while($row = $result->fetch_assoc()) {
+                        $data[]=$row;
+                    }
+                }
+            }
+            return [0, $data];
+
+        }
+
+        /**
+         * Get comments for a student 
+         *
+         * @param $fields
+         * @return int : Error Code
+         *          0 - Succeeded
+         *          1 - Empty Result
+         *          101 - Connection Error
+         *          102 - Failed to obtain student's comment from database
+         */
+        public function getComment($studentId){
+
+            $data = array();
+
+            /* Connect to database */
+            $db_connection = $this->connect();
+
+            if ($db_connection == NULL) return [101, $data];
+
+            $arguments = array(
+                "select" => "Comment.*, Faculty.firstName, Faculty.lastName",
+                "where" => "studentId = '{$studentId}' ORDER BY sendTime"
+            );
+
+            $tables = 'Comment LEFT JOIN Faculty ON Comment.facultyId = Faculty.facultyId';
             $query = $this->generateQuery(self::SELECT, $tables, $arguments);
 
             /* Executing query */

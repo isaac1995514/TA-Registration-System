@@ -68,6 +68,9 @@ INSERT INTO Course VALUES ("Algorithms", "CMSC351", "Computer Science", "2018", 
 INSERT INTO Course VALUES ("Algorithms", "CMSC351", "Computer Science", "2018", "Spring", "0501", "000004", 3);
 
 INSERT INTO Comment (studentId, facultyId, comment) VALUES ('00000003', '000001', 'You are terrible');
+INSERT INTO Comment (studentId, facultyId, comment) VALUES ('00000003', '000002', 'You are okay');
+INSERT INTO Comment (studentId, facultyId, comment) VALUES ('00000003', '000003', 'You are alright');
+INSERT INTO Comment (studentId, facultyId, comment) VALUES ('00000003', '000004', 'You suck');
 INSERT INTO Comment (studentId, facultyId, comment) VALUES ('00000002', '000001', 'You are so terrible');
 INSERT INTO Comment (studentId, facultyId, comment) VALUES ('00000001', '000001', 'You are super terrible');
 
