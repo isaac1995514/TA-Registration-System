@@ -25,14 +25,14 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Faculty Feedback to student</title>
+        <title>Personal Information</title>
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href='./../../resources/style/feedback.css'>
-        <link rel="stylesheet" type="text/css" href='./../../resources/style/commonFacultyStyle.css'>
+        <link rel="stylesheet" type="text/css" href='./../../resources/style/applicationFilter.css'>
+        <link rel="stylesheet" type="text/css" href='./../../resources/style/commonAdminStyle.css'>
     </head>
     
     <body>
@@ -63,21 +63,37 @@
 
         <!-- Sidebar -->
         <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:20%">
-            <h3 class="w3-bar-item">Faculty Function Menu</h3>
-            <a id = 'personalInfo' href="viewTA.php" class="w3-bar-item w3-button">View TA Assigned</a>
-            <a id = 'personalInfo' href="feedback.php" class="w3-bar-item w3-button">Send Feedback</a>
+            <h3 class="w3-bar-item">Admin Function Menu</h3>
+            <a id = 'personalInfo' href="#" class="w3-bar-item w3-button">Select TA</a>
         </div>
       
         <!-- Page Content -->
         <div style="margin-left:20%">
       
             <div id = 'headerBlock' class="w3-container w3-teal">
-                <h1>Send Feedback to Student</h1>
+                <h1>Personal Infomation</h1>
             </div>
       
             <div id = 'contentBlock' class="w3-container">
                 <div class="form-style-5">
-            
+                    <form>
+                        <h1> Filter Criteria </h1>
+                        <h4>Student Id: </h4><input type = "text" id = 'studentId' name = 'studentId' placeholder = "Filter By Student id *"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <h4>First Name: </h4><input type = "text" id = 'firstName' name = 'firstName' placeholder = "Filter By Student's firstName *"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <h4>Last Name: </h4><input type = "text" id = 'lastName' name = 'lastName' placeholder = "Filter By Student's lastName *"/>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <h
+
+                        <h3>Teaching TA Applications</h3>
+                        <table id = "teaching">
+                            
+                        </table>
+
+                        <h3>Grading TA Applications</h3>
+                        <table id = "grading">
+                            
+                        </table>
+                    </form>
                 </div>
             </div>
         </div>

@@ -115,7 +115,7 @@
             <h3 class="w3-bar-item">Student Function Menu</h3>
             <a id = 'personalInfo' href="personalInfo.php" class="w3-bar-item w3-button">Personal Info</a>
             <a id = 'newApp' href="newApplication.php" class="w3-bar-item w3-button">New Application</a>
-            <a id = 'viewApp' href="viewApplication.php" class="w3-bar-item w3-button">View Applications</a>
+            <a id = 'viewApp' href="viewApplication.php" class="w3-bar-item w3-button">View & Edit Applications</a>
             <a id = 'comments' href="comments.php" class="w3-bar-item w3-button">Comments</a>
         </div>
       
@@ -160,6 +160,7 @@
                                 <select required id="studentType" name="studentType">
                                     <option value = 'Undergrad' <?php echo (isset($searchResult['studentType']) && $searchResult['studentType'] == "Undergrad") ? "selected": "" ?>>Undergrad</option>
                                     <option value = 'Grad' <?php echo (isset($searchResult['studentType']) && $searchResult['studentType'] == "Grad") ? "selected": "" ?>>Grad</option>
+                                    <option value = 'Master' <?php echo (isset($searchResult['studentType']) && $searchResult['studentType'] == "Master") ? "selected": "" ?>>Master</option>
                                     <option value = 'PhD' <?php echo (isset($searchResult['studentType']) && $searchResult['studentType'] == "PhD") ? "selected": "" ?>>PhD</option>
                                 </select>
 

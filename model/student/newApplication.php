@@ -122,7 +122,7 @@
             <h3 class="w3-bar-item">Student Function Menu</h3>
             <a id = 'personalInfo' href="personalInfo.php" class="w3-bar-item w3-button">Personal Info</a>
             <a id = 'newApp' href="newApplication.php" class="w3-bar-item w3-button">New Application</a>
-            <a id = 'viewApp' href="viewApplication.php" class="w3-bar-item w3-button">View Applications</a>
+            <a id = 'viewApp' href="viewApplication.php" class="w3-bar-item w3-button">View & Edit Applications</a>
             <a id = 'comments' href="comments.php" class="w3-bar-item w3-button">Comments</a>
         </div>
       

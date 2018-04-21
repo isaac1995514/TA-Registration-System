@@ -27,7 +27,7 @@ CREATE TABLE Student(
     resumeFile BLOB,
     entryYear VARCHAR(4) NOT NULL,
     entryTerm enum('Spring', 'Fall') NOT NULL,
-    studentType enum('Undergrad', 'Grad', 'PhD') NOT NULL,
+    studentType enum('Undergrad', 'Grad', 'Master', 'PhD') NOT NULL,
     adviser VARCHAR(100),
     earnedMasterDegree TINYINT(1) NOT NULL,
     foreignStudent TINYINT(1) NOT NULL,
