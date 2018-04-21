@@ -5,6 +5,14 @@
 
     $errorMsg = "";
     $studentId= null;
+    $errorCode = 0;
+
+    $nextSemesterYear = DatabaseManager::$nextSemesterYear;
+    $nextSemesterTerm = DatabaseManager::$nextSemesterTerm;
+
+    // Set Cookie
+    setcookie("nextSemesterYear", $nextSemesterYear);
+    setcookie("nextSemesterTerm", $nextSemesterTerm);
 
     // Check if login in gate has been passed
     if(isset($_SESSION['studentId'])){
@@ -13,17 +21,12 @@
         header("Location: ./../login/login.php");
     }
 
-    $nextSemesterYear = DatabaseManager::$nextSemesterYear;
-    $nextSemesterTerm = DatabaseManager::$nextSemesterTerm;
-
     if(isset($_SESSION['database'])){
         $database = $_SESSION['database'];
     }else{
         $database = new DatabaseManager();
     }
 
-    $errorCode = 0;
-   
     if(isset($_SESSION['courseInfo'])){
         $errorCode = 202;
         //echo "Local Copy Found";
@@ -34,7 +37,24 @@
         //echo "Local Copy not Found";
     }
 
-    // Student Found in Database
+    
+    $studentInfo = $_SESSION['studentInfo'];
+    $studentType = $studentInfo['studentType'];
+
+    // Check if the student can teach
+    $canTeach = false;
+    $foreignStudent = $studentInfo['foreignStudent'];
+    $emiTestPassed = $studentInfo['emiTestPassed'];
+
+    if($foreignStudent == "0"){
+        $canTeach = true;
+    }else{
+        if($emiTestPassed == "1"){
+            $canTeach = true;
+        }
+    }
+
+    // Course Found in Database
     if($errorCode == 0 || $errorCode == 202){
         if($errorCode == 0){
             $searchResult = $result[1];
@@ -49,15 +69,9 @@
 
         foreach($searchResult as $course){
             $options .= "<option value = '{$course['courseCode']}'>{$course['courseCode']}</option>";
-        }
-
-        //Store CourseInfo as Local Copy
-        $_SESSION['courseInfo'] = $searchResult;
-        
-    // Local Copy Found
-    }elseif($errorCode == 202){
-
-    // The student just registered
+        }    
+    }else{
+        $errorMsg .= "There is no course in the database!";
     }
 
 ?>
@@ -74,7 +88,7 @@
         <link rel="stylesheet" type="text/css" href='./../../resources/style/newApplication.css'>
         <link rel="stylesheet" type="text/css" href='./../../resources/style/commonStudentStyle.css'>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <script type="text/javascript" src='./../../resources/script/newApplication.js'></script>
+        <script src= "./../../resources/script/newApplication.js"></script> 
     </head>
     
     <body>
@@ -121,32 +135,38 @@
       
             <div id = 'contentBlock' class="w3-container">
                 <div class="form-style-5">
+                    <?="<h1 id = 'errorMsg'>{$errorMsg}</h1>"?>
                     <form action="newApplicationSubmit.php" method="post">
                         <legend>Application Preferences</legend>
-                        <label for="taType">Availability:</label>
+                        <label for="taType">TA Type:</label>
                             <select required class="form-control" id = 'taType' name="taType">
-                                <option value = 'Full Time'>Full Time (20hrs/week)</option>
-                                <option value = 'Part Time'>Part Time (10hrs/week)</option>
+                                <option <?=(($studentType == "Undergrad") ? "disabled": "" )?> value = 'Full Time'>Full Time (20hrs/week)</option>
+                                <option <?=(($studentType == "Grad") ? "disabled": "" )?> value = 'Part Time'>Part Time (10hrs/week)</option>
                             </select>
-
+                        
                         <legend>Course</legend>
                         <label for="academicYear">Academic Year:</label>
-                        <input required type = "number" name = 'academicYear' id = 'academicYear' min = '2010' max = '2050' value = '<?=$nextSemesterYear?>'/>
+                        <input required type = "number" name = 'academicYear' id = 'academicYear' value = '<?=$nextSemesterYear?>'/>
                         
                         <label for="term">Semester:</label>
                             <select required class="form-control" id="term" name = 'term'>
                                 <option <?php echo (($nextSemesterTerm == 'Fall') ? "selected" : "")?> value = 'Fall'>Fall</option>
                                 <option <?php echo (($nextSemesterTerm == 'Spring') ? "selected" : "")?> value = 'Spring'>Spring</option>
                                 <option <?php echo (($nextSemesterTerm == 'Summer') ? "selected" : "")?> value = 'Summer'>Summer</option>
-                                <option <?php echo (($nextSemesterTerm == 'Winter') ? "selected" : "")?> value = 'Winter'>Winter</option>
                             </select>
-
+                        
                         <label for="pref-courses">Select Classes to TA</label>
                             <div id="pref-courses">
                                 <select required class="form-control" name = "courseCode[]" id="courseCode" multiple>
                                 <?=$options?>
                                 </select>
                             </div>
+                        
+                        <label for="taType">Can you teach these courses?</label>
+                            <select required class="form-control" id = 'canTeach' name="canTeach">
+                                <option <?=((!$canTeach) ? "disabled": "" )?> value = '1'>Yes</option>
+                                <option <?=((!$canTeach) ? "selected": "" )?> value = '0'>No</option>
+                            </select>
                         
                         <input type="reset" name = "resetBtn" value = "Clear Application"/>
                         <input type="submit" name = "submitBtn" value="Submit Application"/>

@@ -10,6 +10,7 @@
 
     // Show Student Data in Personal Info Page
 
+    // testing
     $_SESSION['studentId'] = '00000003';
 
     // Check if login in gate has been passed
@@ -66,9 +67,7 @@
     }else{
         $errorMsg = "System Failed. Please report to Admin";
     }
-    
 ?>
-
 
 <!doctype html>
 <html lang="en">
@@ -142,15 +141,15 @@
                                 </div>
 
                                 <input required type= "email" name="email" placeholder = "Email *" <?php echo (isset($searchResult['email'])) ? "value = '{$searchResult['email']}'": "" ?>>
-                                <input required type= "text" name = "phone" placeholder = "Phone Number *" <?php echo (isset($searchResult['phone'])) ? "value = '{$searchResult['phone']}'": "" ?>>
+                                <input required type= "text" id = "phone" name = "phone" placeholder = "Phone Number * (###-###-####)" <?php echo (isset($searchResult['phone'])) ? "value = '{$searchResult['phone']}'": "" ?>>
                                 <input required type = 'number' name = 'gpa' step = "0.01" min = "0" max = "4.0" placeholder = "GPA *" <?php echo (isset($searchResult['gpa'])) ? "value = '{$searchResult['gpa']}'": "" ?>>
                                 <input required type = 'text' id = 'departmentName' name = "departmentName" placeholder = "Name of Your Department *" <?php echo (isset($searchResult['departmentName'])) ? "value = '{$searchResult['departmentName']}'": "" ?>>
                             
                             <legend><span class="number">2</span> Additional Info</legend>
 
-                                <label for="entry">Which is your entry semster?</label>
+                                <label>Which is your entry semester?</label>
                                 <div id = 'entry' class = 'subSection'>
-                                    <input type = 'text' name = "entryYear" placeholder = "Entry Year *" <?php echo (isset($searchResult['entryYear'])) ? "value = '{$searchResult['entryYear']}'": "" ?>>
+                                    <input type = 'text' id = "entryYear" name = "entryYear" placeholder = "Entry Year *" <?php echo (isset($searchResult['entryYear'])) ? "value = '{$searchResult['entryYear']}'": "" ?>>
                                     <select required name = 'entryTerm'>
                                         <option value = 'Fall' <?php echo (isset($searchResult['entryTerm']) && $searchResult['entryTerm'] == "Fall") ? "selected": "" ?>>Fall</option>
                                         <option value = 'Spring' <?php echo (isset($searchResult['entryTerm']) && $searchResult['entryTerm'] == "Spring") ? "selected": "" ?>>Spring</option>
@@ -161,7 +160,6 @@
                                 <select required id="studentType" name="studentType">
                                     <option value = 'Undergrad' <?php echo (isset($searchResult['studentType']) && $searchResult['studentType'] == "Undergrad") ? "selected": "" ?>>Undergrad</option>
                                     <option value = 'Grad' <?php echo (isset($searchResult['studentType']) && $searchResult['studentType'] == "Grad") ? "selected": "" ?>>Grad</option>
-                                    <option value = 'Master' <?php echo (isset($searchResult['studentType']) && $searchResult['studentType'] == "Master") ? "selected": "" ?>>Master</option>
                                     <option value = 'PhD' <?php echo (isset($searchResult['studentType']) && $searchResult['studentType'] == "PhD") ? "selected": "" ?>>PhD</option>
                                 </select>
 
@@ -180,14 +178,14 @@
                                     <option value = '0' <?php echo (isset($searchResult['foreignStudent']) && $searchResult['foreignStudent'] == "0") ? "selected": "" ?>>No</option>
                                 </select>
 
-                                <label for="emiTestPassed">If you are a foreign Student, Have you passed the EMI Test?</label>
+                                <label for="emiTestPassed">If you are a foreign Student, Have you passed the Maryland English Institute (MEI) Test?</label>
                                 <select required id="emiTestPassed" name="emiTestPassed">
                                     <option value = '-1' <?php echo (isset($searchResult['emiTestPassed']) && $searchResult['emiTestPassed'] == "-1") ? "selected": "" ?>>Not applicatable</option>
                                     <option value = '1' <?php echo (isset($searchResult['emiTestPassed']) && $searchResult['emiTestPassed'] == "1") ? "selected": "" ?>>Yes</option>
                                     <option value = '0' <?php echo (isset($searchResult['emiTestPassed']) && $searchResult['emiTestPassed'] == "0") ? "selected": "" ?>>No</option>
                                 </select>
 
-                                <label for="currentEMI">If you, Have you passed the EMI Test?</label>
+                                <label for="currentEMI">If you have not passed the test, are you currently taking and MEI course?</label>
                                 <select required id="currentEMI" name="currentEMI">
                                     <option value = '-1' <?php echo (isset($searchResult['currentEMI']) && $searchResult['currentEMI'] == "-1") ? "selected": "" ?>>Not applicatable</option>
                                     <option value = '1' <?php echo (isset($searchResult['currentEMI']) && $searchResult['currentEMI'] == "1") ? "selected": "" ?>>Yes</option>

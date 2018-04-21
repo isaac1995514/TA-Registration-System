@@ -36,7 +36,7 @@
         public static $currentSemesterYear = "2018";
         public static $currentSemesterTerm = "Spring";
         public static $nextSemesterYear = "2018";
-        public static $nextSemesterTerm = "Fall";
+        public static $nextSemesterTerm = "Summer";
 
         /**
          * DatabaseManager constructor.
@@ -104,6 +104,10 @@
                     $where = $arguments['where'];
 
                     $query = "UPDATE {$tables} SET {$set} WHERE {$where};";
+                case "DELETE":
+                    $where = $arguments['where'];
+
+                    $query = "DELETE FROM {$tables} WHERE {$where};";
             }
 
             return $query;
@@ -168,7 +172,7 @@
             $setArr = [];
 
             foreach($fields as $key => $value){
-                $setArr[] = "{$key} = '{$value}'"; 
+                $setArr[] = "{$key} = '{$value}'";
             }
 
             $setStr = join(", ", $setArr);
@@ -179,7 +183,7 @@
             // Generate Query to add Student
             $tables = self::STUDENT;
             $query = $this->generateQuery(self::UPDATE, $tables, $fields);
-            echo $query;
+            //echo $query;
 
             // echo "Query (Add to Student): ", $query;
             // echo "<br><br>";
@@ -473,14 +477,12 @@
 
         }
 
-
         /***
          * Student User Interface Functions
          */
 
         /**
          * Get all application for a specific student
-         *      Note: if $year and $term are not provides, all application (current and previous) will be returned.
          *
          * @param $studentId
          * @param null $year
@@ -492,7 +494,7 @@
          *          101 - Connection Error
          *          102 - Failed to obtain student's application from database
          */
-        public function getStudentApplication($studentId, $year = NULL, $term = NULL){
+        public function getStudentApplication($studentId){
 
             $data = array();
 
@@ -502,9 +504,7 @@
 
             $arguments = array(
                 "select" => "*",
-                "where" => ($year === NULL) ?
-                    ("studentId = '{$studentId}'") :
-                    ("studentId = '{$studentId}', academicYear = '{$year}', term = '{$term}'")
+                "where" => "studentId = '{$studentId}'"
             );
 
             $tables = self::APPLICATION;
@@ -531,6 +531,41 @@
             $db_connection->close();
 
             return [0, $data];
+        }
+
+        /**
+         * Remove application with the specified application id
+         *
+         * @param $id
+         * @return array [Error Code : int, Result : array($key => $value)]
+         *      Error Code:
+         *          0 - Succeeded
+         *          101 - Connection Error
+         *          102 - Failed to delete student from the Applications table
+         */
+        public function removeStudentApplication($id){
+
+            $data = array();
+
+            $db_connection = $this->connect();
+
+            if ($db_connection == NULL) return 101;
+
+            $arguments = array(
+                "where" => "id = '{$id}'"
+            );
+
+            $tables = self::APPLICATION;
+            $query = $this->generateQuery(self::DELETE, $tables, $arguments);
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+
+            if($result){
+                return 0;
+            }else{
+                return 102;
+            }
         }
 
         /***

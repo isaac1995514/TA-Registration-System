@@ -39,7 +39,6 @@
 
         // Check if this is a new account (set only for new student)
         if(isset($_SESSION['newAccount'])){
-        
             $errorCode = $database->addStudent($arguments);
             unset($_SESSION['newAccount']);
         }else{

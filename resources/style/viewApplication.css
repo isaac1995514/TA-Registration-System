@@ -1,0 +1,20 @@
+.container{
+    margin: 0px !important;
+    width: 100% !important;
+    align-items: center !important;
+}
+
+th, tr{
+    text-align: center !important;
+}
+
+.removeBtn{
+    transition: transform .2s; /* Animation */
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+}
+
+.removeBtn:hover{
+    transform: scale(1.3);
+}

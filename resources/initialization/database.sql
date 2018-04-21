@@ -27,12 +27,12 @@ CREATE TABLE Student(
     resumeFile BLOB,
     entryYear VARCHAR(4) NOT NULL,
     entryTerm enum('Spring', 'Fall') NOT NULL,
-    studentType enum('Undergrad', 'Grad', 'Master', 'PhD') NOT NULL,
+    studentType enum('Undergrad', 'Grad', 'PhD') NOT NULL,
     adviser VARCHAR(100),
     earnedMasterDegree TINYINT(1) NOT NULL,
     foreignStudent TINYINT(1) NOT NULL,
-    emiTestPassed TINYINT(1),
-    currentEMI TINYINT(1),
+    emiTestPassed TINYINT(1) NOT NULL,
+    currentEMI TINYINT(1) NOT NULL,
     PRIMARY KEY (studentId),
     FOREIGN KEY (departmentName) REFERENCES Department(departmentName)
 );
@@ -73,7 +73,7 @@ CREATE TABLE Course(
     term enum('Fall', 'Spring', 'Winter', 'Summer') NOT NULL,
     section VARCHAR(4) NOT NULL,
     professorId varchar(8) NOT NULL,
-    credit  INT(1) NOT NULL,
+    credit  TINYINT(1) NOT NULL,
     PRIMARY KEY (courseCode, academicYear, term, section),
     FOREIGN KEY (professorId) REFERENCES Faculty(facultyId)
 );
@@ -82,24 +82,27 @@ CREATE TABLE TA_Experience(
     studentId VARCHAR(8) NOT NULL,
     courseCode VARCHAR(10) NOT NULL,
     academicYear VARCHAR(4) NOT NULL,
-    term enum('Fall', 'Spring', 'Winter', 'Summer') NOT NULL,
-    section VARCHAR(4) NOT NULL,
+    term enum('Fall', 'Spring', 'Summer') NOT NULL,
     professorId VARCHAR(8) NOT NULL,
-    PRIMARY KEY(studentId, courseCode, academicYear, section, term),
+    taType enum('Grader', 'Teaching') NOT NULL,
+    PRIMARY KEY(studentId, courseCode, academicYear, term),
     FOREIGN KEY (studentId) REFERENCES Student(studentId),
     FOREIGN KEY (courseCode) REFERENCES Course(courseCode)
 );
 
 CREATE TABLE Applications(
+    id INT NOT NULL AUTO_INCREMENT,
     studentId VARCHAR(8) NOT NULL,
     academicYear VARCHAR(4) NOT NULL,
     courseCode VARCHAR(8) NOT NULL,
-    term enum('Fall', 'Spring', 'Winter', 'Summer') NOT NULL,
+    term enum('Fall', 'Spring', 'Summer') NOT NULL,
     appStatus enum('New','Accepted', "Denied") NOT NULL,
+    canTeach TINYINT(1) NOT NULL,
     taType enum('Part Time', 'Full Time') NOT NULL,
-    PRIMARY KEY (studentId, academicYear, courseCode),
+    PRIMARY KEY (id),
     FOREIGN KEY (studentId) REFERENCES Student(studentId),
-    FOREIGN KEY (courseCode) REFERENCES Course(courseCode)
+    FOREIGN KEY (courseCode) REFERENCES Course(courseCode),
+    CONSTRAINT unique_application UNIQUE(studentId, courseCode, academicYear, term)
 );
 
 CREATE TABLE Comment(

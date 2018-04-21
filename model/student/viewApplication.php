@@ -6,7 +6,9 @@
     $errorMsg = "";
     $studentId = null;
     $errorCode = 0;
-
+    $fullTable = "";
+    $nextSemesterYear = DatabaseManager::$nextSemesterYear;
+    $nextSemesterTerm = DatabaseManager::$nextSemesterTerm;
 
     // Check if login in gate has been passed
     if(isset($_SESSION['studentId'])){
@@ -22,31 +24,73 @@
     }
 
     // Check to see if there is a local copy
-    if(isset($_SESSION['studentApplications'])){
-        // Find local copy
-
+    if(isset($_SESSION['applicationTable'])){
         $errorCode = 202;
-        
             //echo "<h1>Local Copy</h1>";
             
     }else{
         // Get SQL search result
-        
+        $result = $database->getStudentApplication($studentId);
+        $errorCode = $result[0];
             //echo "<h1>New Copy</h1>";
     }
 
-    // Student Found in Database
-    if($errorCode == 0){
-        //$searchResult = $result[1][0];
-        
-        // Store Result as local Copy
-        //$_SESSION['studentApplications'] = $searchResult;
-    
-    // Local Copy Found
-    }elseif($errorCode == 202){
+    // Applications Found in Database
+    if($errorCode == 0 || $errorCode == 202 || $errorCode == 1){
+        if($errorCode == 0){
+            $searchResult = $result[1];
 
+            $currHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th><th>Remove Button</th></tr>';
+            $prevHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th></tr>';
 
-    // Error Msg: This is student is not in the database ()
+            $currApplication = "";
+            $previousApplication = "";
+
+            foreach($searchResult as $application){
+                $id = $application['id'];
+                $buttonId = "removeButton@{$id}";
+                $course = $application['courseCode'];
+                $year = $application['academicYear'];
+                $semester = $application['term'];
+                $status = $application['appStatus'];
+                $teach = ($application['canTeach'] == "1") ? "Yes" : "No";
+                $type = $application['taType'];
+
+                // Check if the application is current
+                if($application['academicYear'] == $nextSemesterYear && $application['term'] == $nextSemesterTerm){
+                    $currApplication .= "<tr>";
+                    $currApplication .= "<td>{$course}</td><td>{$year}</td><td>{$semester}</td><td>{$status}</td><td>{$teach}</td><td>{$type}</td>";
+                    $currApplication .= "<td><img class = 'removeBtn' id = '{$buttonId}' src='./../../resources/image/removeButtonIcon.png' alt='removeButton'/></td>";
+                    $currApplication .= "</tr>";
+                }else{
+                    $previousApplication .= "<tr><td>{$course}</td><td>{$year}</td><td>{$semester}</td><td>{$status}</td><td>{$teach}</td><td>{$type}</td></tr>";
+                }
+            }
+
+            $fullTable = "<h1>Current Application</h1>";
+            $fullTable .= '<table class = "table table-responsive table-condensed table-hover">';
+            $fullTable .= "{$currHead}{$currApplication}</table><br><br><br>";
+            $fullTable .= "<h1>Previous Application</h1>";
+            $fullTable .= '<table class = "table table-responsive table-condensed table-hover">';
+            $fullTable .= "{$prevHead}{$previousApplication}</table>";
+
+            $_SESSION['applicationTable'] = $fullTable;
+        }else if($errorCode == 202){
+            $fullTable = $_SESSION['applicationTable'];
+        }else{
+
+            $currHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th><th>Remove Button</th></tr>';
+            $prevHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th></tr>';
+
+            $fullTable = "<h1>Current Application</h1>";
+            $fullTable .= '<table class = "table table-responsive table-condensed table-hover">';
+            $fullTable .= "{$currHead}</table><br><br><br>";
+            $fullTable .= "<h1>Previous Application</h1>";
+            $fullTable .= '<table class = "table table-responsive table-condensed table-hover">';
+            $fullTable .= "{$prevHead}</table>";
+        }
+
+    // Error Msg: There is no application for this student.
     }elseif($errorCode == 1){
         $errorMsg = "No Application exists for this student.";
     }else{
@@ -65,10 +109,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <link rel="stylesheet" type="text/css" href='./../../resources/style/personalInfo.css'>
+        <link rel="stylesheet" type="text/css" href='./../../resources/style/viewApplication.css'>
         <link rel="stylesheet" type="text/css" href='./../../resources/style/commonStudentStyle.css'>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <script src= "./../../resources/script/personalInfo.js"></script> 
+        <script src= "./../../resources/script/viewApplication.js"></script> 
     </head>
     
     <body>
@@ -114,8 +158,11 @@
             </div>
       
             <div id = 'contentBlock' class="w3-container">
-                <div class="form-style-5">
-                    
+                <div class="form-style-5 container">
+                    <form id = 'removeApp' action = "removeButtonSubmit.php" method = 'post'>
+                        <?=$fullTable?>
+                        <input type = "hidden" name = "removeId" id = "removeId" value = ""/>
+                    </form>
                 </div>
             </div>
         </div>

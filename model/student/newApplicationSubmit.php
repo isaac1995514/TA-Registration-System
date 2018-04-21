@@ -30,8 +30,14 @@
                 "courseCode" => $course,
                 "term" => $_POST['term'],
                 "appStatus" => "New",
+                "canTeach" => $_POST['canTeach']
             );
             $errorCode = $database->addApplication($arguments);
+        }
+
+        // Remove the local copy of application table for viewApplication Tab to ensure it refreshes
+        if(isset($_SESSION['applicationTable'])){
+            unset($_SESSION['applicationTable']);
         }
 
         header("Location: newApplication.php");

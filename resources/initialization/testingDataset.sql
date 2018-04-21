@@ -14,15 +14,15 @@ INSERT INTO Department VALUES ("Japanese", "JAPN", "JAPN010");
 /* Insert Student Testing Dataset */
 INSERT INTO Student VALUES ("00000001", "First01", "M", "Last01", "fakeEmail@gmail.com", "000-000-0000", "2.22",
                             "Computer Science", NULL, "2015", "Fall", "Undergrad", "Adviser",
-                            0, 0, NULL, NULL);
+                            0, 0, -1, -1);
 
 INSERT INTO Student VALUES ("00000002", "First02", "M", "Last02", "fakeEmail@gmail.com", "000-000-0000", "2.22",
                             "Computer Science", NULL, "2015", "Fall", "Undergrad", "Adviser",
-                            0, 0, NULL, NULL);
+                            0, 0, -1, -1);
 
 INSERT INTO Student VALUES ("00000003", "First03", "M", "Last03", "fakeEmail@gmail.com", "000-000-0000", "2.22",
                             "Computer Science", NULL, "2015", "Spring", "Undergrad", "Adviser",
-                            0, 0, NULL, NULL);   
+                            0, 0, -1, -1);   
 
 /* Insert StudentAccount Testing Dataset */
 
