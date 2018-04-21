@@ -26,7 +26,6 @@
             "phone" => $_POST['phone'],
             "gpa" => $_POST['gpa'],
             "departmentName" => $_POST['departmentName'],
-            "resumeFile" => (is_null($_POST['resumeFile']) ? "NULL" : "NULL"), 
             "entryYear" => $_POST['entryYear'],
             "entryTerm" => $_POST['entryTerm'],
             "studentType" => $_POST['studentType'],

@@ -104,6 +104,7 @@
                     $where = $arguments['where'];
 
                     $query = "UPDATE {$tables} SET {$set} WHERE {$where};";
+                    break;
                 case "DELETE":
                     $where = $arguments['where'];
 
@@ -160,7 +161,7 @@
          * @return int : Error Code
          *      0 - Succeed
          *      101 - Connection Error
-         *      102 - Failed to insert to Student
+         *      1 - Failed to update  Student
          */
         public function updateStudent($fields){
 
@@ -190,14 +191,11 @@
 
             /* Executing query */
             $result = $db_connection->query($query);
-            if (!$result) {
-                return 102;
-            }
 
             // Disconnect from Database;
             $db_connection->close();
 
-            return 0;
+            return ($result == true) ? 0 : 1;
 
         }
 
