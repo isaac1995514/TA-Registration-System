@@ -51,7 +51,7 @@
             $commentView .= <<<COMMENT
 
             <div>
-                {$comment["firstName"]} {$comment["lastName"]} @ {$comment["sendTime"]}
+                <span style = "font-size:6em">&#x263a;</span>{$comment["firstName"]} {$comment["lastName"]} @ {$comment["sendTime"]}
             </div>
             <textarea readonly rows = "7">
                 {$comment["comment"]}
