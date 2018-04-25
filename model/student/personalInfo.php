@@ -129,7 +129,7 @@
             <div id = 'contentBlock' class="w3-container">
                 <div class="form-style-5">
                     <?="<h1 id = 'errorMsg'>{$errorMsg}</h1>"?>
-                    <form action = "personalInfoSubmit.php" method = 'post' width = "90%">
+                    <form action = "personalInfoSubmit.php" method = 'post' width = "90%" enctype="multipart/form-data">
                         <fieldset>
                             <legend><span class="number">1</span> Basic Info</legend>
 
@@ -193,7 +193,7 @@
                                     <option value = '0' <?php echo (isset($searchResult['currentEMI']) && $searchResult['currentEMI'] == "0") ? "selected": "" ?>>No</option>
                                 </select>
                             <legend><span class="number">3</span> Documents</legend>
-                            <input type="file" name="resumeFile" id="resumeFile" accept=".pdf" class="required" />
+                            <input type="file" name="transcriptFile" id="transcriptFile" accept=".pdf" class="required" />
 
                         </fieldset>
 
