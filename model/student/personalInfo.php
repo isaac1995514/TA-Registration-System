@@ -193,7 +193,7 @@
                                     <option value = '0' <?php echo (isset($searchResult['currentEMI']) && $searchResult['currentEMI'] == "0") ? "selected": "" ?>>No</option>
                                 </select>
                             <legend><span class="number">3</span> Documents</legend>
-                            <input type="file" name="resumeFile" id="resumeFile" accept=".pdf" class="required" />
+                            <input type="file" name="transcript" id="transcript" accept=".pdf" class="required" />
 
                         </fieldset>
 

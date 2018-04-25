@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS Comment;
+DROP TABLE IF EXISTS Transcript;
 DROP TABLE IF EXISTS Applications;
 DROP TABLE IF EXISTS TA_Experience;
 DROP TABLE IF EXISTS Course;
@@ -24,7 +25,6 @@ CREATE TABLE Student(
     phone VARCHAR(15) NOT NULL,
     gpa FLOAT NOT NULL,
     departmentName VARCHAR(50) NOT NULL,
-    resumeFile BLOB,
     entryYear VARCHAR(4) NOT NULL,
     entryTerm enum('Spring', 'Fall') NOT NULL,
     studentType enum('Undergrad', 'Grad', 'Master', 'PhD') NOT NULL,
@@ -103,6 +103,14 @@ CREATE TABLE Applications(
     FOREIGN KEY (studentId) REFERENCES Student(studentId),
     FOREIGN KEY (courseCode) REFERENCES Course(courseCode),
     CONSTRAINT unique_application UNIQUE(studentId, courseCode, academicYear, term)
+);
+
+CREATE TABLE Transcript(
+    studentId VARCHAR(8) NOT NULL,
+    mime VARCHAR (255) NOT NULL,
+    data BLOB NOT NULL,
+    PRIMARY KEY(studentId),
+    FOREIGN KEY (studentId) REFERENCES Student(studentId)
 );
 
 CREATE TABLE Comment(
