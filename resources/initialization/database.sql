@@ -16,6 +16,13 @@ CREATE TABLE Department(
     PRIMARY KEY (departmentName)
 );
 
+CREATE TABLE StudentAccount(
+    studentId VARCHAR(8) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    psw VARCHAR(255) NOT NULL,
+    PRIMARY KEY (studentId)
+);
+
 CREATE TABLE Student(
     studentId VARCHAR(8) NOT NULL,
     firstName VARCHAR(50) NOT NULL,
@@ -34,15 +41,14 @@ CREATE TABLE Student(
     emiTestPassed TINYINT(1) NOT NULL,
     currentEMI TINYINT(1) NOT NULL,
     PRIMARY KEY (studentId),
-    FOREIGN KEY (departmentName) REFERENCES Department(departmentName)
+    FOREIGN KEY (studentId) REFERENCES StudentAccount(studentId)
 );
 
-CREATE TABLE StudentAccount(
-    studentId VARCHAR(8) NOT NULL,
+CREATE TABLE FacultyAccount(
+    facultyId VARCHAR(8) NOT NULL,
     username VARCHAR(255) NOT NULL UNIQUE,
     psw VARCHAR(255) NOT NULL,
-    PRIMARY KEY (studentId),
-    FOREIGN KEY (studentId) REFERENCES Student(studentId)
+    PRIMARY KEY (facultyId)
 );
 
 CREATE TABLE Faculty(
@@ -54,15 +60,8 @@ CREATE TABLE Faculty(
     phone VARCHAR(15) NOT NULL,
     departmentName varchar(50) NOT NULL,
     PRIMARY KEY (facultyId),
-    FOREIGN KEY (departmentName) REFERENCES Department(departmentName)
-);
-
-CREATE TABLE FacultyAccount(
-    facultyId VARCHAR(8) NOT NULL,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    psw VARCHAR(255) NOT NULL,
-    PRIMARY KEY (facultyId),
-    FOREIGN KEY (facultyId) REFERENCES Faculty(facultyId)
+    FOREIGN KEY (departmentName) REFERENCES Department(departmentName),
+    FOREIGN KEY (facultyId) REFERENCES FacultyAccount(facultyId)
 );
 
 CREATE TABLE Course(

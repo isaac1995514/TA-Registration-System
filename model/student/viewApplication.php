@@ -35,8 +35,6 @@
             //echo "<h1>New Copy</h1>";
     }
 
-    // Applications Found in Database
-    if($errorCode == 0 || $errorCode == 202 || $errorCode == 1){
         if($errorCode == 0){
             $searchResult = $result[1];
 

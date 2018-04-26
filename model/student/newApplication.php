@@ -27,24 +27,16 @@
         $database = new DatabaseManager();
     }
 
-    if(isset($_SESSION['courseInfo'])){
-        $errorCode = 202;
-        //echo "Local Copy Found";
-    }else{
-        // Get SQL search result
         $result = $database->getCourse($studentId);
         $errorCode = $result[0];
-        //echo "Local Copy not Found";
-    }
 
-    
     $studentInfo = $_SESSION['studentInfo'];
     $studentType = $studentInfo['studentType'];
+    $foreignStudent = $studentInfo['foreignStudent'];
+    $emiTestPassed = $studentInfo['emiTestPassed'];
 
     // Check if the student can teach
     $canTeach = false;
-    $foreignStudent = $studentInfo['foreignStudent'];
-    $emiTestPassed = $studentInfo['emiTestPassed'];
 
     if($foreignStudent == "0"){
         $canTeach = true;
@@ -54,26 +46,22 @@
         }
     }
 
-    // Course Found in Database
-    if($errorCode == 0 || $errorCode == 202){
+    // Search for the list of course everytime
+    // Check if course list is empty
         if($errorCode == 0){
             $searchResult = $result[1];
-            $_SESSION['courseInfo'] = $searchResult;
-            //echo "New Copy Used";
-        }else{
-            $searchResult = $_SESSION['courseInfo'];
-            //echo "Local Copy Used";
-        }
-        
         $options = "";
-
         foreach($searchResult as $course){
             $options .= "<option value = '{$course['courseCode']}'>{$course['courseCode']}</option>";
         }    
-    }else{
-        $errorMsg .= "There is no course in the database!";
-    }
+    
+    // No Course Found
+    }else if($errorCode == 1){
+        $errorMsg = "There is not a list of course in the database for the students Major. Please contact admin!"
 
+    }else{
+        $errorMsg = "System Failed. Please report to Admin";
+    }
 ?>
 
 <!doctype html>
