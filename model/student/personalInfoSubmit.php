@@ -45,20 +45,15 @@
         }
 
         // Upload transcript
-        $target_dir = "../uploads/";
-        $target_file = $target_dir . basename($_FILES["transcriptFile"]["name"]);
-        if (file_exists($target_file)) {
-            echo "<h1 style=color:red;>File already uploaded</h1>";
-        } else {
-            if (!file_exists("../uploads")) {
-                mkdir("../uploads", 0600);
-            }
-            $valid_move = move_uploaded_file($_FILES["transcriptFile"]["name"], $target_file);
-            if ($valid_move) {
-                echo "The file has been successfully uploaded";
-            }
+        $name = $_FILES["transcriptFile"]["name"];
+        $type = $_FILES["transcriptFile"]["type"];
+        $data = file_get_contents($_FILES["transcriptFile"]["tmp_name"];
+        $studentID = $arguments[0];
+        $transcript_args = array($studentID, $type, $data);
+        $query_result = $database->generateQuery("INSERT", "Transcript", $transcript_args);
+        if (!($query_result)) {
+            echo "Could not upload transcript.";
         }
-
         // Unset local copy after insert or update
         unset($_SESSION['studentInfo']);
         header("Location: personalInfo.php");
