@@ -25,6 +25,7 @@
         public const TA = "TA_Experience";
         public const APPLICATION = "Applications";
         public const COURSE = "Course";
+        public const TRANSCRIPT = "Transcript";
         public const COMMENT = "Comment";
 
         private $host;

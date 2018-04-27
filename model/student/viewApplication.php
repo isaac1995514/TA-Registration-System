@@ -23,20 +23,12 @@
         $database = new DatabaseManager();
     }
 
-    // Check to see if there is a local copy
-    if(isset($_SESSION['applicationTable'])){
-        $errorCode = 202;
-            //echo "<h1>Local Copy</h1>";
-            
-    }else{
-        // Get SQL search result
-        $result = $database->getStudentApplication($studentId);
-        $errorCode = $result[0];
-            //echo "<h1>New Copy</h1>";
-    }
+    // Get Student's Application Information
+    $result = $database->getStudentApplication($studentId);
+    $errorCode = $result[0];
 
-        if($errorCode == 0){
-            $searchResult = $result[1];
+    if($errorCode == 0){
+        $searchResult = $result[1];
 
             $currHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th><th>Remove Button</th></tr>';
             $prevHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th></tr>';
@@ -66,35 +58,27 @@
             }
 
             $fullTable = "<h1>Current Application</h1>";
-            $fullTable .= '<table class = "table table-responsive table-condensed table-hover">';
+            $fullTable .= '<table id = "current" class = "table table-responsive table-condensed table-hover">';
             $fullTable .= "{$currHead}{$currApplication}</table><br><br><br>";
             $fullTable .= "<h1>Previous Application</h1>";
-            $fullTable .= '<table class = "table table-responsive table-condensed table-hover">';
+            $fullTable .= '<table id = "previous" class = "table table-responsive table-condensed table-hover">';
             $fullTable .= "{$prevHead}{$previousApplication}</table>";
 
-            $_SESSION['applicationTable'] = $fullTable;
-        }else if($errorCode == 202){
-            $fullTable = $_SESSION['applicationTable'];
-        }else{
-
-            $currHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th><th>Remove Button</th></tr>';
-            $prevHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th></tr>';
-
-            $fullTable = "<h1>Current Application</h1>";
-            $fullTable .= '<table class = "table table-responsive table-condensed table-hover">';
-            $fullTable .= "{$currHead}</table><br><br><br>";
-            $fullTable .= "<h1>Previous Application</h1>";
-            $fullTable .= '<table class = "table table-responsive table-condensed table-hover">';
-            $fullTable .= "{$prevHead}</table>";
-        }
-
-    // Error Msg: There is no application for this student.
-    }elseif($errorCode == 1){
+    }else if($errorCode == 1){
         $errorMsg = "No Application exists for this student.";
+        $currHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th><th>Remove Button</th></tr>';
+        $prevHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th></tr>';
+
+        $fullTable = "<h1>Current Application</h1>";
+        $fullTable .= '<table id = "current" class = "table table-responsive table-condensed table-hover">';
+        $fullTable .= "{$currHead}</table><br><br><br>";
+        $fullTable .= "<h1>Previous Application</h1>";
+        $fullTable .= '<table id = "previous" class = "table table-responsive table-condensed table-hover">';
+        $fullTable .= "{$prevHead}</table>";
     }else{
         $errorMsg = "System Failed. Please report to Admin";
-    }
-    
+        
+    }    
 ?>
 
 
@@ -157,10 +141,8 @@
       
             <div id = 'contentBlock' class="w3-container">
                 <div class="form-style-5 container">
-                    <form id = 'removeApp' action = "removeButtonSubmit.php" method = 'post'>
-                        <?=$fullTable?>
-                        <input type = "hidden" name = "removeId" id = "removeId" value = ""/>
-                    </form>
+                    <?="<h1 id = 'errorMsg'>{$errorMsg}</h1>"?>
+                    <?=$fullTable?>
                 </div>
             </div>
         </div>

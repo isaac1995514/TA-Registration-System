@@ -5,8 +5,7 @@
 
     $errorMsg = "";
     $studentId = null;
-    $errorCode = 0;
-    $newAccount = false;
+    $searchResult = null;
 
     // Show Student Data in Personal Info Page
 
@@ -27,46 +26,28 @@
     }
 
     // Check if this is a new Account
-    if(isset($_SESSION['newAccount'])){
-        $newAccount = $_SESSION['newAccount'];
-    }
-
-    // Check to see if there is a local copy
-    if(isset($_SESSION['studentInfo'])){
-        // Find local copy
-        $searchResult = $_SESSION['studentInfo'];
-        $errorCode = 202;
-        
-            //echo "<h1>Local Copy</h1>";
-            
-    }else{
-        // Get SQL search result
+    // If it is, the student is required to fill in all information except the studentId.
+    // If not, the information will be pull from the database every time the window is visit
+    if(!isset($_SESSION['newAccount'])){
         $result = $database->getStudent($studentId);
-        $errorCode = $result[0];
-        
-            //echo "<h1>New Copy</h1>";
-    }
 
-    // Student Found in Database
-    if($errorCode == 0){
-        $searchResult = $result[1][0];
-        
-        // Store Result as local Copy
-        $_SESSION['studentInfo'] = $searchResult;
+        // The result is not empty
+        if($result[0] == 0){
+            $searchResult = $result[1][0];
+            $_SESSION['studentInfo'] = $searchResult;
+
+        // The result is empty    
+        }else if($result[0] == 1){
+            $errorMsg = "Student does not existed in the database. Please report to Admin";
+            $_SESSION['newAccount'] = true;
+        }else{
+            $errorMsg = "System Failed. Please report to Admin";
+        }
     
-    // Local Copy Found
-    }elseif($errorCode == 202){
-
-    // The student just registered
-    }elseif($newAccount){
-        $errorMsg = "Please fill in all data before proceeding to other functionality";
-
-    // Error Msg: This is student is not in the database ()
-    }elseif($errorCode == 1){
-        $errorMsg = "Student does not existed in the database. Please report to Admin";
     }else{
-        $errorMsg = "System Failed. Please report to Admin";
+        $errorMsg = "This is a new Account. Please fill in all data before proceeding to other functionality";
     }
+
 ?>
 
 <!doctype html>
@@ -81,6 +62,10 @@
         <link rel="stylesheet" type="text/css" href='./../../resources/style/personalInfo.css'>
         <link rel="stylesheet" type="text/css" href='./../../resources/style/commonStudentStyle.css'>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script
+            src="http://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
         <script src= "./../../resources/script/personalInfo.js"></script> 
     </head>
     

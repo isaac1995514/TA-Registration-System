@@ -45,7 +45,6 @@
         if(isset($_POST['sub'])){
           $username = $_POST['user'];
           $pass = $_POST['password'];
-          $temp = $obj->__construct();
           $db = new mysqli('localhost', 'dbuser', 'password', 'tasql');
           if(!$db){
             die("connection failed" . mysqli_connect_error());
@@ -59,7 +58,7 @@
               session_start();
               if(password_verify($pass, $recordArray['psw'])){
                 $_SESSION['studentId'] = $recordArray['studentId'];
-                header("Location: ../model/student/personalInfo.php");
+                header("Location: ./../student/personalInfo.php");
               }else{
                 echo "Username and password combination do not exist";
               }
@@ -138,8 +137,8 @@
               if($result){
                 session_start();
                 $_SESSION['studentId'] = $id;
-                $_SESSION['new'] = true;
-                header("Location: ../model/student/personalInfo.php");
+                $_SESSION['newAccount'] = true;
+                header("Location: ./../student/personalInfo.php");
               }else{
                 die("second failed" . mysqli_connect_error());
               }
@@ -154,7 +153,7 @@
               if($result){
                 session_start();
                 $_SESSION['facultyId'] = $id;
-                $_SESSION['new'] = true;
+                $_SESSION['newAccount'] = true;
                 //redirect to other login for faculty
               }
             }else{
