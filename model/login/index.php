@@ -42,11 +42,10 @@
 
       </form>
       <?php
-        require_once('./model/DatabaseManager.php');
         if(isset($_POST['sub'])){
-          $obj = new DatabaseManager();
           $username = $_POST['user'];
           $pass = $_POST['password'];
+          $temp = $obj->__construct();
           $db = new mysqli('localhost', 'dbuser', 'password', 'tasql');
           if(!$db){
             die("connection failed" . mysqli_connect_error());
@@ -122,15 +121,13 @@
       </form>
       <?php
         if(isset($_POST['subdos'])){
-          require_once('./model/DatabaseManager.php');
-          $obj = new DatabaseManager();
           $username = $_POST['user'];
           $pass = $_POST['password'];
           $verpass = $_POST['verpassword'];
           $id = $_POST['key'];
           $db = new mysqli('localhost', 'dbuser', 'password', 'tasql');
           if(!$db){
-            die("connection failed" . mysqli_connect_error());
+            die("first failed" . mysqli_connect_error());
           }
 
           if($_POST['acctype'] == 'student'){
@@ -141,7 +138,10 @@
               if($result){
                 session_start();
                 $_SESSION['studentId'] = $id;
+                $_SESSION['new'] = true;
                 header("Location: ../model/student/personalInfo.php");
+              }else{
+                die("second failed" . mysqli_connect_error());
               }
             }else{
               echo "Passwords do not match";
@@ -154,6 +154,7 @@
               if($result){
                 session_start();
                 $_SESSION['facultyId'] = $id;
+                $_SESSION['new'] = true;
                 //redirect to other login for faculty
               }
             }else{
