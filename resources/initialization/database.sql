@@ -1,12 +1,13 @@
 DROP TABLE IF EXISTS Comment;
 DROP TABLE IF EXISTS Transcript;
+DROP TABLE IF EXISTS files;
 DROP TABLE IF EXISTS Applications;
 DROP TABLE IF EXISTS TA_Experience;
 DROP TABLE IF EXISTS Course;
-DROP TABLE IF EXISTS FacultyAccount;
 DROP TABLE IF EXISTS Faculty;
-DROP TABLE IF EXISTS StudentAccount;
+DROP TABLE IF EXISTS FacultyAccount;
 DROP TABLE IF EXISTS Student;
+DROP TABLE IF EXISTS StudentAccount;
 DROP TABLE IF EXISTS Department;
 
 CREATE TABLE Department(
@@ -105,11 +106,15 @@ CREATE TABLE Applications(
 );
 
 CREATE TABLE Transcript(
-    studentId VARCHAR(8) NOT NULL,
+    pid int primary key not null auto_increment,
+    title text,
+    imgdata longblob
+);
+
+CREATE TABLE files (
+    id   INT           AUTO_INCREMENT PRIMARY KEY,
     mime VARCHAR (255) NOT NULL,
-    data BLOB NOT NULL,
-    PRIMARY KEY(studentId),
-    FOREIGN KEY (studentId) REFERENCES Student(studentId)
+    data LONGBLOB          NOT NULL
 );
 
 CREATE TABLE Comment(
