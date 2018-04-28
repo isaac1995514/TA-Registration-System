@@ -81,12 +81,14 @@ CREATE TABLE Course(
 CREATE TABLE TA_Experience(
     studentId VARCHAR(8) NOT NULL,
     courseCode VARCHAR(10) NOT NULL,
+    section VARCHAR(4) NOT NULL,
     academicYear VARCHAR(4) NOT NULL,
     term enum('Fall', 'Spring', 'Summer') NOT NULL,
     professorId VARCHAR(8) NOT NULL,
-    taType enum('Grader', 'Teaching') NOT NULL,
+    taType enum('Part Time', 'Full Time') NOT NULL,
+    canTeach TINYINT(1) NOT NULL,
     PRIMARY KEY(studentId, courseCode, academicYear, term),
-    FOREIGN KEY (studentId) REFERENCES Student(studentId),
+    FOREIGN KEY (studentId) REFERENCES StudentAccount(studentId),
     FOREIGN KEY (courseCode) REFERENCES Course(courseCode)
 );
 
@@ -100,15 +102,16 @@ CREATE TABLE Applications(
     canTeach TINYINT(1) NOT NULL,
     taType enum('Part Time', 'Full Time') NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (studentId) REFERENCES Student(studentId),
+    FOREIGN KEY (studentId) REFERENCES StudentAccount(studentId),
     FOREIGN KEY (courseCode) REFERENCES Course(courseCode),
     CONSTRAINT unique_application UNIQUE(studentId, courseCode, academicYear, term)
 );
 
 CREATE TABLE Transcript(
-    pid int primary key not null auto_increment,
+    studentId VARCHAR(8) NOT NULL,
     title text,
-    imgdata longblob
+    imgdata longblob,
+    FOREIGN KEY (studentId) REFERENCES StudentAccount(studentId)
 );
 
 CREATE TABLE files (
@@ -124,7 +127,7 @@ CREATE TABLE Comment(
     comment TEXT NOT NULL,
     sendTime TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (studentId) REFERENCES Student(studentId),
+    FOREIGN KEY (studentId) REFERENCES StudentAccount(studentId),
     FOREIGN KEY (facultyId) REFERENCES Faculty(facultyId)
 );
 
