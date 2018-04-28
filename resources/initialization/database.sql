@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS Config;
 DROP TABLE IF EXISTS Comment;
 DROP TABLE IF EXISTS Transcript;
 DROP TABLE IF EXISTS files;
@@ -130,5 +131,12 @@ CREATE TABLE Comment(
     FOREIGN KEY (studentId) REFERENCES StudentAccount(studentId),
     FOREIGN KEY (facultyId) REFERENCES Faculty(facultyId)
 );
+
+CREATE TABLE Config(
+    numOfStudent INT NOT NULL,
+    PRIMARY KEY (numOfStudent)
+);
+
+INSERT INTO Config VALUES(5);
 
 GRANT ALL ON tasql.* to dbuser@localhost identified by "password";
