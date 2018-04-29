@@ -108,7 +108,7 @@ CREATE TABLE Applications(
 CREATE TABLE Transcript(
     studentId VARCHAR(8) NOT NULL,
     mime VARCHAR (255) NOT NULL,
-    data BLOB NOT NULL,
+    data MEDIUMBLOB NOT NULL,
     PRIMARY KEY(studentId),
     FOREIGN KEY (studentId) REFERENCES Student(studentId)
 );

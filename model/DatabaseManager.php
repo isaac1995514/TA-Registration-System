@@ -11,21 +11,21 @@
         /**
          * Constants
          */
-        public const INSERT = "INSERT";
-        public const DELETE = "DELETE";
-        public const UPDATE = "UPDATE";
-        public const SELECT = "SELECT";
+        const INSERT = "INSERT";
+        const DELETE = "DELETE";
+        const UPDATE = "UPDATE";
+        const SELECT = "SELECT";
 
         // Tables
-        public const DEPARTMENT = "Department";
-        public const STUDENT = "Student";
-        public const STUDENT_ACCOUNT = "StudentAccount";
-        public const FACULTY = "Faculty";
-        public const FACULTY_ACCOUNT = "FacultyAccount";
-        public const TA = "TA_Experience";
-        public const APPLICATION = "Applications";
-        public const COURSE = "Course";
-        public const COMMENT = "Comment";
+        const DEPARTMENT = "Department";
+        const STUDENT = "Student";
+        const STUDENT_ACCOUNT = "StudentAccount";
+        const FACULTY = "Faculty";
+        const FACULTY_ACCOUNT = "FacultyAccount";
+        const TA = "TA_Experience";
+        const APPLICATION = "Applications";
+        const COURSE = "Course";
+        const COMMENT = "Comment";
 
         private $host;
         private $user;
@@ -58,7 +58,7 @@
          *      * NULL is return when there is a connection error
          * @return mysqli|null
          */
-        private function connect(){
+        public function connect(){
 
             /* Connecting to the database */
             $db_connection = new mysqli($this->host, $this->user, $this->password, $this->database);
@@ -725,6 +725,20 @@
             }
 
             return $columns;
+        }
+
+        function uploadTranscript($id, $type, $data) {
+            $db_connection = $this->connect();
+            $stmt = $db_connection->prepare("INSERT INTO Transcript (studentId, mime, data)
+                        VALUES (?, ?, ?)");
+            $stmt->bind_param('sss', $id, $type, $data);
+            $stmt->execute();
+            if (!$stmt) {
+                echo mysqli_error($db_connection);
+                return false;
+            } else {
+                header("Location: transcript.php");
+            } 
         }
     }
 

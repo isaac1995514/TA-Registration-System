@@ -45,18 +45,16 @@
         }
 
         // Upload transcript
+        // $db = new PDO("mysql:host=localhost;dbname=tasql", "dbuser" ,"password");
         $name = $_FILES["transcriptFile"]["name"];
         $type = $_FILES["transcriptFile"]["type"];
-        $data = file_get_contents($_FILES["transcriptFile"]["tmp_name"];
-        $studentID = $arguments[0];
-        $transcript_args = array($studentID, $type, $data);
-        $query_result = $database->generateQuery("INSERT", "Transcript", $transcript_args);
-        if (!($query_result)) {
-            echo "Could not upload transcript.";
-        }
+        $data = file_get_contents($_FILES["transcriptFile"]["tmp_name"]);
+        $studentID = $arguments["studentId"];
+        $database->uploadTranscript($studentId, $type, $data);
+        
         // Unset local copy after insert or update
         unset($_SESSION['studentInfo']);
-        header("Location: personalInfo.php");
+        // header("Location: personalInfo.php");
 
     }else{
         echo '<h1 style="color:red;">Submission Error</h1>';
