@@ -17,15 +17,16 @@
         const SELECT = "SELECT";
 
         // Tables
-        const DEPARTMENT = "Department";
-        const STUDENT = "Student";
-        const STUDENT_ACCOUNT = "StudentAccount";
-        const FACULTY = "Faculty";
-        const FACULTY_ACCOUNT = "FacultyAccount";
-        const TA = "TA_Experience";
-        const APPLICATION = "Applications";
-        const COURSE = "Course";
-        const COMMENT = "Comment";
+        public const DEPARTMENT = "Department";
+        public const STUDENT = "Student";
+        public const STUDENT_ACCOUNT = "StudentAccount";
+        public const FACULTY = "Faculty";
+        public const FACULTY_ACCOUNT = "FacultyAccount";
+        public const TA = "TA_Experience";
+        public const APPLICATION = "Applications";
+        public const COURSE = "Course";
+        public const TRANSCRIPT = "Transcript";
+        public const COMMENT = "Comment";
 
         private $host;
         private $user;
@@ -377,6 +378,57 @@
 
             return 0;
 
+        }
+
+        /**
+         * 
+         * 
+         * 
+         */
+        public function getTA($studentId){
+
+            $data = array();
+
+            /* Connect to database */
+            $db_connection = $this->connect();
+
+            if ($db_connection == NULL) return [101, $data];
+
+            $where = [
+                "t.professorId = f.facultyId",
+                "t.courseCode = c.courseCode",
+                "t.section = c.section",
+                "studentId = '{$studentId}'"
+            ];
+
+            $arguments = array(
+                "select" => "t.*, CONCAT(f.firstName, ' ',f.lastName) as professorName, c.courseName",
+                "where" => join(' and ', $where)." ORDER BY t.academicYear, t.term"
+            );
+
+            $tables = "Ta_experience t, Faculty f, Course c";
+            $query = $this->generateQuery(self::SELECT, $tables, $arguments);
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return [102, $result];
+            }else{
+                
+                /* Number of rows found */
+                $num_rows = $result->num_rows;
+
+                if($num_rows == 0){
+                    return [1, $data];
+                }else{
+
+                    while($row = $result->fetch_assoc()) {
+                        $data[]=$row;
+                    }
+                }
+            }
+            return [0, $data];
+            
         }
 
         /**

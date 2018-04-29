@@ -1,5 +1,7 @@
 window.onsubmit = validateData;
 
+window.onload = validateLinks;
+
 function validateData(){
     
     // Check if the department is valid
@@ -69,6 +71,18 @@ function validateData(){
     }
 
    
+}
+
+function validateLinks(){
+
+    let errorMsg = document.getElementById('errorMsg').innerHTML;
+
+    if(errorMsg != ""){
+        // Disable all other functions
+        document.getElementById('newApp').style.visibility = 'hidden';
+        document.getElementById('viewApp').style.visibility = 'hidden';
+        document.getElementById('comments').style.visibility = 'hidden';
+    }
 }
 
 function contains(arr, str) {

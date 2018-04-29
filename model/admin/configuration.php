@@ -5,83 +5,57 @@
 
     $errorMsg = "";
     $errorCode = 0;
-    $searchResult = "";
-    $commentView = "<br><br>";
-    $studentId = null;
 
+    /*
     // Check if login in gate has been passed
     if(isset($_SESSION['studentId'])){
         $studentId = $_SESSION['studentId'];
     }else{
         header("Location: ./../login/login.php");
     }
-    
-    (isset($_SESSION['studentId']) ? $_SESSION['studentId'] : "INVALID");
+    */
+
     if(isset($_SESSION['database'])){
         $database = $_SESSION['database'];
     }else{
         $database = new DatabaseManager();
     }
 
-    // Check to see if there is a local copy
-    if(isset($_SESSION['comments'])){
-        // Find local copy
-        $searchResult = $_SESSION['comments'];
-        $errorCode = 202;
-        
-            //echo "<h1>Local Copy</h1>";
+    // Self Referencing Script
+    if(isset($_POST['submit'])){
+
+        $numOfStudent = $_POST['numOfStudent'];
+
+        if($errorCode == 0){
+
+            $result = $database->setConfig($numOfStudent);
+
+            if($result == 0){
+                $errorMsg = "Updated Successfully";
+            }else{
+                $errorMsg = "Failed to update";
+            }
+
+        }else{
+            $errorMsg = "System Failed. Please report to Admin";
             
-    }else{
-        // Get SQL search result
-        $result = $database->getComment($studentId) ;
-        $errorCode = $result[0];
-        $searchResult = $result[1];
-
-        // Store Result as local Copy
-        $_SESSION['comment'] = $searchResult;
-
-            //echo "<h1>New Copy</h1>";
+        }    
     }
-
-    // Comments in Database or Local Copy
-    if($errorCode == 0 || $errorCode == 202){
-
-        // Process Comment Array (Array of Hash Time)
-        foreach($searchResult as $comment){
-            $commentView .= <<<COMMENT
-
-            <div>
-                <span style = "font-size:6em">&#x263a;</span>{$comment["firstName"]} {$comment["lastName"]} @ {$comment["sendTime"]}
-            </div>
-            <textarea readonly rows = "7">
-                {$comment["comment"]}
-            </textarea> 
-            <br><br><br><br><br>
-COMMENT;
-
-        }
-    // Error Msg: This is no comments for this student
-    }elseif($errorCode == 1){
-        $errorMsg = "There is no comments for this student";
-    }else{
-        $errorMsg = "System Failed. Please report to Admin";
-    }
-    
 ?>
-
 
 <!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Comments</title>
+        <title>Configuation</title>
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <link rel="stylesheet" type="text/css" href='./../../resources/style/commonStudentStyle.css'>
-        <link rel="stylesheet" type="text/css" href='./../../resources/style/comments.css'>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href='./../../resources/style/commonAdminStyle.css'>
+        <link rel="stylesheet" type="text/css" href='./../../resources/style/applicationFilter.css'>
+        <script src= "./../../resources/script/applicationFilter.js"></script> 
     </head>
     
     <body>
@@ -112,32 +86,25 @@ COMMENT;
 
         <!-- Sidebar -->
         <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:20%">
-            <h3 class="w3-bar-item">Student Function Menu</h3>
-            <a id = 'personalInfo' href="personalInfo.php" class="w3-bar-item w3-button">Personal Info</a>
-            <a id = 'newApp' href="newApplication.php" class="w3-bar-item w3-button">New Application</a>
-            <a id = 'viewApp' href="viewApplication.php" class="w3-bar-item w3-button">View & Edit Applications</a>
-            <a id = 'assignedTA' href="assignedTA.php" class="w3-bar-item w3-button">Assigned TA</a>
-            <a id = 'comments' href="comments.php" class="w3-bar-item w3-button">Comments</a>
+            <h3 class="w3-bar-item">Admin Function Menu</h3>
+            <a id = 'personalInfo' href="./applicationFilter.php" class="w3-bar-item w3-button">Assign TA</a>
+            <a id = 'personalInfo' href="#" class="w3-bar-item w3-button">Configuration</a>
         </div>
       
         <!-- Page Content -->
         <div style="margin-left:20%">
       
             <div id = 'headerBlock' class="w3-container w3-teal">
-                <h1>Comments</h1>
+                <h1>Configuation</h1>
             </div>
       
             <div id = 'contentBlock' class="w3-container">
+                <?="<h1 id = 'errorMsg'>{$errorMsg}</h1>"?>
                 <div class="form-style-5">
-                    <?php
-                        if($errorCode == 1){
-                            echo "<h1 sytle='color:red'>{$errorMsg}</h1>";
-                        }else if($errorCode == 0 || $errorCode == 202){
-                            echo $commentView;
-                        }else{
-                            echo $errorCode;
-                        }
-                    ?>
+                    <form action = <?php echo $_SERVER['PHP_SELF']; ?> method = 'post'>
+                        <h4>TA per section: </h4> <input type = 'number' name = 'numOfStudent'min = '0' max = '10' value = '5'/>&nbsp;&nbsp;&nbsp;<h4>(5 is default)</h1>
+                        <input type = 'submit' name = 'submit' value = "Submit"/>
+                    </form>
                 </div>
             </div>
         </div>

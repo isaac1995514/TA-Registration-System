@@ -27,25 +27,17 @@
         $database = new DatabaseManager();
     }
 
-    if(isset($_SESSION['courseInfo'])){
-        $errorCode = 202;
-        //echo "Local Copy Found";
-    }else{
-        // Get SQL search result
-        $result = $database->getCourse($studentId);
-        $errorCode = $result[0];
-        //echo "Local Copy not Found";
-    }
+    $result = $database->getCourse($studentId);
+    $errorCode = $result[0];
 
-    
     $studentInfo = $_SESSION['studentInfo'];
     $studentType = $studentInfo['studentType'];
-
-    // Check if the student can teach
-    $canTeach = false;
     $foreignStudent = $studentInfo['foreignStudent'];
     $emiTestPassed = $studentInfo['emiTestPassed'];
 
+    // Check if the student can teach
+    $canTeach = false;
+    
     if($foreignStudent == "0"){
         $canTeach = true;
     }else{
@@ -54,26 +46,22 @@
         }
     }
 
-    // Course Found in Database
-    if($errorCode == 0 || $errorCode == 202){
-        if($errorCode == 0){
-            $searchResult = $result[1];
-            $_SESSION['courseInfo'] = $searchResult;
-            //echo "New Copy Used";
-        }else{
-            $searchResult = $_SESSION['courseInfo'];
-            //echo "Local Copy Used";
-        }
-        
+    // Search for the list of course everytime
+    // Check if course list is empty
+    if($errorCode == 0){
+        $searchResult = $result[1];
         $options = "";
-
         foreach($searchResult as $course){
             $options .= "<option value = '{$course['courseCode']}'>{$course['courseCode']}</option>";
-        }    
-    }else{
-        $errorMsg .= "There is no course in the database!";
-    }
+        }   
+    
+    // No Course Found
+    }else if($errorCode == 1){
+        $errorMsg = "There is not a list of course in the database for the students Major. Please contact admin!";
 
+    }else{
+        $errorMsg = "System Failed. Please report to Admin";
+    }
 ?>
 
 <!doctype html>
@@ -123,6 +111,7 @@
             <a id = 'personalInfo' href="personalInfo.php" class="w3-bar-item w3-button">Personal Info</a>
             <a id = 'newApp' href="newApplication.php" class="w3-bar-item w3-button">New Application</a>
             <a id = 'viewApp' href="viewApplication.php" class="w3-bar-item w3-button">View & Edit Applications</a>
+            <a id = 'assignedTA' href="assignedTA.php" class="w3-bar-item w3-button">Assigned TA</a>
             <a id = 'comments' href="comments.php" class="w3-bar-item w3-button">Comments</a>
         </div>
       
@@ -143,6 +132,12 @@
                                 <option <?=(($studentType == "Undergrad") ? "disabled": "" )?> value = 'Full Time'>Full Time (20hrs/week)</option>
                                 <option <?=(($studentType == "Grad") ? "disabled": "" )?> value = 'Part Time'>Part Time (10hrs/week)</option>
                             </select>
+
+                        <label for="taType">Can you teach these courses?</label>
+                            <select required class="form-control" id = 'canTeach' name="canTeach">
+                                <option <?=((!$canTeach) ? "disabled": "" )?> value = '1'>Yes</option>
+                                <option <?=((!$canTeach) ? "selected": "" )?> value = '0'>No</option>
+                            </select>
                         
                         <legend>Course</legend>
                         <label for="academicYear">Academic Year:</label>
@@ -161,12 +156,6 @@
                                 <?=$options?>
                                 </select>
                             </div>
-                        
-                        <label for="taType">Can you teach these courses?</label>
-                            <select required class="form-control" id = 'canTeach' name="canTeach">
-                                <option <?=((!$canTeach) ? "disabled": "" )?> value = '1'>Yes</option>
-                                <option <?=((!$canTeach) ? "selected": "" )?> value = '0'>No</option>
-                            </select>
                         
                         <input type="reset" name = "resetBtn" value = "Clear Application"/>
                         <input type="submit" name = "submitBtn" value="Submit Application"/>

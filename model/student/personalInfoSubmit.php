@@ -39,6 +39,8 @@
         // Check if this is a new account (set only for new student)
         if(isset($_SESSION['newAccount'])){
             $errorCode = $database->addStudent($arguments);
+
+            // Let the user to pass the New Account Gate
             unset($_SESSION['newAccount']);
         }else {
             $errorCode = $database->updateStudent($arguments);
