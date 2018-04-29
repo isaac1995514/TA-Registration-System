@@ -116,14 +116,6 @@ CREATE TABLE Transcript(
     FOREIGN KEY (studentId) REFERENCES StudentAccount(studentId)
 );
 
-CREATE TABLE files (
-    id   INT           AUTO_INCREMENT PRIMARY KEY,
-    mime VARCHAR (255) NOT NULL,
-    data MEDIUMBLOB NOT NULL,
-    PRIMARY KEY(studentId),
-    FOREIGN KEY (studentId) REFERENCES Student(studentId)
-);
-
 CREATE TABLE Comment(
     id INT NOT NULL AUTO_INCREMENT,
     studentId VARCHAR(8) NOT NULL,
