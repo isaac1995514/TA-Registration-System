@@ -7,11 +7,6 @@
     $studentId = null;
     $searchResult = null;
 
-    // Show Student Data in Personal Info Page
-
-    // testing
-    $_SESSION['studentId'] = '00000003';
-
     // Check if login in gate has been passed
     if(isset($_SESSION['studentId'])){
         $studentId = $_SESSION['studentId'];
@@ -101,6 +96,7 @@
             <a id = 'personalInfo' href="personalInfo.php" class="w3-bar-item w3-button">Personal Info</a>
             <a id = 'newApp' href="newApplication.php" class="w3-bar-item w3-button">New Application</a>
             <a id = 'viewApp' href="viewApplication.php" class="w3-bar-item w3-button">View & Edit Applications</a>
+            <a id = 'assignedTA' href="assignedTA.php" class="w3-bar-item w3-button">Assigned TA</a>
             <a id = 'comments' href="comments.php" class="w3-bar-item w3-button">Comments</a>
         </div>
       

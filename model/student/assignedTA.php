@@ -7,8 +7,6 @@
     $studentId = null;
     $errorCode = 0;
     $fullTable = "";
-    $nextSemesterYear = DatabaseManager::$nextSemesterYear;
-    $nextSemesterTerm = DatabaseManager::$nextSemesterTerm;
 
     // Check if login in gate has been passed
     if(isset($_SESSION['studentId'])){
@@ -23,62 +21,40 @@
         $database = new DatabaseManager();
     }
 
-    // Get Student's Application Information
-    $result = $database->getStudentApplication($studentId);
+    // Get Student's TA position information
+    $result = $database->getTA($studentId);
     $errorCode = $result[0];
+    $fullTable = "<h1>Assigned TA position</h1>";
+    $fullTable .= '<table id = "assignedTA" class = "table table-responsive table-condensed table-hover">';
+    $head = "";
+    $row = "";
 
     if($errorCode == 0){
         $searchResult = $result[1];
+        $head  = '<tr><th>Course</th><th>Section</th><th>Year</th><th>Semester</th><th>Professor</th><th>Position</th><th>TA Type</th></tr>';
+        
+        foreach($searchResult as $position){
+            $course = $position['courseCode']." - ". $position['courseName'];
+            $section = $position['section'];
+            $year = $position['academicYear'];
+            $semester = $position['term'];
+            $professorName = $position['professorName'];
+            $positionOffered = ($position['canTeach'] == '1')? "Teaching TA" : "Grading TA";
+            $taType = $position['taType'];
 
-            $currHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th><th>Remove Button</th></tr>';
-            $prevHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th></tr>';
-
-            $currApplication = "";
-            $previousApplication = "";
-
-            foreach($searchResult as $application){
-                $id = $application['id'];
-                $buttonId = "removeButton@{$id}";
-                $course = $application['courseCode'];
-                $year = $application['academicYear'];
-                $semester = $application['term'];
-                $status = $application['appStatus'];
-                $teach = ($application['canTeach'] == "1") ? "Yes" : "No";
-                $type = $application['taType'];
-
-                // Check if the application is current
-                if($application['academicYear'] == $nextSemesterYear && $application['term'] == $nextSemesterTerm){
-                    $currApplication .= "<tr>";
-                    $currApplication .= "<td>{$course}</td><td>{$year}</td><td>{$semester}</td><td>{$status}</td><td>{$teach}</td><td>{$type}</td>";
-                    $currApplication .= "<td><img class = 'removeBtn' id = '{$buttonId}' src='./../../resources/image/removeButtonIcon.png' alt='removeButton'/></td>";
-                    $currApplication .= "</tr>";
-                }else{
-                    $previousApplication .= "<tr><td>{$course}</td><td>{$year}</td><td>{$semester}</td><td>{$status}</td><td>{$teach}</td><td>{$type}</td></tr>";
-                }
-            }
-
-            $fullTable = "<h1>Current Application</h1>";
-            $fullTable .= '<table id = "current" class = "table table-responsive table-condensed table-hover">';
-            $fullTable .= "{$currHead}{$currApplication}</table><br><br><br>";
-            $fullTable .= "<h1>Previous Application</h1>";
-            $fullTable .= '<table id = "previous" class = "table table-responsive table-condensed table-hover">';
-            $fullTable .= "{$prevHead}{$previousApplication}</table>";
-
+            // Check if the application is current
+            $row .= "<tr><td>{$course}</td><td>{$section}</td><td>{$year}</td><td>{$semester}</td><td>{$professorName}</td><td>{$positionOffered}</td><td>{$taType}</td></tr>";
+                
+        }
     }else if($errorCode == 1){
-        $errorMsg = "No Application exists for this student.";
-        $currHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th><th>Remove Button</th></tr>';
-        $prevHead  = '<tr><th>Course</th><th>Year</th><th>Semester</th><th>Application Status</th><th>Teaching</th><th>TA Type</th></tr>';
-
-        $fullTable = "<h1>Current Application</h1>";
-        $fullTable .= '<table id = "current" class = "table table-responsive table-condensed table-hover">';
-        $fullTable .= "{$currHead}</table><br><br><br>";
-        $fullTable .= "<h1>Previous Application</h1>";
-        $fullTable .= '<table id = "previous" class = "table table-responsive table-condensed table-hover">';
-        $fullTable .= "{$prevHead}</table>";
+        $errorMsg = "No TA position was assigned to this student";
     }else{
         $errorMsg = "System Failed. Please report to Admin";
         
-    }    
+    }
+    
+    $fullTable .= "{$head}{$row}</table><br><br><br>";
+
 ?>
 
 
