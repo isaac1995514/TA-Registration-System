@@ -90,7 +90,8 @@ CREATE TABLE TA_Experience(
     canTeach TINYINT(1) NOT NULL,
     PRIMARY KEY(studentId, courseCode, academicYear, term),
     FOREIGN KEY (studentId) REFERENCES StudentAccount(studentId),
-    FOREIGN KEY (courseCode) REFERENCES Course(courseCode)
+    FOREIGN KEY (courseCode) REFERENCES Course(courseCode),
+    FOREIGN KEY (professorId) REFERENCES FacultyAccount(facultyId)
 );
 
 CREATE TABLE Applications(
