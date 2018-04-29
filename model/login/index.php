@@ -81,7 +81,7 @@
             $psw = 'password';
 
             if($username == $adminUser && $pass == $psw){
-              //Include new page for admin
+              header("Location: ./../admin/applicationFilter.php");
             }else {
               echo "Username and password combination do not exist";
             }
