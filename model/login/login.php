@@ -81,7 +81,7 @@
             $psw = 'password';
 
             if($username == $adminUser && $pass == $psw){
-              //Include new page for admin
+              header("Location: ./../admin/applicationFilter.php");
             }else {
               echo "Username and password combination do not exist";
             }
@@ -91,9 +91,11 @@
     </div>
     <div id="register" class="tab-pane fade">
       <form action = "<?php $_SERVER['PHP_SELF']?>" method= "post">
-        <select class="form-control" name= "acctype" required>
-          <option value="student">Student</option>
-          <option value="professor">Professor</option>
+
+
+        <select data-target=".my-info-1" class="div-toggle form-control" name= "acctype" required>
+            <option value="student" data-show=".stud">Student</option>
+            <option value="professor" data-show=".prof">Professor</option>
         </select><br>
 
         <div class= "input-group">
@@ -109,15 +111,61 @@
           <input type="password" class="form-control" name="verpassword" placeholder="Verify Password" required>
         </div><br><br>
 
-        <div class="input-group">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-asterisk"></i></span>
-          <input type="text" class="form-control" name="key" placeholder="Key (Professors) or Student Id" required>
-        </div><br><br>
+        <div class = "my-info-1">
+          <div id = "prof" class = "prof hide">
+            <input type="text" class="form-control" name="first" placeholder="First Name" required><br>
+            <input type="text" class="form-control" name="middle" placeholder="Middle Name"><br>
+            <input type="text" class="form-control" name="last" placeholder="Last Name" required><br>
+            <div class= "input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+              <input type="email" class="form-control" name="email" placeholder="Email" required>
+            </div><br>
 
-        <button type="submit" class="btn btn-default" name="subdos">
-          <span class="glyphicon glyphicon-circle-arrow-right"></span>
-        </button>
+            <div class= "input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+              <input type="text" size = "10" maxlength="10" class="form-control" id= "phone" name="phone" placeholder="Phone Number" required>
+            </div><br>
+
+            <div class= "input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+              <input type="text" class="form-control" name="dept" placeholder="Department Name" required>
+            </div><br>
+
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-asterisk"></i></span>
+              <input type="text" class="form-control" name="key" placeholder="Faculty Id" required>
+            </div><br><br>
+
+            <button type="submit" class="btn btn-default" name="subdos">
+              <span class="glyphicon glyphicon-circle-arrow-right"></span>
+            </button>
+          </div>
+
+          <div id = "stud" class = "stud hide">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-asterisk"></i></span>
+              <input type="text" class="form-control" name="key" placeholder="Student Id" required>
+            </div><br><br>
+
+            <button type="submit" class="btn btn-default" name="subdos">
+              <span class="glyphicon glyphicon-circle-arrow-right"></span>
+            </button>
+          </div>
+        </div>
+
       </form>
+
+      <script>
+        $(document).on('change', '.div-toggle', function() {
+          var target = $(this).data('target');
+          var show = $("option:selected", this).data('show');
+          $(target).children().addClass('hide');
+          $(show).removeClass('hide');
+        });
+        $(document).ready(function(){
+            $('.div-toggle').trigger('change');
+        });
+      </script>
       <?php
         if(isset($_POST['subdos'])){
           $username = $_POST['user'];
