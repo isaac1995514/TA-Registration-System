@@ -90,29 +90,29 @@
        ?>
     </div>
     <div id="register" class="tab-pane fade">
-      <form action = "<?php $_SERVER['PHP_SELF']?>" method= "post">
 
 
-        <select data-target=".my-info-1" class="div-toggle form-control" name= "acctype" required>
-            <option value="student" data-show=".stud">Student</option>
-            <option value="professor" data-show=".prof">Professor</option>
-        </select><br>
-
-        <div class= "input-group">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-          <input type="text" class="form-control" name="user" placeholder="Username" required>
-        </div><br>
-        <div class="input-group">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-          <input type="password" class="form-control" name="password" placeholder="Password" required>
-        </div><br>
-        <div class="input-group">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-          <input type="password" class="form-control" name="verpassword" placeholder="Verify Password" required>
-        </div><br><br>
+    <select data-target=".my-info-1" class="div-toggle form-control" name= "acctype" required>
+        <option value="student" data-show=".stud">Student</option>
+        <option value="professor" data-show=".prof">Professor</option>
+    </select><br>
 
         <div class = "my-info-1">
           <div id = "prof" class = "prof hide">
+            <form action = "prof.php" method= "post">
+
+              <div class= "input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input type="text" class="form-control" name="user" placeholder="Username" required>
+              </div><br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input type="password" class="form-control" name="password" placeholder="Password" required>
+              </div><br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input type="password" class="form-control" name="verpassword" placeholder="Verify Password" required>
+              </div><br><br>
             <input type="text" class="form-control" name="first" placeholder="First Name" required><br>
             <input type="text" class="form-control" name="middle" placeholder="Middle Name"><br>
             <input type="text" class="form-control" name="last" placeholder="Last Name" required><br>
@@ -136,12 +136,28 @@
               <input type="text" class="form-control" name="key" placeholder="Faculty Id" required>
             </div><br><br>
 
-            <button type="submit" class="btn btn-default" name="subdos">
+            <button type="submit" class="btn btn-default" name="subtres">
               <span class="glyphicon glyphicon-circle-arrow-right"></span>
             </button>
+          </form>
           </div>
 
           <div id = "stud" class = "stud hide">
+            <form action = "student.php" method= "post">
+
+              <div class= "input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input type="text" class="form-control" name="user" placeholder="Username" required>
+              </div><br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input type="password" class="form-control" name="password" placeholder="Password" required>
+              </div><br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input type="password" class="form-control" name="verpassword" placeholder="Verify Password" required>
+              </div><br><br>
+
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-asterisk"></i></span>
               <input type="text" class="form-control" name="key" placeholder="Student Id" required>
@@ -150,10 +166,9 @@
             <button type="submit" class="btn btn-default" name="subdos">
               <span class="glyphicon glyphicon-circle-arrow-right"></span>
             </button>
+          </form>
           </div>
         </div>
-
-      </form>
 
       <script>
         $(document).on('change', '.div-toggle', function() {
@@ -166,52 +181,9 @@
             $('.div-toggle').trigger('change');
         });
       </script>
-      <?php
-        if(isset($_POST['subdos'])){
-          $username = $_POST['user'];
-          $pass = $_POST['password'];
-          $verpass = $_POST['verpassword'];
-          $id = $_POST['key'];
-          $db = new mysqli('localhost', 'dbuser', 'password', 'tasql');
-          if(!$db){
-            die("first failed" . mysqli_connect_error());
-          }
 
-          if($_POST['acctype'] == 'student'){
-            if($pass == $verpass){
-              $passw = password_hash($pass, PASSWORD_DEFAULT);
-              $sqlQuery = "insert into StudentAccount values('$id', '$username', '$passw')";
-              $result = mysqli_query($db, $sqlQuery);
-              if($result){
-                session_start();
-                $_SESSION['studentId'] = $id;
-                $_SESSION['newAccount'] = true;
-                header("Location: ./../student/personalInfo.php");
-              }else{
-                die("second failed" . mysqli_connect_error());
-              }
-            }else{
-              echo "Passwords do not match";
-            }
-          }else{
-            if($pass == $verpass){
-              $passw = password_hash($pass, PASSWORD_DEFAULT);
-              $sqlQuery = "insert into FacultyAccount values('$id', '$username', '$passw')";
-              $result = mysqli_query($db, $sqlQuery);
-              if($result){
-                session_start();
-                $_SESSION['facultyId'] = $id;
-                $_SESSION['newAccount'] = true;
-                //redirect to other login for faculty
-              }
-            }else{
-              echo "Passwords do not match";
-            }
-          }
-        }
-      ?>
     </div>
-  </div>
+    </div>
 </div>
 </body>
 </html>
