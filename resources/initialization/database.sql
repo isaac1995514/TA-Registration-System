@@ -5,10 +5,10 @@ DROP TABLE IF EXISTS files;
 DROP TABLE IF EXISTS Applications;
 DROP TABLE IF EXISTS TA_Experience;
 DROP TABLE IF EXISTS Course;
-DROP TABLE IF EXISTS FacultyAccount;
 DROP TABLE IF EXISTS Faculty;
-DROP TABLE IF EXISTS StudentAccount;
+DROP TABLE IF EXISTS FacultyAccount;
 DROP TABLE IF EXISTS Student;
+DROP TABLE IF EXISTS StudentAccount;
 DROP TABLE IF EXISTS Department;
 
 CREATE TABLE Department(
@@ -26,6 +26,7 @@ CREATE TABLE StudentAccount(
 );
 
 CREATE TABLE Student(
+    id INT NOT NULL AUTO_INCREMENT,
     studentId VARCHAR(8) NOT NULL,
     firstName VARCHAR(50) NOT NULL,
     middleName VARCHAR(1),
@@ -42,8 +43,9 @@ CREATE TABLE Student(
     foreignStudent TINYINT(1) NOT NULL,
     emiTestPassed TINYINT(1) NOT NULL,
     currentEMI TINYINT(1) NOT NULL,
-    PRIMARY KEY (studentId),
-    FOREIGN KEY (studentId) REFERENCES StudentAccount(studentId)
+    PRIMARY KEY (id),
+    FOREIGN KEY (studentId) REFERENCES StudentAccount(studentId),
+    CONSTRAINT unique_studentInfo UNIQUE(studentId)
 );
 
 CREATE TABLE FacultyAccount(
@@ -54,6 +56,7 @@ CREATE TABLE FacultyAccount(
 );
 
 CREATE TABLE Faculty(
+    id INT NOT NULL AUTO_INCREMENT,
     facultyId VARCHAR(8) NOT NULL,
     firstName VARCHAR(50) NOT NULL,
     middleName VARCHAR(1),
@@ -61,9 +64,10 @@ CREATE TABLE Faculty(
     email VARCHAR(100) NOT NULL,
     phone VARCHAR(15) NOT NULL,
     departmentName varchar(50) NOT NULL,
-    PRIMARY KEY (facultyId),
+    PRIMARY KEY (id),
     FOREIGN KEY (departmentName) REFERENCES Department(departmentName),
-    FOREIGN KEY (facultyId) REFERENCES FacultyAccount(facultyId)
+    FOREIGN KEY (facultyId) REFERENCES FacultyAccount(facultyId),
+    CONSTRAINT unique_facultyInfo UNIQUE(facultyId)
 );
 
 CREATE TABLE Course(
@@ -76,7 +80,7 @@ CREATE TABLE Course(
     professorId varchar(8) NOT NULL,
     credit  TINYINT(1) NOT NULL,
     PRIMARY KEY (courseCode, academicYear, term, section),
-    FOREIGN KEY (professorId) REFERENCES Faculty(facultyId)
+    FOREIGN KEY (professorId) REFERENCES FacultyAccount(facultyId)
 );
 
 CREATE TABLE TA_Experience(
@@ -110,10 +114,13 @@ CREATE TABLE Applications(
 );
 
 CREATE TABLE Transcript(
+    id INT NOT NULL AUTO_INCREMENT,
     studentId VARCHAR(8) NOT NULL,
-    title text,
-    imgdata longblob,
-    FOREIGN KEY (studentId) REFERENCES StudentAccount(studentId)
+    mime VARCHAR(255) NOT NULL,
+    data longblob,
+    PRIMARY KEY (id),
+    FOREIGN KEY (studentId) REFERENCES StudentAccount(studentId),
+    CONSTRAINT unique_studentId UNIQUE(studentId)
 );
 
 CREATE TABLE Comment(
