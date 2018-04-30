@@ -2,8 +2,12 @@ body {
  	padding-top: 160px;
   padding-left: 15%;
   padding-right: 15%;
-  background-color: #BFC9CA;
-
+  background-color: black;
+  background: url('./../../resources/image/loginBackground.jpg') no-repeat center center fixed;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
 }
 
 img{
@@ -19,13 +23,12 @@ button {
   margin: 10px 75%;
 }
 
-
-  .block {
-   padding-top: 5%;
-   padding-left: 5%;
-   padding-right: 5%;
-   padding-bottom: 15px;
-   border-bottom-left-radius: 15px;
-   border-bottom-right-radius: 15px;
-   background-color: white;
-  }
+.block {
+  padding-top: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-color: white;
+}
