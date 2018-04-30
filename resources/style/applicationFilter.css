@@ -5,3 +5,26 @@ input{
 h4{
     display: inline;
 }
+
+.assignBtn{
+    transition: transform .2s; /* Animation */
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+}
+
+.assignBtn:hover{
+    transform: scale(1.3);
+}
+
+#hideShow{
+    padding: 0px 0px 0px 0px !important;
+    background-color: lightslategrey !important;
+    border-color: lightslategrey !important;
+}
+
+#hideShow:hover{
+    background-color: lightslategray !important;
+    border-color: lightslategray !important;
+
+}

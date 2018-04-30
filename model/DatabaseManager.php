@@ -634,26 +634,47 @@
 
             if ($db_connection == NULL) return [101, $data];
 
+            $tables = "Applications a, Student s";
+            $nextSemesterYear = DatabaseManager::$nextSemesterYear;
+            $nextSemesterTerm = DatabaseManager::$nextSemesterTerm;
+
             $where = [
-                "courseCode LIKE '{$department}%'"
+                "a.studentId = s.studentId",
+                "a.academicYear = '{$nextSemesterYear}'",
+                "a.term = '{$nextSemesterTerm}'",
+                "a.courseCode LIKE '{$department}%'"
             ];
 
+            // Check if studentId field is emtpy
             if($studentId != ""){
-                $where[] = "studentId = '{$studentId}'";
+                $where[] = "a.studentId = '{$studentId}'";
             }
 
+            // Check if courseCode field is emtpy
             if($courseCode != ""){
-                $where[] = "courseCode = '{$courseCode}'";
+                $where[] = "a.courseCode = '{$courseCode}'";
             }
 
-            if($studentType != "allStudent"){
-                $where[] = "taType = '{$}'"
+            // Check if studentType not equals to all Student;
+            if($studentType != 'allStudent'){
+                $where[] = "s.studentType = '{$studentType}'";
             }
 
+            // Check if taType not equals to all Student;
+            if($taType != 'allStudent'){
+                $where[] = "a.taType = '{$taType}'";
+            }
+            $order = "";
 
+            if($orderBy != "none"){
+                $order = " ORDER BY '{$orderBy}'";
+            }
 
-
-            $tables = self::APPLICATION;
+            $arguments = [
+                "select" => "a.*, s.gpa, s.studentType, CONCAT(s.firstName, ' ', s.lastName) as studentName",
+                "where" => join(' and ', $where).$order
+            ];
+          
             $query = $this->generateQuery(self::SELECT, $tables, $arguments);
 
             /* Executing query */

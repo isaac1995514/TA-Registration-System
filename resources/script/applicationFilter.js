@@ -31,11 +31,12 @@ function setUp(){
         let term = btn.parentNode.parentNode.parentNode.rows[rowIdx].cells[5].innerHTML;
         let taType = btn.parentNode.parentNode.parentNode.rows[rowIdx].cells[7].innerHTML;
         let canTeach = btn.parentNode.parentNode.getAttribute('class');
-    
+
+        
         // Check what type of button
         if(btn.getAttribute('class') == "assignBtn"){
             btn.addEventListener('click', () =>{
-            
+
                 let confirmation = confirm(`Are you sure to assign this student to ${courseCode}`);
 
                 if(confirmation){

@@ -9,10 +9,6 @@
         $database = new DatabaseManager();
     }
 
-    $result = $database->isTA('10000003', '2018', 'Summer');
-    $isTA = $result[1];
-
-    // If the student is a TA already
-
-    print_r($isTA);
+    $result = $database->getAllApplication("", "", "CMSC", "allStudent", "allStudent", "none");
+    
 ?>

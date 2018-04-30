@@ -5,6 +5,7 @@
 
     $errorMsg = "";
     $errorCode = 0;
+    $fullTable = "";
 
     /*
     // Check if login in gate has been passed
@@ -36,7 +37,6 @@
 
     // Check if filter button has been clicked
     if(isset($_POST['sumbitBtn'])){
-        echo "HELLO";
         $studentId = $_POST['studentId'];
         $courseCode = $_POST['courseCode'];
         $department = $_POST['department'];
@@ -44,7 +44,58 @@
         $taType = $_POST['taType'];
         $orderBy = $_POST['orderBy'];
         
-        echo $studentId."-".$courseCode."-".$department."-".$studentType."-".$taType."-".$orderBy;
+        $result = $database->getAllApplication($studentId, $courseCode, $department, $studentType, $taType, $orderBy);
+        $errorCode = $result[0];
+
+        // If there is a match
+        if($errorCode == 0){
+
+            //print_r($result);
+            $searchResult = $result[1];
+            $teachingApplication = "<h3>Teaching TA Applications</h3><table id = 'teaching' class = 'table table-responsive table-condensed table-hover'>";
+            $gradingApplication = "<h3>Grading TA Applications</h3><table id = 'grading' class = 'table table-responsive table-condensed table-hover'>";
+            $head  = '<tr><th>StudentId</th><th>Student Name</th><th>Student Type</th><th>GPA</th><th>Year</th><th>Semester</th><th>Course</th><th>TA Type</th><th>Assign Button</th></tr>';
+            $teachingApplicationRow = "";
+            $gradingApplicationRow = "";
+
+            foreach($searchResult as $application){
+                $applicationId = $application['id'];
+                $buttonId = 'assignBtn'."@"."{$applicationId}";
+                $studentId = $application['studentId'];
+                $studentName = $application['studentName'];
+                $studentType = $application['studentType'];
+                $gpa = $application['gpa'];
+                $academicYear = $application['academicYear'];
+                $term = $application['term'];
+                $courseCode = $application['courseCode'];
+                $taType = $application['taType'];
+                $canTeach = $application['canTeach'];
+
+                // Check if the student can teach the course
+                if($canTeach == '1'){
+                    $teachingApplicationRow .= "<tr class = 'teaching'>";
+                    $teachingApplicationRow .= "<td>{$studentId}</td><td>{$studentName}</td><td>{$studentType}</td><td>{$gpa}</td><td>{$academicYear}</td><td>{$term}</td><td>{$courseCode}</td><td>{$taType}</td>";
+                    $teachingApplicationRow .= "<td><img class = 'assignBtn' id = '{$buttonId}' src='./../../resources/image/assignButtonIcon.png' alt='assignButton'/></td>";
+                    $teachingApplicationRow .= "</tr>";
+                }else{
+                    $gradingApplicationRow .= "<tr class = 'grading'>";
+                    $gradingApplicationRow .= "<td>{$studentId}</td><td>{$studentName}</td><td>{$studentType}</td><td>{$gpa}</td><td>{$academicYear}</td><td>{$term}</td><td>{$courseCode}</td><td>{$taType}</td>";
+                    $gradingApplicationRow .= "<td><img class = 'assignBtn' id = '{$buttonId}' src='./../../resources/image/assignButtonIcon.png' alt='assignButton'/></td>";
+                    $gradingApplicationRow .= "</tr>";
+
+                }
+            }
+            
+            $fullTable .= $teachingApplication.$head.$teachingApplicationRow;
+            $fullTable .= "</table><br><br><br>";
+            $fullTable .= $gradingApplication.$head.$gradingApplicationRow;
+            $fullTable .= "</table><br><br><br>";
+        }else if($errorCode == 1){
+            $errorMsg = "No Student Application found for this filtering criteria!";
+        }else{
+            $errorMsg = "System Fail. Please report to admin!";
+        }
+        
     }
 ?>
 
@@ -112,7 +163,7 @@
                             <h4>Student Id: </h4><input type = "text" id = 'studentId' name = 'studentId' placeholder = "Filter By Student id *"/>&nbsp;&nbsp;&nbsp;&nbsp;
                             <h4>Course Code:</h4> <input type = "text" id = 'courseCode' name = 'courseCode' placeholder = "CMSCXXX(Optional Letter)"/>&nbsp;&nbsp;&nbsp;&nbsp;<br>
                             <h4>Department</h4>
-                            <selectid = 'department' name = 'department'>
+                            <select id = 'department' name = 'department'>
                                 <?=$course;?>
                             </select>&nbsp;&nbsp;&nbsp;&nbsp;
                             <h4> TA Type: </h4>
@@ -134,23 +185,14 @@
                                 <option selected id = 'none' value = 'none'>None</option>
                                 <option id = 'lastName' value = 'lastName'>Last Name</option>
                                 <option id = 'gpa' value = 'gpa'>GPA</option>
-                                <option id = 'entryYear' value = 'entryYear'>Entry Year</option>
                                 <option id = 'studentType' value = 'studentType'>Student Type</option>
                                 <option id = 'taType' value = 'taType'>TA Type</option>
                             </select>
                             <input type = 'submit' name = 'sumbitBtn' value = 'Apply Filter'>
                         </fieldset>
                     </form>
-
-                    <h3>Teaching TA Applications</h3>
-                    <table id = "teaching">
-                                
-                    </table>
-
-                    <h3>Grading TA Applications</h3>
-                    <table id = "grading">
-                                
-                    </table>
+                    <?=$errorMsg;?>
+                    <?=$fullTable;?>
                 </div>
             </div>
         </div>
@@ -160,4 +202,3 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         </body>
     </html>
-
