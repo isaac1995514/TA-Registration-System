@@ -13,8 +13,22 @@ h4{
     margin: 0 auto;
 }
 
+.viewBtn{
+    transition: transform .2s; /* Animation */
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+}
+
 .assignBtn:hover{
     transform: scale(1.3);
+}
+.viewBtn:hover{
+    transform: scale(1.3);
+}
+
+th, tr{
+    text-align: center !important;
 }
 
 #hideShow{

@@ -472,6 +472,34 @@
             }
         }
 
+        public function hasTranscript($studentId){
+
+             /* Connect to database */
+             $db_connection = $this->connect();
+
+             if ($db_connection == NULL) return [101, $data];
+
+             $query = "SELECT * FROM Transcript WHERE studentId = '{$studentId}'";
+ 
+             /* Executing query */
+             $result = $db_connection->query($query);
+             if (!$result) {
+                 return [102, $result];
+             }else{
+                 
+                 /* Number of rows found */
+                 $num_rows = $result->num_rows;
+ 
+                 if($num_rows == 0){
+                     return false;
+                 }else{
+                     return true;
+                 }
+ 
+                 $db_connection->close();
+             }
+        }
+
         /**
          * Add faculty into Faculty Table and FacultyAccount Table
          *
@@ -632,7 +660,8 @@
 
             if ($db_connection == NULL) return [101, $data];
 
-            $tables = "Applications a, Student s";
+            $tables = "Student s, Applications a
+                        LEFT JOIN Transcript t ON a.studentId = t.studentId";
             $nextSemesterYear = DatabaseManager::$nextSemesterYear;
             $nextSemesterTerm = DatabaseManager::$nextSemesterTerm;
 
@@ -669,7 +698,7 @@
             }
 
             $arguments = [
-                "select" => "a.*, s.gpa, s.studentType, CONCAT(s.firstName, ' ', s.lastName) as studentName",
+                "select" => "a.*, s.gpa, s.studentType, CONCAT(s.firstName, ' ', s.lastName) as studentName, t.mime, t.data",
                 "where" => join(' and ', $where).$order
             ];
           
@@ -1056,15 +1085,21 @@
 
         function uploadTranscript($id, $type, $data) {
             $db_connection = $this->connect();
-            $stmt = $db_connection->prepare("INSERT INTO Transcript (studentId, mime, data) VALUES (?, ?, ?)");
-            $stmt->bind_param('sss', $id, $type, $data);
-            $stmt->execute();
-            if (!$stmt) {
-                echo mysqli_error($db_connection);
-                return false;
-            } else {
-                header("Location: transcript.php");
-            } 
+
+            // Check if the student has a transcript in the database already
+            if($this->hasTranscript($id)){
+                $stmt = $db_connection->prepare("UPDATE Transcript SET mime = ?, data = ? WHERE studentId = ?");
+                $stmt->bind_param('sss', $type, $data, $id);
+                $stmt->execute();
+
+                return (stmt) ? '0' : '1';
+            }else{
+                $stmt = $db_connection->prepare("INSERT INTO Transcript (studentId, mime, data) VALUES (?, ?, ?)");
+                $stmt->bind_param('sss', $id, $type, $data);
+                $stmt->execute();
+
+                return (stmt) ? '2' : '3';
+            }
         }
     }
 

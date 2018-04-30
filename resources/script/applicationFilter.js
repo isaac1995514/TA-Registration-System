@@ -22,69 +22,74 @@ function setUp(){
     // Set up Buttons
 
     for(let btn of allButtons){
-        let buttonId = String(btn.getAttribute('id'));
-        let appId = buttonId.split('@')[1].trim();
-        let rowIdx = btn.parentNode.parentNode.rowIndex;
-        let studentId = btn.parentNode.parentNode.parentNode.rows[rowIdx].cells[0].innerHTML;
-        let courseCode = btn.parentNode.parentNode.parentNode.rows[rowIdx].cells[6].innerHTML;
-        let academicYear = btn.parentNode.parentNode.parentNode.rows[rowIdx].cells[4].innerHTML;
-        let term = btn.parentNode.parentNode.parentNode.rows[rowIdx].cells[5].innerHTML;
-        let taType = btn.parentNode.parentNode.parentNode.rows[rowIdx].cells[7].innerHTML;
-        let canTeach = btn.parentNode.parentNode.getAttribute('class');
 
-        
-        // Check what type of button
         if(btn.getAttribute('class') == "assignBtn"){
-            btn.addEventListener('click', () =>{
 
-                let confirmation = confirm(`Are you sure to assign this student to ${courseCode}`);
+            let buttonId = String(btn.getAttribute('id'));
+            console.log(buttonId);
+            let appId = buttonId.split('@')[1].trim();
+            let rowIdx = btn.parentNode.parentNode.rowIndex;
+            let studentId = btn.parentNode.parentNode.parentNode.rows[rowIdx].cells[0].innerHTML;
+            let courseCode = btn.parentNode.parentNode.parentNode.rows[rowIdx].cells[6].innerHTML;
+            let academicYear = btn.parentNode.parentNode.parentNode.rows[rowIdx].cells[4].innerHTML;
+            let term = btn.parentNode.parentNode.parentNode.rows[rowIdx].cells[5].innerHTML;
+            let taType = btn.parentNode.parentNode.parentNode.rows[rowIdx].cells[7].innerHTML;
+            let canTeach = btn.parentNode.parentNode.getAttribute('class');
 
-                if(confirmation){
-                    let section = prompt("Do you wish to assign him/her to a specific section? (Click cancel for any section)");
-
-                    let xHttp = new XMLHttpRequest();
-                let params = `?appId=${appId}&
-                                studentId=${studentId}&
-                                courseCode=${courseCode}&
-                                section=${section}&
-                                academicYear=${academicYear}&
-                                term=${term}&
-                                taType=${taType}&
-                                canTeach=${canTeach}`;
-                let url = "./../../model/ajaxScript/insertTA.php"
-                let asynch = true;
-    
-                /* adding appId to url */
-                url += params;
-
-                // Add Random value to avoid cache
-                url += "&randomValue=" + randomValueToAvoidCache;
             
-                xHttp.open("GET", url, asynch);
-                xHttp.onreadystatechange = () =>{
-                    if (xHttp.readyState === 4) {
-                        if (xHttp.status === 200) {
-                            /* retrieving response */
+            // Check what type of button
+            if(btn.getAttribute('class') == "assignBtn"){
+                btn.addEventListener('click', () =>{
 
-                            let resultArr = xHttp.responseText.split('|');
-                            let errorCode = resultArr[0];
-                            let message = resultArr[1];
-                        
-                            if(errorCode == "0"){
-                                window.location.reload(true);
-                            }
+                    let confirmation = confirm(`Are you sure to assign this student to ${courseCode}`);
 
-                            alert(message);
-                        } else {
-                           alert("Failed to Assing Student as TA to the database. Please report to admin. (2)");
-                        }
-                    } 
-                };
+                    if(confirmation){
+                        let section = prompt("Do you wish to assign him/her to a specific section? (Click cancel for any section)");
 
-                /* sending request */
-                xHttp.send(null);
-                }
-            })
+                        let xHttp = new XMLHttpRequest();
+                        let params = `?appId=${appId}&
+                                        studentId=${studentId}&
+                                        courseCode=${courseCode}&
+                                        section=${section}&
+                                        academicYear=${academicYear}&
+                                        term=${term}&
+                                        taType=${taType}&
+                                        canTeach=${canTeach}`;
+                        let url = "./../../model/ajaxScript/insertTA.php"
+                        let asynch = true;
+            
+                        /* adding appId to url */
+                        url += params;
+
+                        // Add Random value to avoid cache
+                        url += "&randomValue=" + randomValueToAvoidCache;
+                    
+                        xHttp.open("GET", url, asynch);
+                        xHttp.onreadystatechange = () =>{
+                            if (xHttp.readyState === 4) {
+                                if (xHttp.status === 200) {
+                                    /* retrieving response */
+
+                                    let resultArr = xHttp.responseText.split('|');
+                                    let errorCode = resultArr[0];
+                                    let message = resultArr[1];
+                                
+                                    if(errorCode == "0"){
+                                        window.location.reload(true);
+                                    }
+
+                                    alert(message);
+                                } else {
+                                alert("Failed to Assing Student as TA to the database. Please report to admin. (2)");
+                                }
+                            } 
+                        };
+
+                        /* sending request */
+                        xHttp.send(null);
+                    }
+                })
+            }
         }
     }
 }

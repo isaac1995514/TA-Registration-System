@@ -47,6 +47,8 @@
         $result = $database->getAllApplication($studentId, $courseCode, $department, $studentType, $taType, $orderBy);
         $errorCode = $result[0];
 
+
+
         // If there is a match
         if($errorCode == 0){
 
@@ -54,7 +56,7 @@
             $searchResult = $result[1];
             $teachingApplication = "<h3>Teaching TA Applications</h3><table id = 'teaching' class = 'table table-responsive table-condensed table-hover'>";
             $gradingApplication = "<h3>Grading TA Applications</h3><table id = 'grading' class = 'table table-responsive table-condensed table-hover'>";
-            $head  = '<tr><th>StudentId</th><th>Student Name</th><th>Student Type</th><th>GPA</th><th>Year</th><th>Semester</th><th>Course</th><th>TA Type</th><th>Assign Button</th></tr>';
+            $head  = '<tr><th>StudentId</th><th>Student Name</th><th>Student Type</th><th>GPA</th><th>Year</th><th>Semester</th><th>Course</th><th>TA Type</th><th>View Application</th><th>Assign Button</th></tr>';
             $teachingApplicationRow = "";
             $gradingApplicationRow = "";
 
@@ -62,6 +64,7 @@
                 $applicationId = $application['id'];
                 $buttonId = 'assignBtn'."@"."{$applicationId}";
                 $studentId = $application['studentId'];
+                $viewButtonId = 'viewBtn'."@"."{$studentId}";
                 $studentName = $application['studentName'];
                 $studentType = $application['studentType'];
                 $gpa = $application['gpa'];
@@ -70,16 +73,28 @@
                 $courseCode = $application['courseCode'];
                 $taType = $application['taType'];
                 $canTeach = $application['canTeach'];
+                $mime = $application['mime'];
+                $data = $application['data'];
 
                 // Check if the student can teach the course
                 if($canTeach == '1'){
                     $teachingApplicationRow .= "<tr class = 'teaching'>";
                     $teachingApplicationRow .= "<td>{$studentId}</td><td>{$studentName}</td><td>{$studentType}</td><td>{$gpa}</td><td>{$academicYear}</td><td>{$term}</td><td>{$courseCode}</td><td>{$taType}</td>";
+                    if($mime != null){
+                        $teachingApplicationRow .= "<td><a href = './../ajaxScript/transcript.php?studentId={$studentId}' target='_blank'><img class = 'viewBtn' id = '{$viewButtonId}' src='./../../resources/image/transcriptIcon.png' alt='viewButton'/></a></td>";
+                    }else{
+                        $teachingApplicationRow .= "<td>X</td>";
+                    }
                     $teachingApplicationRow .= "<td><img class = 'assignBtn' id = '{$buttonId}' src='./../../resources/image/assignButtonIcon.png' alt='assignButton'/></td>";
                     $teachingApplicationRow .= "</tr>";
                 }else{
                     $gradingApplicationRow .= "<tr class = 'grading'>";
                     $gradingApplicationRow .= "<td>{$studentId}</td><td>{$studentName}</td><td>{$studentType}</td><td>{$gpa}</td><td>{$academicYear}</td><td>{$term}</td><td>{$courseCode}</td><td>{$taType}</td>";
+                    if($mime != null){
+                        $gradingApplicationRow .= "<td><a href = './../ajaxScript/transcript.php?studentId={$studentId}' target='_blank'><img class = 'viewBtn' id = '{$viewButtonId}' src='./../../resources/image/transcriptIcon.png' alt='viewButton'/></a></td>";
+                    }else{
+                        $gradingApplicationRow .= "<td>X</td>";
+                    }
                     $gradingApplicationRow .= "<td><img class = 'assignBtn' id = '{$buttonId}' src='./../../resources/image/assignButtonIcon.png' alt='assignButton'/></td>";
                     $gradingApplicationRow .= "</tr>";
 
