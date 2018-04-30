@@ -48,15 +48,19 @@
 
         // Upload transcript
         // $db = new PDO("mysql:host=localhost;dbname=tasql", "dbuser" ,"password");
-        $name = $_FILES["transcriptFile"]["name"];
-        $type = $_FILES["transcriptFile"]["type"];
-        $data = file_get_contents($_FILES["transcriptFile"]["tmp_name"]);
-        $studentID = $arguments["studentId"];
-        $database->uploadTranscript($studentId, $type, $data);
-        
+        if($_FILES['transcriptFile']['name'] != "") {
+            // A file was selected for upload, your (re)action goes here
+
+            $name = $_FILES["transcriptFile"]["name"];
+            $type = $_FILES["transcriptFile"]["type"];
+            $data = file_get_contents($_FILES["transcriptFile"]["tmp_name"]);
+            $studentID = $arguments["studentId"];
+            $database->uploadTranscript($studentId, $type, $data);
+        }
+
         // Unset local copy after insert or update
         unset($_SESSION['studentInfo']);
-        // header("Location: personalInfo.php");
+        //header("Location: personalInfo.php");
 
     }else{
         echo '<h1 style="color:red;">Submission Error</h1>';

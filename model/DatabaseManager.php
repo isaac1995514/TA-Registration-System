@@ -1031,8 +1031,6 @@
                 }
             }
             return [0, $data];
-
-
         }
 
         public function removeAllApplication($studentId){
@@ -1058,8 +1056,7 @@
 
         function uploadTranscript($id, $type, $data) {
             $db_connection = $this->connect();
-            $stmt = $db_connection->prepare("INSERT INTO Transcript (studentId, mime, data)
-                        VALUES (?, ?, ?)");
+            $stmt = $db_connection->prepare("INSERT INTO Transcript (studentId, mime, data) VALUES (?, ?, ?)");
             $stmt->bind_param('sss', $id, $type, $data);
             $stmt->execute();
             if (!$stmt) {

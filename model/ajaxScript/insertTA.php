@@ -34,6 +34,9 @@
     if($isTA){
         echo "2|This Student has already been assigned as a TA for {$academicYear} {$term}. Please assign a different student";
     
+        // Remove the student's application
+        $result = $database->removeAllApplication($studentId);
+
     // If the student is not yet a TA
     }else{
         // Check if a specific section is provided

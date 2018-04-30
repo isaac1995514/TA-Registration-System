@@ -19,7 +19,7 @@ if(!$db){
 
     $passw = password_hash($pass, PASSWORD_DEFAULT);
     $sqlQuery = "insert into FacultyAccount values('$id', '$username', '$passw')";
-    $sqlQuery2 = "insert into Faculty values ('$id', '$first', '$middle', '$last', '$email', '$phone', '$dept')";
+    $sqlQuery2 = "insert into Faculty (facultyId, firstName, middleName, lastName, email, phone, departmentName) values ('$id', '$first', '$middle', '$last', '$email', '$phone', '$dept')";
 
     $result = mysqli_query($db, $sqlQuery);
     $result2 = mysqli_query($db, $sqlQuery2);
