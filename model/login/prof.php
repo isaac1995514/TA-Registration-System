@@ -1,4 +1,5 @@
 <?php
+session_start();
 $username = $_POST['user'];
 $pass = $_POST['password'];
 $verpass = $_POST['verpassword'];
@@ -25,10 +26,8 @@ if(!$db){
     $result2 = mysqli_query($db, $sqlQuery2);
 
     if($result && $result2){
-      session_start();
       $_SESSION['facultyId'] = $id;
-      $_SESSION['new'] = true;
-      header("Location: ../faculty/viewTA.php");
+      header("Location: ./../faculty/viewTA.php");
       //redirect to other login for faculty
     }else{
       die("second2 failed" . mysqli_connect_error());

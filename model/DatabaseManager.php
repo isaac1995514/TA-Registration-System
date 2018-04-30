@@ -394,10 +394,15 @@
 
             if ($db_connection == NULL) return [101, $data];
 
+            $nextSemesterYear = DatabaseManager::$nextSemesterYear;
+            $nextSemesterTerm = DatabaseManager::$nextSemesterTerm;
+
             $where = [
                 "t.professorId = f.facultyId",
                 "t.courseCode = c.courseCode",
                 "t.section = c.section",
+                "c.academicYear = '{$nextSemesterYear}'",
+                "c.term = '{$nextSemesterTerm}'",
                 "studentId = '{$studentId}'"
             ];
 
@@ -1092,13 +1097,13 @@
                 $stmt->bind_param('sss', $type, $data, $id);
                 $stmt->execute();
 
-                return (stmt) ? '0' : '1';
+                return ($stmt) ? '0' : '1';
             }else{
                 $stmt = $db_connection->prepare("INSERT INTO Transcript (studentId, mime, data) VALUES (?, ?, ?)");
                 $stmt->bind_param('sss', $id, $type, $data);
                 $stmt->execute();
 
-                return (stmt) ? '2' : '3';
+                return ($stmt) ? '2' : '3';
             }
         }
     }

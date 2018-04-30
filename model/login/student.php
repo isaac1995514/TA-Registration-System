@@ -1,4 +1,5 @@
 <?php
+  session_start();
   $username = $_POST['user'];
   $pass = $_POST['password'];
   $verpass = $_POST['verpassword'];
@@ -14,7 +15,6 @@
       $sqlQuery = "insert into StudentAccount values('$id', '$username', '$passw')";
       $result = mysqli_query($db, $sqlQuery);
       if($result){
-        session_start();
         $_SESSION['studentId'] = $id;
         $_SESSION['newAccount'] = true;
         header("Location: ../student/personalInfo.php");

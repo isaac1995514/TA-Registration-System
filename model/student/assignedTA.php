@@ -32,7 +32,6 @@
     if($errorCode == 0){
         $searchResult = $result[1];
         
-        
         foreach($searchResult as $position){
             $course = $position['courseCode']." - ". $position['courseName'];
             $section = $position['section'];
