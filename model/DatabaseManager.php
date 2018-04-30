@@ -27,6 +27,7 @@
         public const COURSE = "Course";
         public const TRANSCRIPT = "Transcript";
         public const COMMENT = "Comment";
+        public const CONFIG = "Config";
 
         private $host;
         private $user;
@@ -349,7 +350,7 @@
          *      101 - Connection Error
          *      102 - Failed to insert to TA_Experience
          */
-        public function addTA($fields){
+        public function addTA($studentId, $courseCode, $section, $academicYear, $term, $professorId, $taType, $canTeach){
             /* Connect to database */
             $db_connection = $this->connect();
 
@@ -429,6 +430,48 @@
             }
             return [0, $data];
             
+        }
+
+        public function isTA($studentId, $academicYar, $term){
+
+        
+            /* Connect to database */
+            $db_connection = $this->connect();
+
+            if ($db_connection == NULL) return [101, $data];
+
+            $where = [
+                "studentId = {$studentId}",
+                "academicYear = {$academicYear}",
+                "term = {$term}"
+            ];
+
+            $arguments = array(
+                "select" => "*",
+                "where" => join(' and ', $where)
+            );
+
+            $tables = self::TA;
+            $query = $this->generateQuery(self::SELECT, $tables, $arguments);
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return [102, $result];
+            }else{
+                
+                /* Number of rows found */
+                $num_rows = $result->num_rows;
+
+                if($num_rows > 0){
+                    return [1, true];
+                }else{
+                    return [1, false];
+                }
+
+                $db_connection->close();
+            }
+
         }
 
         /**
@@ -556,6 +599,59 @@
                 "select" => "*",
                 "where" => "studentId = '{$studentId}'"
             );
+
+            $tables = self::APPLICATION;
+            $query = $this->generateQuery(self::SELECT, $tables, $arguments);
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return [102, $result];
+            }else{
+                /* Number of rows found */
+                $num_rows = $result->num_rows;
+
+                if($num_rows == 0){
+                    return [1, $data];
+                }else{
+
+                    while($row = $result->fetch_assoc()) {
+                        $data[]=$row;
+                    }
+                }
+            }
+
+            $db_connection->close();
+
+            return [0, $data];
+        }
+
+        public function getAllApplication($studentId, $courseCode, $department, $studentType, $taType, $orderBy){
+
+            $data = [];
+            
+            $db_connection = $this->connect();
+
+            if ($db_connection == NULL) return [101, $data];
+
+            $where = [
+                "courseCode LIKE '{$department}%'"
+            ];
+
+            if($studentId != ""){
+                $where[] = "studentId = '{$studentId}'";
+            }
+
+            if($courseCode != ""){
+                $where[] = "courseCode = '{$courseCode}'";
+            }
+
+            if($studentType != "allStudent"){
+                $where[] = "taType = '{$}'"
+            }
+
+
+
 
             $tables = self::APPLICATION;
             $query = $this->generateQuery(self::SELECT, $tables, $arguments);
@@ -753,31 +849,121 @@
 
         }
 
-        private function getRow($columns, $row){
+        public function getConfig(){
 
-            $translatedRow = array();
+            /* Connect to database */
+            $db_connection = $this->connect();
 
-            foreach($columns as $column){
-                $translatedRow[(string) $column] = $row[(string) $column];
-            }
+            if ($db_connection == NULL) return [101, $data];
 
-            return $translatedRow;
-        }
+            $arguments = array(
+                "select" => "numOfStudent",
+                "where" => "true"
+            );
 
-        private function getTableColumnNames($db_connection, $table){
-            $columns = [];
-            $columnQuery = "SHOW COLUMNS FROM {$table}";
-            $res = $db_connection->query($columnQuery);
-            if(!$res){
-                return NULL;
+            $tables = self::CONFIG;
+            $query = $this->generateQuery(self::SELECT, $tables, $arguments);
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return [102, $result];
             }else{
-                while($row = $res->fetch_assoc()){
-                    $columns[] = $row['Field'];
+                
+                /* Number of rows found */
+                $num_rows = $result->num_rows;
+
+                if($num_rows == 0){
+                    return [1, $data];
+                }else{
+                    $row = $result->fetch_assoc();
+                    $data = $row['numOfStudent'];
                 }
             }
-
-            return $columns;
+            return [0, $data];
         }
+
+        public function setConfig($numOfStudent){
+
+            /* Connect to database */
+            $db_connection = $this->connect();
+
+            if ($db_connection == NULL) return 101;
+
+            $table = self::CONFIG;
+            $set = "numOfStudent = '{$numOfStudent}'";
+            
+            $query = "UPDATE {$table} SET {$set};";
+           
+            /* Executing query */
+            $result = $db_connection->query($query);
+
+            print_r($query);
+
+            // Disconnect from Database;
+            $db_connection->close();
+
+            return ($result == true) ? 0 : 1;
+
+        }
+
+        public function getCourseCode(){
+
+            $data = [];
+
+            /* Connect to database */
+            $db_connection = $this->connect();
+
+            if ($db_connection == NULL) return [101, $data];
+
+            $arguments = array(
+                "select" => "abbreviation",
+                "where" => "true"
+            );
+
+            $tables = self::DEPARTMENT;
+            $query = $this->generateQuery(self::SELECT, $tables, $arguments);
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return [102, $result];
+            }else{
+
+                /* Number of rows found */
+                $num_rows = $result->num_rows;
+
+                if($num_rows == 0){
+                    return [1, $data];
+                }else{
+                    while($row = $result->fetch_assoc()){
+                        $data[] = $row['abbreviation'];
+                    }
+                }
+            }
+            return [0, $data];
+        }
+
+        public function getAvailableSection($courseCode){
+
+
+        }
+
+        public function checkSectionAvailable($courseCode, $section){
+
+
+        }
+
+        public function removeAllApplication($studentId){
+
+            
+        }
+
+
+
+
+
+    
 
         function uploadTranscript($id, $type, $data) {
             $db_connection = $this->connect();

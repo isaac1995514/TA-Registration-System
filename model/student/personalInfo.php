@@ -9,7 +9,7 @@
 
     // Check if login in gate has been passed
     if(isset($_SESSION['studentId'])){
-        $studentId = $_SESSION['studentId'];
+        $studentId = trim($_SESSION['studentId']);
     }else{
         header("Location: ./../login/login.php");
     }

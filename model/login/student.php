@@ -16,7 +16,7 @@
       if($result){
         session_start();
         $_SESSION['studentId'] = $id;
-        $_SESSION['new'] = true;
+        $_SESSION['newAccount'] = true;
         header("Location: ../student/personalInfo.php");
       }else{
         die("second failed1" . mysqli_connect_error());
