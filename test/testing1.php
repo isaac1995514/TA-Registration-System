@@ -9,6 +9,8 @@
         $database = new DatabaseManager();
     }
 
-    $result = $database->getAllApplication("", "", "CMSC", "allStudent", "allStudent", "none");
+    $result = $database->getAvailableSection('CMSC351');
+
+    print_r($result);
     
 ?>

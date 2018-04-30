@@ -358,11 +358,14 @@
 
             // Set up values to be added
             $arguments = array(
-                "studentId" => "'{$fields["studentId"]}'",
-                "courseCode" => "'{$fields["courseCode"]}'",
-                "academicYear" => "'{$fields["academicYear"]}'",
-                "term" => "'{$fields["term"]}'",
-                "professorId" => "'{$fields["professorId"]}'"
+                "studentId" => "{$studentId}",
+                "courseCode" => "{$courseCode}",
+                "section" => "{$section}",
+                "academicYear" => "{$academicYear}",
+                "term" => "{$term}",
+                "professorId" => "{$professorId}",
+                "taType" => "{$taType}",
+                "canTeach" => "{$canTeach}",
             );
 
             // Generate Query to add Faculty
@@ -371,14 +374,10 @@
 
             /* Executing query */
             $result = $db_connection->query($query);
-            if (!$result) {
-                return 102;
-            }
-
+    
             $db_connection->close();
 
-            return 0;
-
+            return $result;
         }
 
         /**
@@ -407,7 +406,7 @@
                 "where" => join(' and ', $where)." ORDER BY t.academicYear, t.term"
             );
 
-            $tables = "Ta_experience t, Faculty f, Course c";
+            $tables = "TA_Experience t, Faculty f, Course c";
             $query = $this->generateQuery(self::SELECT, $tables, $arguments);
 
             /* Executing query */
@@ -432,7 +431,7 @@
             
         }
 
-        public function isTA($studentId, $academicYar, $term){
+        public function isTA($studentId, $academicYear, $term){
 
         
             /* Connect to database */
@@ -441,9 +440,9 @@
             if ($db_connection == NULL) return [101, $data];
 
             $where = [
-                "studentId = {$studentId}",
-                "academicYear = {$academicYear}",
-                "term = {$term}"
+                "studentId = '{$studentId}'",
+                "academicYear = '{$academicYear}'",
+                "term = '{$term}'"
             ];
 
             $arguments = array(
@@ -471,7 +470,6 @@
 
                 $db_connection->close();
             }
-
         }
 
         /**
@@ -735,6 +733,8 @@
             }
         }
 
+
+
         /***
          * Admin User Interface Functions
          */
@@ -919,8 +919,6 @@
             /* Executing query */
             $result = $db_connection->query($query);
 
-            print_r($query);
-
             // Disconnect from Database;
             $db_connection->close();
 
@@ -965,26 +963,98 @@
             return [0, $data];
         }
 
+        /**
+         * Error Code:
+         *        0 - Found
+         *        1 - Empty
+         *      101 - Connection Failed
+         *      102 - getConfig Failed
+         *      103 - query failed
+         */
         public function getAvailableSection($courseCode){
 
+            $data = array();
 
-        }
+            /* Connect to database */
+            $db_connection = $this->connect();
 
-        public function checkSectionAvailable($courseCode, $section){
+            if ($db_connection == NULL) return [101, $data];
+
+            // Get the number of student avaiable for each section
+            $result = $this->getConfig();
+            $errorCode = $result[0];
+            $numOfStudent = $result[1];
+            $nextSemesterYear = DatabaseManager::$nextSemesterYear;
+            $nextSemesterTerm = DatabaseManager::$nextSemesterTerm;
+
+            // Check if the getConfig is successful
+            if($errorCode != 0){
+                return [102, $data];
+            }
+
+            $where = [
+                "c.courseCode = '{$courseCode}'",
+                "{$numOfStudent} > (SELECT count(*) 
+                                        FROM TA_Experience t 
+                                        WHERE c.courseCode = t.courseCode AND
+                                                 c.section = t.section AND
+                                                 t.academicYear = '{$nextSemesterYear}' AND
+                                                 t.term = '{$nextSemesterTerm}')",
+            ];
+
+            $arguments = array(
+                "select" => "c.section, c.professorId",
+                "where" => join(' and ', $where)
+            );
+
+            $tables = "Course c";
+            $query = $this->generateQuery(self::SELECT, $tables, $arguments);
+
+            //return $query;
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+            if (!$result) {
+                return [103, $result];
+            }else{
+                
+                /* Number of rows found */
+                $num_rows = $result->num_rows;
+
+                if($num_rows == 0){
+                    return [1, $data];
+                }else{
+
+                    while($row = $result->fetch_assoc()) {
+                        $data[]=$row;
+                    }
+                }
+            }
+            return [0, $data];
 
 
         }
 
         public function removeAllApplication($studentId){
 
-            
+            $data = array();
+
+            $db_connection = $this->connect();
+
+            if ($db_connection == NULL) return 101;
+
+            $arguments = array(
+                "where" => "studentId = '{$studentId}'"
+            );
+
+            $tables = self::APPLICATION;
+            $query = $this->generateQuery(self::DELETE, $tables, $arguments);
+
+            /* Executing query */
+            $result = $db_connection->query($query);
+
+            return $result;
         }
-
-
-
-
-
-    
 
         function uploadTranscript($id, $type, $data) {
             $db_connection = $this->connect();

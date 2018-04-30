@@ -82,6 +82,7 @@ function validateLinks(){
         document.getElementById('newApp').style.visibility = 'hidden';
         document.getElementById('viewApp').style.visibility = 'hidden';
         document.getElementById('comments').style.visibility = 'hidden';
+        document.getElementById('assignedTA').style.visibility = 'hidden';
     }
 }
 

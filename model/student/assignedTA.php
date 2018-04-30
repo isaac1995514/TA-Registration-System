@@ -26,12 +26,12 @@
     $errorCode = $result[0];
     $fullTable = "<h1>Assigned TA position</h1>";
     $fullTable .= '<table id = "assignedTA" class = "table table-responsive table-condensed table-hover">';
-    $head = "";
+    $head  = '<tr><th>Course</th><th>Section</th><th>Year</th><th>Semester</th><th>Professor</th><th>Position</th><th>TA Type</th></tr>';
     $row = "";
 
     if($errorCode == 0){
         $searchResult = $result[1];
-        $head  = '<tr><th>Course</th><th>Section</th><th>Year</th><th>Semester</th><th>Professor</th><th>Position</th><th>TA Type</th></tr>';
+        
         
         foreach($searchResult as $position){
             $course = $position['courseCode']." - ". $position['courseName'];

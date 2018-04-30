@@ -24,6 +24,7 @@
     $term = trim($_GET['term']);
     $taType = trim($_GET['taType']);
     $canTeach = trim($_GET['canTeach']);
+    $canTeach = ($canTeach == 'teaching') ? '1' : '0';
 
     // Check if the student is already a TA for the next term
     $result = $database->isTA($studentId, $academicYear, $term);
@@ -55,7 +56,6 @@
     
                     // Add student as TA to the database
                     $result = $database->addTA($studentId, $courseCode, $section, $academicYear, $term, $professorId, $taType, $canTeach);
-    
                     if($result){
 
                         $result = $database->removeAllApplication($studentId);
@@ -78,31 +78,50 @@
                 echo "1|System Failed. Please report to Admin! (2)";
             }
         }else{
-            // Check if the student can be added as A TA to that specific section
-            if($errorCode == 0 || $errorCode == 202){
-            
-                $professorId = $result[1];
 
-                // Add student as TA to the database
-                $result = $database->addTA($studentId, $courseCode, $section, $academicYear, $term, $professorId, $taType, $canTeach);
+            //Get all classes that is not full
+            $result = $database->getAvailableSection($courseCode);
+            $errorCode = $result[0];
+            $sectionList = $result[1];
 
-                if($result){
+            // Check if there is an available section
+            if($errorCode == 0){
 
-                    $result = $database->removeAllApplication($studentId);
+                $sectionFound = false;
+                $professorId = "";
+                // Check if the target section is included
+                foreach($sectionList as $sectionEntry){
+                    if($sectionEntry['section'] == $section){
+                        $sectionFound = true;
+                        $professorId = $sectionEntry['professorId'];
+                        break;
+                    }
+                }
+
+                // Check if the targeted section is in the available section list
+                if($sectionFound){
+
+                    // Add student as TA to the database
+                    $result = $database->addTA($studentId, $courseCode, $section, $academicYear, $term, $professorId, $taType, $canTeach);
 
                     if($result){
-                        echo "0|Student {$studentId} added to {$courseCode} - {$section}";
+
+                        $result = $database->removeAllApplication($studentId);
+    
+                        if($result){
+                            echo "0|Student {$studentId} added to {$courseCode} - {$section}";
+                        }else{
+                            echo "1|System Failed. Please report to Admin! (3)"; 
+                        }
                     }else{
-                        echo "1|System Failed. Please report to Admin! (3)"; 
+                        echo "1|System Failed. Please report to Admin! (3-1)";
                     }
+
                 }else{
-                    echo "1|System Failed. Please report to Admin! (3-1)";
+                    echo "3|Section {$section} is full. Please assign this student to a different section!";
                 }
-            // The section is full
-            }else if($errorCode = 103){
-                echo "3|Section {$section} is full. Please assign this student to a different section!";
             }else{
-                echo "1|System Failed. Please report to Admin! (4)";
+                echo "3|All section for {$courseCode} is full. Please consider assigning this student to a different class!";
             }
         }
     }
